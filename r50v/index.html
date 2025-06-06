@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng Điều Khiển So Sánh: Sigma 18-50mm f/2.8 vs. Canon 24mm f/1.8</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Creative Clash -->
+    <!-- Application Structure Plan: A dynamic dashboard approach. The user is presented with a set of common use-case "scenarios" (e.g., Vlogging, Low Light). Selecting a scenario updates the entire dashboard: a Radar Chart provides a multi-dimensional score comparison, and adjacent analysis cards highlight the winner for that specific scenario with detailed pros and cons. A "Use-Case Analysis" section with visual comparisons for specific situations has been added. The two collapsible sections for physical feel and technical specs are open by default for immediate access. A new, comprehensive "Final Verdict & Advice" section has been added to synthesize all information and provide actionable recommendations. -->
+    <!-- Visualization & Content Choices: 
+        - Scenario Selector: A series of interactive buttons (HTML/Tailwind) serves as the primary control for the dashboard.
+        - Core Comparison: A dynamic Radar Chart (Chart.js) is the central visualization. Goal: Compare multiple performance metrics simultaneously for two items. Justification: It's highly effective at showing which lens has a better "shape" of performance for a given task.
+        - Detailed Analysis Cards: Dynamic text cards (HTML/Tailwind) update with scenario-specific verdicts and pros/cons. Interaction: A highlight border and a "Winner" badge are applied via JS. Justification: Provides immediate, clear conclusions.
+        - Use-Case Scenarios: A new grid of cards with simple HTML/CSS visualizations and text analysis to show how each setup performs in specific real-world tasks. Justification: Directly answers the user's request for more practical, visual comparisons.
+        - Final Verdict Section: A new section with clear, persona-based recommendations and a final summary card to provide a conclusive end to the user's journey. Justification: Fulfills the user's request for a conclusion and adds significant value. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #F0F2F5;
+            color: #1c1e21;
+        }
+        .text-balance { text-wrap: balance; }
+        .hero-title {
+            font-weight: 800;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 350px;
+            margin: auto;
+        }
+        .scenario-btn {
+            transition: all 0.2s ease-in-out;
+            border: 2px solid transparent;
+        }
+        .scenario-btn.active {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: #4D96FF;
+        }
+        .winner-card {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px -5px rgba(77, 150, 255, 0.4);
+            border: 2px solid #4D96FF;
+        }
+        .winner-badge {
+            position: absolute;
+            top: -12px;
+            right: 16px;
+            background: linear-gradient(45deg, #4D96FF, #3b82f6);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .sigma-text { color: #4D96FF; }
+        .canon-text { color: #FF6B6B; }
+        details > summary {
+            list-style: none;
+            cursor: pointer;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details > summary::after {
+            content: ' ▼';
+            font-size: 0.8em;
+            float: right;
+            line-height: inherit;
+        }
+        details[open] > summary::after {
+            content: ' ▲';
+        }
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .spec-table th, .spec-table td {
+            border: 1px solid #e5e7eb;
+            padding: 0.75rem;
+            text-align: left;
+            font-size: 0.875rem;
+        }
+        .spec-table th {
+            background-color: #f9fafb;
+            font-weight: 600;
+        }
+        .spec-table td:nth-child(2), .spec-table td:nth-child(3) {
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 py-12">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-5xl hero-title mb-2">Bảng Điều Khiển So Sánh Ống Kính</h1>
+            <p class="text-md md:text-lg text-gray-600 max-w-2xl mx-auto text-balance">
+                Chọn một kịch bản sử dụng để xem ống kính nào vượt trội hơn cho nhu cầu của bạn trên máy Canon R50 V.
+            </p>
+        </header>
+
+        <section id="scenario-selector" class="mb-12">
+            <h2 class="text-center font-bold text-lg mb-4 text-gray-700">Chọn Kịch Bản Của Bạn:</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-4xl mx-auto">
+                <button data-scenario="video" class="scenario-btn card text-center p-4 cursor-pointer hover:shadow-lg">
+                    <span class="text-3xl">🎬</span>
+                    <span class="block font-semibold mt-2">Quay Video & Vlog</span>
+                </button>
+                <button data-scenario="lowlight" class="scenario-btn card text-center p-4 cursor-pointer hover:shadow-lg">
+                    <span class="text-3xl">🌃</span>
+                    <span class="block font-semibold mt-2">Chụp Thiếu Sáng</span>
+                </button>
+                <button data-scenario="travel" class="scenario-btn card text-center p-4 cursor-pointer hover:shadow-lg">
+                    <span class="text-3xl">✈️</span>
+                    <span class="block font-semibold mt-2">Du Lịch & Đa Dụng</span>
+                </button>
+                 <button data-scenario="creative" class="scenario-btn card text-center p-4 cursor-pointer hover:shadow-lg">
+                    <span class="text-3xl">🎨</span>
+                    <span class="block font-semibold mt-2">Sáng Tạo (Macro/Bokeh)</span>
+                </button>
+            </div>
+        </section>
+
+        <section id="dashboard" class="mb-12">
+            <div class="card p-6 md:p-8">
+                <h2 id="scenario-title" class="text-2xl font-bold text-center mb-8"></h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="chart-container">
+                        <canvas id="lensRadarChart"></canvas>
+                    </div>
+                    <div class="space-y-6">
+                        <div id="sigma-card" class="card relative">
+                            <h3 class="text-2xl font-bold sigma-text mb-2">Sigma 18-50mm f/2.8</h3>
+                            <p id="sigma-verdict" class="text-sm text-gray-600 mb-4 italic"></p>
+                            <div id="sigma-analysis"></div>
+                        </div>
+                        <div id="canon-card" class="card relative">
+                            <h3 class="text-2xl font-bold canon-text mb-2">Canon RF 24mm f/1.8</h3>
+                             <p id="canon-verdict" class="text-sm text-gray-600 mb-4 italic"></p>
+                            <div id="canon-analysis"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+             <h2 class="text-2xl font-bold text-center mb-8">Phân Tích Tình Huống Sử Dụng</h2>
+             <div class="text-center max-w-3xl mx-auto text-gray-600 mb-8">
+                <p class="text-md">Mỗi bộ máy ảnh tỏa sáng trong những hoàn cảnh khác nhau. Dưới đây là phân tích trực quan về cách chúng hoạt động trong các tình huống phổ biến với R50 V.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-4">
+                    <h3 class="font-bold text-center mb-4">Tình huống: Thiết Lập Vlogging</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="border-r pr-4 text-center">
+                            <h4 class="font-semibold text-sm sigma-text mb-2">Sigma 18-50mm</h4>
+                            <div class="text-3xl mb-2">📷+<span class="text-xl">🤸+🎤</span></div>
+                            <p class="text-xs text-gray-500">AF êm và linh hoạt, nhưng **yêu cầu gimbal** để ổn định và micro rời để đảm bảo âm thanh.</p>
+                            <p class="font-bold text-xs mt-2 text-blue-600">Linh hoạt nhưng cồng kềnh</p>
+                        </div>
+                        <div class="text-center">
+                            <h4 class="font-semibold text-sm canon-text mb-2">Canon 24mm</h4>
+                             <div class="text-3xl mb-2">📷+<span class="text-xl">🎤</span></div>
+                            <p class="text-xs text-gray-500">OIS tích hợp giúp gọn nhẹ hơn, nhưng AF ồn **vẫn cần micro rời**. Góc nhìn cố định.</p>
+                            <p class="font-bold text-xs mt-2 text-red-600">Gọn nhẹ nhưng kém linh hoạt</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card p-4">
+                    <h3 class="font-bold text-center mb-4">Tình huống: Nhiếp Ảnh Đường Phố</h3>
+                     <div class="grid grid-cols-2 gap-4">
+                        <div class="border-r pr-4 text-center">
+                            <h4 class="font-semibold text-sm sigma-text mb-2">Sigma 18-50mm</h4>
+                             <div class="text-3xl mb-2">🏙️→🧍</div>
+                            <p class="text-xs text-gray-500">Dải zoom là vua. Bạn có thể chụp từ góc rộng kiến trúc đến chân dung cận cảnh mà **không cần thay ống kính**.</p>
+                            <p class="font-bold text-xs mt-2 text-blue-600">"Bắt trọn" mọi khoảnh khắc</p>
+                        </div>
+                        <div class="text-center">
+                           <h4 class="font-semibold text-sm canon-text mb-2">Canon 24mm</h4>
+                            <div class="text-3xl mb-2">🤫+🌃</div>
+                            <p class="text-xs text-gray-500">Nhỏ gọn và kín đáo giúp bạn hòa mình vào đám đông. Khẩu độ f/1.8 cho phép **tách nền nghệ thuật** và chụp đêm.</p>
+                            <p class="font-bold text-xs mt-2 text-red-600">Nhỏ gọn, nghệ thuật</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card p-4">
+                     <h3 class="font-bold text-center mb-4">Tình huống: Chụp Sản Phẩm</h3>
+                     <div class="grid grid-cols-2 gap-4">
+                        <div class="border-r pr-4 text-center">
+                            <h4 class="font-semibold text-sm sigma-text mb-2">Sigma 18-50mm</h4>
+                            <div class="text-3xl mb-2">☕</div>
+                            <p class="text-xs text-gray-500">Khả năng chụp cận cảnh rất tốt cho một ống kính zoom, **đủ dùng cho nhiều sản phẩm**. Dải zoom giúp dễ dàng thay đổi bố cục.</p>
+                            <p class="font-bold text-xs mt-2 text-blue-600">Đủ tốt và linh hoạt</p>
+                        </div>
+                        <div class="text-center">
+                             <h4 class="font-semibold text-sm canon-text mb-2">Canon 24mm</h4>
+                            <div class="text-3xl mb-2">💎</div>
+                            <p class="text-xs text-gray-500">Khả năng macro 0.5x vượt trội, cho phép chụp **các chi tiết siêu nhỏ**. Khẩu độ f/1.8 làm nổi bật sản phẩm.</p>
+                            <p class="font-bold text-xs mt-2 text-red-600">Chuyên gia chi tiết</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="physical-visualization" class="mb-12">
+            <details class="card p-6" open>
+                <summary class="font-bold text-xl text-gray-800">Trực Quan Hóa: Diện Mạo & Cảm Giác Cầm Nắm</summary>
+                <div class="mt-6 border-t pt-6 text-gray-700 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                         <h3 class="font-bold text-lg sigma-text">Canon R50 V + Sigma 18-50mm f/2.8</h3>
+                         <p class="font-semibold italic text-gray-500">"Người cộng sự đa năng, sẵn sàng tác nghiệp"</p>
+                         <div class="bg-gray-100 p-8 rounded-lg flex justify-center items-center flex-col">
+                            <div class="flex items-end font-sans">
+                                <div style="width: 80px; height: 75px; background: #333; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; border: 2px solid #444;">
+                                    <div style="width: 50px; height: 50px; background: #222; border-radius: 50%; border: 2px solid #555;"></div>
+                                </div>
+                                <div style="width: 120px; height: 74px; background: #1c1e21; border-radius: 0 8px 8px 0; position: relative;">
+                                    <div style="position: absolute; top: -20px; right: 15px; width: 50px; height: 20px; background: #1c1e21; border-radius: 5px 5px 0 0;"></div>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-4 text-center">Mô phỏng tỷ lệ tương đối</p>
+                        </div>
+                        <p class="text-sm"><strong>Diện mạo:</strong> Trông rất hiện đại và chuyên nghiệp. Dù là ống kính zoom, Sigma cực kỳ nhỏ gọn, mang lại cho chiếc R50 V một vẻ ngoài "chắc chắn", ra dáng một cỗ máy sẵn sàng cho công việc.</p>
+                        <p class="text-sm"><strong>Cảm giác cầm nắm:</strong> Do trọng lượng 300g và chiều dài nhỉnh hơn, bộ máy có xu hướng hơi đổ về phía trước một chút. Tuy nhiên, sự chênh lệch này không đáng kể và tổng thể vẫn rất nhẹ và cân bằng tốt.</p>
+                    </div>
+                     <div class="space-y-4">
+                         <h3 class="font-bold text-lg canon-text">Canon R50 V + Canon RF 24mm f/1.8</h3>
+                          <p class="font-semibold italic text-gray-500">"Người bạn đồng hành tối giản, kín đáo"</p>
+                        <div class="bg-gray-100 p-8 rounded-lg flex justify-center items-center flex-col">
+                            <div class="flex items-end font-sans">
+                                <div style="width: 70px; height: 63px; background: #333; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; border: 2px solid #444;">
+                                    <div style="width: 45px; height: 45px; background: #222; border-radius: 50%; border: 2px solid #555;"></div>
+                                </div>
+                                <div style="width: 120px; height: 74px; background: #1c1e21; border-radius: 0 8px 8px 0; position: relative;">
+                                    <div style="position: absolute; top: -20px; right: 15px; width: 50px; height: 20px; background: #1c1e21; border-radius: 5px 5px 0 0;"></div>
+                                </div>
+                            </div>
+                           <p class="text-xs text-gray-500 mt-4 text-center">Mô phỏng tỷ lệ tương đối</p>
+                        </div>
+                        <p class="text-sm"><strong>Diện mạo:</strong> Tạo ra một bộ máy cực kỳ nhỏ gọn và kín đáo, gần như biến R50 V thành một máy ảnh du lịch cao cấp. Rất phù hợp cho nhiếp ảnh đường phố hoặc những tình huống không muốn gây sự chú ý.</p>
+                        <p class="text-sm"><strong>Cảm giác cầm nắm:</strong> Hoàn hảo. Ống kính này tạo ra một sự cân bằng tuyệt đối với thân máy. Bạn có thể cầm và thao tác bằng một tay rất dễ dàng, cảm giác như một khối duy nhất.</p>
+                    </div>
+                </div>
+            </details>
+        </section>
+
+        <section id="in-depth-analysis" class="mb-12">
+            <details class="card p-6" open>
+                <summary class="font-bold text-xl text-gray-800">Phân Tích Chuyên Sâu & Thông Số Kỹ Thuật</summary>
+                <div class="mt-6 border-t pt-6 text-gray-700 space-y-6">
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">Phân Tích Quang Học Chi Tiết</h3>
+                        <p class="text-sm mb-2"><strong>Độ nét:</strong> Cả hai ống kính đều cho độ nét trung tâm rất tốt. Tuy nhiên, ở khẩu độ lớn nhất, ống kính Canon RF 24mm có xu hướng mềm hơn ở vùng rìa ảnh so với Sigma. Chất lượng rìa của Canon cải thiện đáng kể khi khép khẩu xuống f/4.</p>
+                        <p class="text-sm mb-2"><strong>Méo hình & Tối góc:</strong> Ống kính Canon RF 24mm thể hiện hiện tượng méo hình dạng thùng và tối góc rất nặng trên file RAW. Ngược lại, ống kính Sigma kiểm soát các yếu tố này tốt hơn nhiều. Cả hai đều phụ thuộc vào các thuật toán hiệu chỉnh trong máy để có hình ảnh JPEG hoàn thiện.</p>
+                        <p class="text-sm mb-2"><strong>Bokeh & Quang sai màu:</strong> Với khẩu độ f/1.8, Canon tạo ra hiệu ứng xóa phông (bokeh) mịn màng hơn nhưng cũng thể hiện viền tím/xanh (quang sai màu dọc) ở các vùng tương phản cao. Sigma kiểm soát quang sai màu tốt hơn.</p>
+                        <p class="text-sm"><strong>Cong trường ảnh (Sigma):</strong> Khi chụp cận cảnh ở tiêu cự 18mm, ống kính Sigma thể hiện hiện tượng cong trường ảnh, khiến vùng rìa và trung tâm của một chủ thể phẳng khó cùng lúc đạt nét tối đa.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">Hiệu Suất Lấy Nét và Chống Rung</h3>
+                        <p class="text-sm mb-2"><strong>AF Video:</strong> Đây là sự khác biệt lớn nhất. Động cơ của Sigma hoạt động cực kỳ êm, nhanh và kiểm soát "focus breathing" tốt, lý tưởng cho video. Ngược lại, động cơ của Canon ồn hơn, chậm hơn và bị "focus breathing" nặng, gây khó khăn cho các cảnh quay chuyên nghiệp cần chuyển nét.</p>
+                        <p class="text-sm"><strong>Chống rung (OIS):</strong> Việc Canon RF 24mm có OIS là một lợi thế cực lớn khi kết hợp với R50 V (không có IBIS). Nó giúp ổn định đáng kể các cảnh quay video cầm tay và cho phép chụp ảnh tĩnh ở tốc độ màn trập chậm hơn. Đây là điểm yếu chí mạng của ống kính Sigma trong sự kết hợp này.</p>
+                    </div>
+                     <div>
+                        <h3 class="font-bold text-lg mb-2">Bảng So Sánh Thông Số Kỹ Thuật</h3>
+                        <div class="overflow-x-auto">
+                            <table class="spec-table">
+                                <thead>
+                                    <tr>
+                                        <th>Thông số</th>
+                                        <th class="sigma-text">Sigma 18-50mm f/2.8</th>
+                                        <th class="canon-text">Canon RF 24mm f/1.8</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Loại ống kính</td>
+                                        <td>Zoom tiêu chuẩn</td>
+                                        <td>Một tiêu cự (Prime)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tiêu cự hiệu dụng</td>
+                                        <td>28.8 - 80 mm</td>
+                                        <td>38.4 mm</td>
+                                    </tr>
+                                     <tr>
+                                        <td>Chống rung (OIS)</td>
+                                        <td class="font-bold text-red-600">Không</td>
+                                        <td class="font-bold text-green-600">Có (5.5 stops)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Độ phóng đại tối đa</td>
+                                        <td>0.36x (1:2.8)</td>
+                                        <td>0.5x (1:2)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Trọng lượng</td>
+                                        <td>~300 g</td>
+                                        <td>~270 g</td>
+                                    </tr>
+                                     <tr>
+                                        <td>Chống chịu thời tiết</td>
+                                        <td>Có gioăng ở ngàm</td>
+                                        <td class="font-bold text-red-600">Không</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </details>
+        </section>
+
+         <section id="final-verdict" class="mb-12">
+            <h2 class="text-2xl font-bold text-center mb-8">Kết Luận & Lời Khuyên Cuối Cùng</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <div class="card border-l-4 border-blue-500">
+                    <h3 class="text-xl font-bold sigma-text mb-4">Chọn Sigma 18-50mm f/2.8 nếu...</h3>
+                    <ul class="space-y-3 list-disc list-outside ml-5 text-gray-700 text-sm">
+                        <li>Bạn là **nhà sáng tạo nội dung video** ưu tiên hiệu suất AF mượt mà, yên tĩnh và chấp nhận dùng gimbal/tripod.</li>
+                        <li>Bạn cần một ống kính **"all-in-one"** cho du lịch và nhiếp ảnh hàng ngày, nơi sự linh hoạt của zoom là quan trọng nhất.</li>
+                        <li>Bạn muốn chất lượng quang học tốt trên toàn dải zoom và ít phụ thuộc vào hiệu chỉnh phần mềm cho méo hình.</li>
+                    </ul>
+                </div>
+                 <div class="card border-l-4 border-red-500">
+                    <h3 class="text-xl font-bold canon-text mb-4">Chọn Canon 24mm f/1.8 nếu...</h3>
+                    <ul class="space-y-3 list-disc list-outside ml-5 text-gray-700 text-sm">
+                        <li>Bạn là **nhiếp ảnh gia tĩnh** tập trung vào chụp thiếu sáng, chân dung nghệ thuật và đường phố.</li>
+                         <li>Bạn cần **OIS hiệu quả** cho việc quay video cầm tay và có thể làm việc xung quanh các vấn đề về AF (dùng mic rời, lấy nét thủ công).</li>
+                        <li>Bạn đam mê **khám phá thế giới macro** với khả năng phóng đại 0.5x ấn tượng.</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="card bg-gray-800 text-white p-6">
+                <h3 class="text-xl font-bold text-center mb-4 text-yellow-300">⚠️ Lời khuyên ưu tiên khi quay 4K/60p trên R50 V</h3>
+                <p class="text-center text-sm text-gray-300">Việc R50 V **crop 1.5x** khi quay 4K/60p là một yếu tố quyết định, làm thay đổi hoàn toàn góc nhìn. Thay vì nói cả hai đều không lý tưởng, đây là lựa chọn ưu tiên dựa trên nhu cầu của bạn:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                    <div class="text-center md:border-r border-gray-600 md:pr-3">
+                         <p class="font-bold sigma-text mb-2">Ưu tiên GÓC RỘNG và AF TỐT NHẤT:</p>
+                         <p class="text-sm text-gray-300">Hãy chọn <span class="font-bold">Sigma 18-50mm</span>. Ở 18mm, nó cho góc nhìn tương đương <span class="font-bold">~43mm</span>, rộng hơn đáng kể so với Canon (~58mm). AF mượt mà và yên tĩnh của nó là một lợi thế lớn. <br><span class="text-yellow-400 font-semibold mt-1 inline-block">Điều kiện:</span> Bạn cần có gimbal để có cảnh quay ổn định.</p>
+                    </div>
+                    <div class="text-center">
+                         <p class="font-bold canon-text mb-2">Ưu tiên CHỐNG RUNG CẦM TAY:</p>
+                         <p class="text-sm text-gray-300">Hãy chọn <span class="font-bold">Canon 24mm</span>. Hệ thống OIS của nó sẽ là cứu cánh cho các cảnh quay cầm tay. Khẩu độ f/1.8 cũng giúp ích trong điều kiện thiếu sáng. <br><span class="text-yellow-400 font-semibold mt-1 inline-block">Điều kiện:</span> Bạn phải chấp nhận góc nhìn hẹp (~58mm), không phù hợp cho vlog nhưng tốt cho các cảnh cận hơn.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const scenariosData = {
+                video: {
+                    title: 'Kịch Bản: Quay Video & Vlogging',
+                    labels: ['Chất Lượng AF', 'Kiểm Soát Âm Thanh', 'Chống Rung (OIS)', 'Linh Hoạt Zoom', 'Kiểm Soát "Breathing"'],
+                    sigma: {
+                        scores: [5, 5, 1, 5, 4],
+                        verdict: 'Vượt trội về AF, phù hợp cho quay phim chuyên nghiệp cần sự yên tĩnh và linh hoạt, nhưng yêu cầu gimbal/tripod.',
+                        analysis: `
+                            <p class="font-semibold text-green-600">Điểm mạnh:</p>
+                            <ul class="list-disc list-inside text-sm text-gray-700">
+                                <li>AF cực nhanh và gần như im lặng.</li>
+                                <li>Kiểm soát focus breathing rất tốt.</li>
+                                <li>Dải zoom linh hoạt cho nhiều góc quay.</li>
+                            </ul>
+                            <p class="font-semibold text-red-600 mt-2">Điểm yếu:</p>
+                            <ul class="list-disc list-inside text-sm text-gray-700">
+                                <li>Không có chống rung quang học (OIS).</li>
+                            </ul>
+                        `
+                    },
+                    canon: {
+                        scores: [2, 2, 5, 2, 1],
+                        verdict: 'Hệ thống chống rung là cứu cánh, nhưng hiệu suất AF là một trở ngại lớn cho video chuyên nghiệp.',
+                         analysis: `
+                            <p class="font-semibold text-green-600">Điểm mạnh:</p>
+                            <ul class="list-disc list-inside text-sm text-gray-700">
+                                <li>Chống rung quang học (OIS) rất hiệu quả.</li>
+                            </ul>
+                            <p class="font-semibold text-red-600 mt-2">Điểm yếu:</p>
+                            <ul class="list-disc list-inside text-sm text-gray-700">
+                                <li>AF ồn, có thể lọt vào âm thanh video.</li>
+                                <li>Focus breathing rất nặng, gây mất tập trung.</li>
+                                <li>Tốc độ AF chậm hơn.</li>
+                            </ul>
+                        `
+                    },
+                    winner: 'sigma'
+                },
+                lowlight: {
+                    title: 'Kịch Bản: Chụp Ảnh Thiếu Sáng',
+                    labels: ['Khẩu Độ Lớn', 'Chống Rung (OIS)', 'Kiểm Soát Nhiễu', 'Độ Nét Trung Tâm', 'Linh Hoạt'],
+                    sigma: {
+                        scores: [3, 1, 4, 5, 4],
+                        verdict: 'Khẩu độ f/2.8 vẫn tốt, nhưng việc thiếu OIS là một hạn chế lớn khi chụp ảnh tĩnh cầm tay trong điều kiện tối.',
+                        analysis: `
+                            <p class="font-semibold text-green-600">Điểm mạnh:</p>
+                            <ul class="list-disc list-inside text-sm text-gray-700">
+                                <li>Độ nét trung tâm xuất sắc.</li>
+                            </ul>
+                            <p class="font-semibold text-red-600 mt-2">Điểm yếu:</p>
+                            <ul class="list-disc list-inside text-sm text-gray-700">
+                                <li>Không có OIS, yêu cầu tốc độ màn trập nhanh hơn/ISO cao hơn.</li>
+                                <li>Khẩu độ nhỏ hơn, thu sáng kém hơn.</li>
+                            </ul>
+                        `
+                    },
+                    canon: {
+                        scores: [5, 5, 5, 5, 2],
+                        verdict: 'Sự kết hợp giữa khẩu độ f/1.8 và OIS làm cho ống kính này trở thành "vua ban đêm", lựa chọn vượt trội.',
+                        analysis: `
+                           <p class="font-semibold text-green-600">Điểm mạnh:</p>
+                            <ul class="list-disc list-inside text-sm text-gray-700">
+                                <li>Khẩu độ f/1.8 thu sáng cực tốt.</li>
+                                <li>OIS cho phép chụp tốc độ chậm mà không rung.</li>
+                                <li>Giữ ISO ở mức thấp, ảnh sạch hơn.</li>
+                            </ul>
+                             <p class="font-semibold text-red-600 mt-2">Điểm yếu:</p>
+                            <ul class="list-disc list-inside text-sm text-gray-700">
+                                <li>Độ nét rìa ảnh có thể mềm hơn ở f/1.8.</li>
+                            </ul>
+                        `
+                    },
+                    winner: 'canon'
+                },
+                travel: {
+                    title: 'Kịch Bản: Du Lịch & Đa Dụng',
+                    labels: ['Linh Hoạt (Zoom)', 'Gọn Nhẹ', 'Chất Lượng Ảnh Ban Ngày', 'Tốc Độ AF Ảnh Tĩnh', 'Sẵn Sàng Mọi Tình Huống'],
+                    sigma: {
+                        scores: [5, 4, 5, 5, 5],
+                        verdict: 'Sự linh hoạt của dải zoom khiến đây là người bạn đồng hành hoàn hảo, một ống kính cho mọi chuyến đi.',
+                        analysis: `
+                            <p class="font-semibold text-green-600">Điểm mạnh:</p>
+                            <ul class="list-disc list-inside text-sm text-gray-700">
+                                <li>Dải zoom 28-80mm bao quát hầu hết nhu cầu.</li>
+                                <li>Không cần thay ống kính, không bỏ lỡ khoảnh khắc.</li>
+                                <li>Cực kỳ nhỏ gọn cho một ống kính zoom f/2.8.</li>
+                            </ul>
+                             <p class="font-semibold text-red-600 mt-2">Điểm yếu:</p>
+                            <ul class="list-disc list-inside text-sm text-gray-700">
+                                <li>Thiếu OIS có thể là vấn đề khi chụp trong bảo tàng, nhà thờ thiếu sáng.</li>
+                            </ul>
+                        `
+                    },
+                    canon: {
+                        scores: [2, 5, 4, 4, 3],
+                        verdict: 'Rất nhỏ gọn và có OIS, nhưng tiêu cự cố định sẽ hạn chế các góc chụp của bạn.',
+                        analysis: `
+                            <p class="font-semibold text-green-600">Điểm mạnh:</p>
+                            <ul class="list-disc list-inside text-sm text-gray-700">
+                                <li>Cực kỳ gọn nhẹ.</li>
+                                <li>OIS hữu ích khi chụp ảnh tĩnh.</li>
+                            </ul>
+                             <p class="font-semibold text-red-600 mt-2">Điểm yếu:</p>
+                            <ul class="list-disc list-inside text-sm text-gray-700">
+                                <li>Phải di chuyển để thay đổi khung hình.</li>
+                                <li>Có thể bỏ lỡ các cảnh ở xa hoặc cần góc rộng hơn.</li>
+                            </ul>
+                        `
+                    },
+                    winner: 'sigma'
+                },
+                creative: {
+                    title: 'Kịch Bản: Sáng Tạo (Macro/Bokeh)',
+                    labels: ['Độ Phóng Đại Macro', 'Chất Lượng Bokeh', 'Khẩu Độ Lớn', 'Góc Nhìn Độc Đáo', 'Độ Nét Chủ Thể'],
+                     sigma: {
+                        scores: [3, 3, 3, 4, 5],
+                        verdict: 'Khả năng chụp cận cảnh tốt cho một ống kính zoom, nhưng không thể sánh bằng sự chuyên dụng của ống kính macro.',
+                        analysis: `
+                           <p class="font-semibold text-green-600">Điểm mạnh:</p>
+                            <ul class="list-disc list-inside text-sm text-gray-700">
+                                <li>Khả năng cận cảnh 0.36x khá hữu ích.</li>
+                            </ul>
+                             <p class="font-semibold text-red-600 mt-2">Điểm yếu:</p>
+                            <ul class="list-disc list-inside text-sm text-gray-700">
+                                <li>Bokeh không mịn màng bằng.</li>
+                                <li>Độ phóng đại thấp hơn.</li>
+                            </ul>
+                        `
+                    },
+                    canon: {
+                        scores: [5, 5, 5, 5, 4],
+                        verdict: 'Lựa chọn không đối thủ cho việc khám phá thế giới tí hon và tạo ra những bức ảnh xóa phông nghệ thuật.',
+                        analysis: `
+                             <p class="font-semibold text-green-600">Điểm mạnh:</p>
+                            <ul class="list-disc list-inside text-sm text-gray-700">
+                                <li>Chụp macro thực thụ với độ phóng đại 0.5x.</li>
+                                <li>Khẩu độ f/1.8 tạo ra bokeh tuyệt đẹp.</li>
+                                <li>Góc nhìn rộng cho phép chụp "macro môi trường".</li>
+                            </ul>
+                            <p class="font-semibold text-red-600 mt-2">Điểm yếu:</p>
+                            <ul class="list-disc list-inside text-sm text-gray-700">
+                                <li>Focus breathing nặng gây khó cho focus stacking.</li>
+                            </ul>
+                        `
+                    },
+                    winner: 'canon'
+                }
+            };
+
+            const ctx = document.getElementById('lensRadarChart').getContext('2d');
+            const radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Sigma 18-50mm f/2.8',
+                            data: [],
+                            fill: true,
+                            backgroundColor: 'rgba(77, 150, 255, 0.2)',
+                            borderColor: 'rgb(77, 150, 255)',
+                            pointBackgroundColor: 'rgb(77, 150, 255)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgb(77, 150, 255)'
+                        },
+                        {
+                            label: 'Canon RF 24mm f/1.8',
+                            data: [],
+                            fill: true,
+                            backgroundColor: 'rgba(255, 107, 107, 0.2)',
+                            borderColor: 'rgb(255, 107, 107)',
+                            pointBackgroundColor: 'rgb(255, 107, 107)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgb(255, 107, 107)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 5,
+                            pointLabels: {
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            },
+                             ticks: {
+                                display: false,
+                                stepSize: 1
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                }
+            });
+
+            const scenarioTitle = document.getElementById('scenario-title');
+            const sigmaCard = document.getElementById('sigma-card');
+            const canonCard = document.getElementById('canon-card');
+            const sigmaVerdict = document.getElementById('sigma-verdict');
+            const canonVerdict = document.getElementById('canon-verdict');
+            const sigmaAnalysis = document.getElementById('sigma-analysis');
+            const canonAnalysis = document.getElementById('canon-analysis');
+
+            function updateDashboard(scenario) {
+                const data = scenariosData[scenario];
+                scenarioTitle.textContent = data.title;
+
+                radarChart.data.labels = data.labels;
+                radarChart.data.datasets[0].data = data.sigma.scores;
+                radarChart.data.datasets[1].data = data.canon.scores;
+                radarChart.update();
+
+                sigmaVerdict.textContent = data.sigma.verdict;
+                canonVerdict.textContent = data.canon.verdict;
+                sigmaAnalysis.innerHTML = data.sigma.analysis;
+                canonAnalysis.innerHTML = data.canon.analysis;
+
+                sigmaCard.classList.remove('winner-card');
+                canonCard.classList.remove('winner-card');
+                const oldWinnerBadge = document.querySelector('.winner-badge');
+                if (oldWinnerBadge) {
+                    oldWinnerBadge.remove();
+                }
+
+                const winnerCard = data.winner === 'sigma' ? sigmaCard : canonCard;
+                winnerCard.classList.add('winner-card');
+                const winnerBadge = document.createElement('div');
+                winnerBadge.className = 'winner-badge';
+                winnerBadge.textContent = 'Lựa chọn tốt hơn';
+                winnerCard.appendChild(winnerBadge);
+            }
+
+            const scenarioButtons = document.querySelectorAll('.scenario-btn');
+            scenarioButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    scenarioButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    const scenario = button.dataset.scenario;
+                    updateDashboard(scenario);
+                });
+            });
+
+            document.querySelector('.scenario-btn[data-scenario="video"]').click();
+        });
+    </script>
+</body>
+</html>
