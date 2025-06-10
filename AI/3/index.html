@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tư Vấn Chọn Máy Ảnh Mirrorless Tương Tác | Ngân Sách 33 Triệu</title>
+
+    <!-- SEO Meta Tags -->
+    <meta
+      name="description"
+      content="Công cụ tương tác giúp bạn chọn gói máy ảnh mirrorless và ống kính tốt nhất trong ngân sách 33 triệu. So sánh Sony, Canon, Fujifilm, Nikon theo nhu cầu du lịch, chân dung, video."
+    />
+    <meta
+      name="keywords"
+      content="tư vấn máy ảnh, chọn máy ảnh, mirrorless, máy ảnh 30 triệu, sony a6400, canon r10, fujifilm x-s10, nikon z50, máy ảnh cho người mới bắt đầu, máy ảnh du lịch, máy ảnh quay video"
+    />
+
+    <!-- Open Graph / Facebook Meta Tags -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Tư Vấn Chọn Máy Ảnh Mirrorless Tương Tác | Ngân Sách 33 Triệu"
+    />
+    <meta
+      property="og:description"
+      content="Khám phá các gói máy ảnh và ống kính tốt nhất trong ngân sách, được cá nhân hóa theo nhu cầu của bạn."
+    />
+    <meta
+      property="og:image"
+      content="https://placehold.co/1200x630/A47E3B/FFFFFF?text=T%C6%B0+V%E1%BA%A5n+M%C3%A1y+%E1%BA%A2nh+Mirrorless"
+    />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Tư Vấn Chọn Máy Ảnh Mirrorless Tương Tác | Ngân Sách 33 Triệu"
+    />
+    <meta
+      name="twitter:description"
+      content="Khám phá các gói máy ảnh và ống kính tốt nhất trong ngân sách, được cá nhân hóa theo nhu cầu của bạn."
+    />
+    <meta
+      name="twitter:image"
+      content="https://placehold.co/1200x630/A47E3B/FFFFFF?text=T%C6%B0+V%E1%BA%A5n+M%C3%A1y+%E1%BA%A2nh+Mirrorless"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Chosen Palette: Warm Harmony -->
+    <!-- Application Structure Plan: The application is designed as an interactive selection tool. The user first selects their primary photography style (e.g., Travel, Portrait, Video). This choice acts as a filter, dynamically displaying relevant camera + lens packages. Clicking a package reveals an in-depth analysis section with pros, cons, and a budget allocation chart. This user-centric, task-oriented flow is more engaging than a static report, guiding the user from a general need to specific, actionable recommendations, thereby enhancing usability and decision-making. -->
+    <!-- Visualization & Content Choices: Report Info: Package price breakdown (Body vs. Lens). -> Goal: Compare/Inform. -> Viz Method: Horizontal Bar Chart (Chart.js/Canvas). -> Interaction: Chart updates dynamically when a user selects a package. -> Justification: Clearly visualizes how the budget is allocated between the two main components, helping users assess value. Report Info: Package features, pros, cons. -> Goal: Inform/Compare. -> Presentation Method: Interactive Cards (HTML/CSS/Tailwind). -> Interaction: Cards are filtered by user's style choice; clicking a card reveals detailed text content. -> Justification: Organizes complex information into digestible, user-filtered chunks, preventing information overload. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+      body {
+        font-family: "Be Vietnam Pro", sans-serif;
+        background-color: #fdfbf8;
+        color: #383838;
+      }
+      .active-filter {
+        background-color: #a47e3b !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 14px 0 rgba(164, 126, 59, 0.39);
+      }
+      .btn-primary {
+        background-color: #a47e3b;
+        color: #ffffff;
+        transition: all 0.3s ease;
+      }
+      .btn-primary:hover {
+        background-color: #8c6a32;
+        box-shadow: 0 4px 14px 0 rgba(164, 126, 59, 0.39);
+      }
+      .card {
+        background-color: #ffffff;
+        border: 1px solid #eaeaea;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+          0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07),
+          0 4px 6px -2px rgba(0, 0, 0, 0.04);
+      }
+      .section-title {
+        color: #a47e3b;
+      }
+      .tag {
+        background-color: #f3f4f6;
+        color: #4b5563;
+      }
+      #packageDetails {
+        scroll-margin-top: 80px;
+      }
+      .chart-container {
+        position: relative;
+        margin: auto;
+        height: 250px;
+        width: 100%;
+        max-width: 600px;
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+      <header class="text-center mb-10">
+        <h1 class="text-3xl md:text-5xl font-bold section-title mb-2">
+          Tư Vấn Chọn Máy Ảnh Mirrorless
+        </h1>
+        <p class="max-w-3xl mx-auto text-base md:text-lg text-gray-600">
+          Khám phá các gói máy ảnh và ống kính tốt nhất trong ngân sách 33 triệu
+          đồng, được cá nhân hóa theo nhu cầu của bạn.
+        </p>
+      </header>
+
+      <main>
+        <!-- Step 1: Filter by Photography Style -->
+        <section id="style-filter" class="mb-10">
+          <h2 class="text-xl md:text-2xl font-bold text-center mb-6">
+            1. Chọn phong cách nhiếp ảnh chính của bạn:
+          </h2>
+          <div class="flex flex-wrap justify-center gap-2 md:gap-4">
+            <button
+              class="filter-btn py-2 px-4 rounded-full font-semibold border-2 border-gray-200 bg-white transition-all duration-300 active-filter"
+              data-style="all"
+            >
+              Tất Cả
+            </button>
+            <button
+              class="filter-btn py-2 px-4 rounded-full font-semibold border-2 border-gray-200 bg-white transition-all duration-300"
+              data-style="Đa dụng"
+            >
+              ✈️ Đa dụng & Du lịch
+            </button>
+            <button
+              class="filter-btn py-2 px-4 rounded-full font-semibold border-2 border-gray-200 bg-white transition-all duration-300"
+              data-style="Video"
+            >
+              🎥 Quay Video & Vlog
+            </button>
+            <button
+              class="filter-btn py-2 px-4 rounded-full font-semibold border-2 border-gray-200 bg-white transition-all duration-300"
+              data-style="Chân dung"
+            >
+              👤 Chân dung
+            </button>
+            <button
+              class="filter-btn py-2 px-4 rounded-full font-semibold border-2 border-gray-200 bg-white transition-all duration-300"
+              data-style="Đường phố"
+            >
+              🏙️ Đường phố
+            </button>
+          </div>
+        </section>
+
+        <!-- Step 2: Display Packages -->
+        <section id="packages" class="mb-12">
+          <h2 class="text-xl md:text-2xl font-bold text-center mb-6">
+            2. Khám phá các gói thiết bị đề xuất:
+          </h2>
+          <p id="no-results" class="text-center text-gray-500 hidden">
+            Không tìm thấy gói nào phù hợp với lựa chọn của bạn.
+          </p>
+          <div
+            id="package-grid"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            <!-- Package cards will be injected here by JavaScript -->
+          </div>
+        </section>
+
+        <!-- Step 3: Package Details -->
+        <section id="packageDetailsContainer" class="hidden">
+          <div
+            id="packageDetails"
+            class="p-6 md:p-8 rounded-2xl bg-white shadow-lg border border-gray-200"
+          >
+            <h2
+              class="text-2xl md:text-3xl font-bold text-center mb-6 section-title"
+            >
+              Chi Tiết Gói Thiết Bị
+            </h2>
+            <div
+              id="details-content"
+              class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start"
+            >
+              <!-- Details will be injected here -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Retailer Info -->
+        <section id="retailers" class="mt-16">
+          <h2
+            class="text-2xl md:text-3xl font-bold text-center mb-4 section-title"
+          >
+            Mua Sắm Thông Minh
+          </h2>
+          <div
+            class="max-w-4xl mx-auto bg-white p-6 rounded-2xl shadow-lg border border-gray-200"
+          >
+            <p class="text-center text-gray-700 mb-6">
+              Giá cả thị trường luôn thay đổi. Hãy chủ động kiểm tra các chương
+              trình khuyến mãi, gói combo, và chương trình thu cũ đổi mới tại
+              các nhà bán lẻ uy tín để có được mức giá tốt nhất. Việc so sánh
+              giữa các cửa hàng có thể giúp bạn tiết kiệm chi phí hoặc nhận được
+              nhiều quà tặng giá trị.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 text-center">
+              <span class="font-semibold text-gray-800">zShop</span>
+              <span class="font-semibold text-gray-800">VJShop</span>
+              <span class="font-semibold text-gray-800">Kyma</span>
+              <span class="font-semibold text-gray-800">WinWinStore</span>
+              <span class="font-semibold text-gray-800">TokyoCamera</span>
+              <span class="font-semibold text-gray-800">CellphoneS</span>
+              <span class="font-semibold text-gray-800">Giang Duy Đạt</span>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer class="mt-16">
+        <div
+          class="max-w-3xl mx-auto mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg"
+        >
+          <h4 class="font-bold text-sm text-blue-800">
+            Lưu ý về Nguồn gốc Nội dung
+          </h4>
+          <p class="text-xs mt-2">
+            Trang web này được tạo ra bởi một AI. Nội dung được tổng hợp, phân
+            tích và trình bày một cách trực quan dựa trên các nguồn báo cáo kỹ
+            thuật công khai. Thông tin được cung cấp nhằm mục đích tham khảo và
+            có thể không phản ánh mọi chi tiết chuyên sâu nhất.
+          </p>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const packageData = [
+          {
+            id: "S1",
+            brand: "Sony",
+            body: "Sony A6400",
+            lens: "Sigma 18-50mm f/2.8 DC DN",
+            bodyPrice: 18490000,
+            lensPrice: 12499000,
+            features: ["AF xuất sắc", "f/2.8", "Nhỏ gọn"],
+            pros: "Chất lượng hình ảnh xuất sắc, tốt trong điều kiện thiếu sáng (ống kính), đa dụng cho nhiều thể loại, bộ máy nhỏ gọn chuyên nghiệp.",
+            cons: "A6400 không có IBIS.",
+            idealFor: ["Đa dụng", "Du lịch", "Video", "Đường phố", "Sự kiện"],
+          },
+          {
+            id: "S2",
+            brand: "Sony",
+            body: "Sony A6400",
+            lens: "Sony E 18-135mm f/3.5-5.6 OSS",
+            bodyPrice: 18490000,
+            lensPrice: 10500000,
+            features: ["AF xuất sắc", "Zoom đa dụng", "OSS"],
+            pros: "Dải zoom cực kỳ linh hoạt, tốt cho du lịch khi chỉ muốn mang một ống kính, ống kính có chống rung.",
+            cons: "Khẩu độ thay đổi, không sáng bằng các lựa chọn f/2.8. A6400 không có IBIS.",
+            idealFor: ["Đa dụng", "Du lịch", "Sự kiện"],
+          },
+          {
+            id: "S3",
+            brand: "Sony",
+            body: "Sony A6400",
+            lens: "Sigma 30mm f/1.4 + Sony 50mm f/1.8",
+            bodyPrice: 18490000,
+            lensPrice: 12280000,
+            features: ["AF xuất sắc", "2 ống Prime", "f/1.4 & f/1.8"],
+            pros: "Hiệu suất thiếu sáng tuyệt vời, bokeh đẹp, ảnh sắc nét, ống 50mm có OSS.",
+            cons: "Ít linh hoạt hơn zoom, cần thay đổi ống kính. A6400 không có IBIS.",
+            idealFor: ["Chân dung", "Đường phố"],
+          },
+          {
+            id: "S4",
+            brand: "Sony",
+            body: "Sony A6400",
+            lens: "Tamron 17-70mm f/2.8 VC RXD",
+            bodyPrice: 18490000,
+            lensPrice: 13290000,
+            features: ["AF xuất sắc", "f/2.8", "Ống kính VC"],
+            pros: "Dải zoom đa dụng, khẩu độ f/2.8 không đổi, ống kính có chống rung (VC), bù đắp cho việc A6400 không có IBIS.",
+            cons: "A6400 màn hình lật nghiêng, không xoay lật hoàn toàn.",
+            idealFor: ["Đa dụng", "Du lịch", "Video", "Sự kiện"],
+          },
+          {
+            id: "C1",
+            brand: "Canon",
+            body: "Canon R10",
+            lens: "Canon RF-S 18-150mm IS STM",
+            bodyPrice: 20190000,
+            lensPrice: 9900000,
+            features: ["AF thông minh", "Zoom đa dụng", "Ống kính IS"],
+            pros: "Ống kính du lịch tất cả trong một tuyệt vời, hiệu suất AF tốt, hệ thống nhẹ.",
+            cons: "Ống kính khẩu độ thay đổi, R10 không có IBIS, lựa chọn ống kính RF-S còn hạn chế.",
+            idealFor: ["Đa dụng", "Du lịch", "Video"],
+          },
+          {
+            id: "C2",
+            brand: "Canon",
+            body: "Canon R10",
+            lens: "Sigma 18-50mm f/2.8 for RF-S",
+            bodyPrice: 20190000,
+            lensPrice: 12990000,
+            features: ["AF thông minh", "f/2.8", "Chất lượng cao"],
+            pros: "Zoom tiêu chuẩn chất lượng cao, tốt trong điều kiện thiếu sáng, nhỏ gọn.",
+            cons: "R10 không có IBIS. Ngân sách bị đẩy đến giới hạn.",
+            idealFor: ["Đa dụng", "Chân dung", "Sự kiện"],
+          },
+          {
+            id: "C3",
+            brand: "Canon",
+            body: "Canon R50",
+            lens: "Canon RF-S 18-150mm IS STM",
+            bodyPrice: 17490000,
+            lensPrice: 9900000,
+            features: ["AF Video tốt", "Nhỏ gọn", "Ống kính IS"],
+            pros: "Rất tốt cho vlogging và du lịch, AF nhận diện chủ thể thông minh, ống kính đa năng.",
+            cons: "R50 không có IBIS, ít nút điều khiển hơn R10.",
+            idealFor: ["Video", "Du lịch"],
+          },
+          {
+            id: "C4",
+            brand: "Canon",
+            body: "Canon R10",
+            lens: "Canon RF 50mm f/1.8 + Sigma 30mm f/1.4",
+            bodyPrice: 20190000,
+            lensPrice: 11990000,
+            features: ["AF thông minh", "2 ống Prime", "f/1.8 & f/1.4"],
+            pros: "Hai ống kính chất lượng cho chân dung và đường phố/thiếu sáng, bokeh đẹp.",
+            cons: "Cần thay ống kính, không có zoom. R10 không có IBIS.",
+            idealFor: ["Chân dung", "Đường phố"],
+          },
+          {
+            id: "F1",
+            brand: "Fujifilm",
+            body: "Fujifilm X-S10",
+            lens: "XC 15-45mm + Viltrox 56mm f/1.4",
+            bodyPrice: 23990000,
+            lensPrice: 9280000,
+            features: ["IBIS", "Màu Fujifilm", "Prime chân dung"],
+            pros: "IBIS là điểm cộng lớn, chất lượng hình ảnh tuyệt vời, rất tốt cho chân dung và sử dụng hàng ngày.",
+            cons: "Ống kính XC 15-45mm có chất lượng cơ bản so với dòng XF.",
+            idealFor: ["Video", "Chân dung", "Du lịch", "Đa dụng"],
+          },
+          {
+            id: "F2",
+            brand: "Fujifilm",
+            body: "Fujifilm X-T30 II",
+            lens: "Viltrox AF 23mm f/1.4 XF",
+            bodyPrice: 26490000,
+            lensPrice: 5350000,
+            features: ["Màu Fujifilm", "Thiết kế cổ điển", "f/1.4"],
+            pros: "Tuyệt vời cho đường phố, tài liệu, thiếu sáng. Nhỏ gọn.",
+            cons: "X-T30 II không có IBIS. Tiêu cự cố định.",
+            idealFor: ["Đường phố", "Du lịch"],
+          },
+          {
+            id: "F3",
+            brand: "Fujifilm",
+            body: "Fujifilm X-S10",
+            lens: "Fujifilm XF 18-55mm f/2.8-4 OIS",
+            bodyPrice: 23990000,
+            lensPrice: 8775000,
+            features: ["IBIS", "Màu Fujifilm", "Kit cao cấp"],
+            pros: "Chống rung kép (IBIS + OIS), chất lượng hình ảnh tuyệt vời từ ống kính, zoom đa dụng.",
+            cons: "Ống kính khẩu độ thay đổi, dù chất lượng tốt.",
+            idealFor: ["Đa dụng", "Video", "Du lịch"],
+          },
+          {
+            id: "N1",
+            brand: "Nikon",
+            body: "Nikon Z50",
+            lens: "Kit 16-50mm VR + 50-250mm VR",
+            bodyPrice: 17500000,
+            lensPrice: 9690000,
+            features: ["Công thái học tốt", "2 ống kính VR", "Dải zoom lớn"],
+            pros: "Dải tiêu cự rất linh hoạt, cả hai ống kính đều có chống rung, bộ kit nhỏ gọn.",
+            cons: "Ống kính khẩu độ thay đổi, dòng ống kính Z DX cho prime còn hạn chế.",
+            idealFor: ["Đa dụng", "Du lịch"],
+          },
+          {
+            id: "N2",
+            brand: "Nikon",
+            body: "Nikon Z fc",
+            lens: "Viltrox AF 33mm f/1.4 Z",
+            bodyPrice: 23590000,
+            lensPrice: 5990000,
+            features: ["Thiết kế cổ điển", "Màn hình xoay lật", "f/1.4"],
+            pros: "Phong cách, tốt cho vlogging, tuyệt vời trong điều kiện thiếu sáng với prime.",
+            cons: "Tiêu cự cố định, công thái học Z fc có thể không phù hợp với mọi người (ít báng cầm).",
+            idealFor: ["Video", "Đường phố"],
+          },
+          {
+            id: "N3",
+            brand: "Nikon",
+            body: "Nikon Z50",
+            lens: "Viltrox 23mm f/1.4 + 56mm f/1.4",
+            bodyPrice: 17500000,
+            lensPrice: 11980000,
+            features: ["Công thái học tốt", "2 ống Prime", "f/1.4"],
+            pros: "Bao phủ các tiêu cự prime quan trọng, tốt cho thiếu sáng và bokeh.",
+            cons: "Cần thay đổi ống kính, lựa chọn prime Z DX gốc từ Nikon còn hạn chế.",
+            idealFor: ["Đường phố", "Chân dung"],
+          },
+        ];
+
+        const packageGrid = document.getElementById("package-grid");
+        const detailsContainer = document.getElementById(
+          "packageDetailsContainer"
+        );
+        const detailsContent = document.getElementById("details-content");
+        const filterBtns = document.querySelectorAll(".filter-btn");
+        const noResults = document.getElementById("no-results");
+        let chartInstance = null;
+
+        const formatCurrency = (value) => {
+          return new Intl.NumberFormat("vi-VN", {
+            style: "currency",
+            currency: "VND",
+          }).format(value);
+        };
+
+        const displayPackages = (filter = "all") => {
+          packageGrid.innerHTML = "";
+          const filteredPackages =
+            filter === "all"
+              ? packageData
+              : packageData.filter((p) => p.idealFor.includes(filter));
+
+          if (filteredPackages.length === 0) {
+            noResults.classList.remove("hidden");
+          } else {
+            noResults.classList.add("hidden");
+          }
+
+          filteredPackages.forEach((pkg) => {
+            const totalCost = pkg.bodyPrice + pkg.lensPrice;
+            const card = document.createElement("div");
+            card.className = "card p-5 flex flex-col";
+            card.innerHTML = `
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-sm font-bold uppercase tracking-wider ${
+                                  pkg.brand === "Sony"
+                                    ? "text-blue-600"
+                                    : pkg.brand === "Canon"
+                                    ? "text-red-600"
+                                    : pkg.brand === "Fujifilm"
+                                    ? "text-teal-600"
+                                    : "text-yellow-500"
+                                }">${pkg.brand}</span>
+                                <div class="flex gap-2">
+                                    ${pkg.features
+                                      .map(
+                                        (f) =>
+                                          `<span class="tag text-xs font-semibold px-2 py-1 rounded-full">${f}</span>`
+                                      )
+                                      .join("")}
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-bold mb-1">${pkg.body}</h3>
+                            <p class="text-gray-600 text-sm mb-4">+ ${
+                              pkg.lens
+                            }</p>
+                        </div>
+                        <div class="mt-auto">
+                            <div class="text-2xl font-bold mb-4">${formatCurrency(
+                              totalCost
+                            )}</div>
+                            <button class="w-full text-center py-2 px-4 rounded-lg font-semibold btn-primary view-details" data-id="${
+                              pkg.id
+                            }">Xem Chi Tiết</button>
+                        </div>
+                    `;
+            packageGrid.appendChild(card);
+          });
+
+          document.querySelectorAll(".view-details").forEach((button) => {
+            button.addEventListener("click", () => {
+              displayPackageDetails(button.dataset.id);
+              document
+                .getElementById("packageDetails")
+                .scrollIntoView({ behavior: "smooth" });
+            });
+          });
+        };
+
+        const displayPackageDetails = (id) => {
+          const pkg = packageData.find((p) => p.id === id);
+          if (!pkg) return;
+
+          const totalCost = pkg.bodyPrice + pkg.lensPrice;
+
+          detailsContent.innerHTML = `
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-bold">${pkg.body} + ${
+            pkg.lens
+          }</h3>
+                        <p class="text-3xl font-bold text-amber-600">${formatCurrency(
+                          totalCost
+                        )}</p>
+                        
+                        <div class="space-y-4 pt-4">
+                           <div>
+                             <h4 class="font-bold text-lg mb-2">Phân Tích</h4>
+                             <p class="text-gray-700">Bộ thiết bị này kết hợp sức mạnh của thân máy <span class="font-semibold">${
+                               pkg.body
+                             }</span> với ống kính <span class="font-semibold">${
+            pkg.lens
+          }</span>, tạo ra một giải pháp tối ưu cho ${pkg.idealFor
+            .join(", ")
+            .toLowerCase()}.</p>
+                           </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">✅ Ưu điểm</h4>
+                                <p class="text-gray-700">${pkg.pros}</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">❌ Nhược điểm</h4>
+                                <p class="text-gray-700">${pkg.cons}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-2 text-center lg:text-left">Phân Bổ Ngân Sách</h4>
+                        <div class="chart-container">
+                            <canvas id="priceChart"></canvas>
+                        </div>
+                    </div>
+                `;
+
+          detailsContainer.classList.remove("hidden");
+
+          if (chartInstance) {
+            chartInstance.destroy();
+          }
+
+          const ctx = document.getElementById("priceChart").getContext("2d");
+          chartInstance = new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: ["Thân máy (Body)", "Ống kính (Lens)"],
+              datasets: [
+                {
+                  label: "Chi phí",
+                  data: [pkg.bodyPrice, pkg.lensPrice],
+                  backgroundColor: [
+                    "rgba(164, 126, 59, 0.7)",
+                    "rgba(54, 54, 54, 0.7)",
+                  ],
+                  borderColor: ["rgba(164, 126, 59, 1)", "rgba(54, 54, 54, 1)"],
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              indexAxis: "y",
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                x: {
+                  beginAtZero: true,
+                  ticks: {
+                    callback: function (value) {
+                      return value / 1000000 + "tr";
+                    },
+                    font: {
+                      size: 10,
+                    },
+                  },
+                },
+                y: {
+                  ticks: {
+                    font: {
+                      size: 12,
+                      weight: "500",
+                    },
+                  },
+                },
+              },
+              plugins: {
+                legend: {
+                  display: false,
+                },
+                tooltip: {
+                  callbacks: {
+                    label: function (context) {
+                      return formatCurrency(context.raw);
+                    },
+                  },
+                },
+              },
+            },
+          });
+        };
+
+        filterBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            filterBtns.forEach((b) => b.classList.remove("active-filter"));
+            btn.classList.add("active-filter");
+            displayPackages(btn.dataset.style);
+            detailsContainer.classList.add("hidden");
+          });
+        });
+
+        displayPackages();
+      });
+    </script>
+  </body>
+</html>
