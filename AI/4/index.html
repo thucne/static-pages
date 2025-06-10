@@ -3,16 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tư Vấn Chọn Máy Ảnh Ngân Sách 33 Triệu</title>
+    <title>Tư Vấn Chọn Máy Ảnh Ngân Sách 33 Triệu (Cập nhật R50 V)</title>
 
     <!-- SEO Meta Tags -->
     <meta
       name="description"
-      content="Công cụ tư vấn tương tác giúp bạn chọn combo máy ảnh mirrorless và ống kính tốt nhất trong ngân sách 33 triệu đồng tại Việt Nam. So sánh các gói từ Sony, Canon, Fujifilm, Nikon."
+      content="Công cụ tư vấn tương tác giúp bạn chọn combo máy ảnh mirrorless và ống kính tốt nhất trong ngân sách 33 triệu đồng tại Việt Nam. So sánh các gói từ Sony, Canon (bao gồm cả R50 V mới), Fujifilm, Nikon."
     />
     <meta
       name="keywords"
-      content="tư vấn máy ảnh, chọn máy ảnh, máy ảnh 33 triệu, sony a6400, canon r50, fujifilm x-t30 ii, canon rp, nikon z5, canon r8, sony a7c, máy ảnh mirrorless, ống kính, nhiếp ảnh, Việt Nam"
+      content="tư vấn máy ảnh, chọn máy ảnh, máy ảnh 33 triệu, sony a6400, canon r50, canon r50 v, fujifilm x-t30 ii, canon rp, nikon z5, canon r8, sony a7c, máy ảnh mirrorless, ống kính, nhiếp ảnh, Việt Nam"
     />
 
     <!-- Open Graph / Facebook Meta Tags -->
@@ -20,11 +20,11 @@
     <meta property="og:url" content="" />
     <meta
       property="og:title"
-      content="Công Cụ Tư Vấn Chọn Máy Ảnh Ngân Sách 33 Triệu"
+      content="Công Cụ Tư Vấn Chọn Máy Ảnh Ngân Sách 33 Triệu (Cập nhật R50 V)"
     />
     <meta
       property="og:description"
-      content="Khám phá các gói kết hợp máy ảnh & ống kính tối ưu nhất cho nhu cầu du lịch, chân dung, video. So sánh và đưa ra lựa chọn thông minh."
+      content="Khám phá các gói kết hợp máy ảnh & ống kính tối ưu nhất cho nhu cầu du lịch, chân dung, video. So sánh và đưa ra lựa chọn thông minh với dữ liệu mới nhất về Canon R50 V."
     />
     <meta
       property="og:image"
@@ -36,11 +36,11 @@
     <meta property="twitter:url" content="" />
     <meta
       name="twitter:title"
-      content="Công Cụ Tư Vấn Chọn Máy Ảnh Ngân Sách 33 Triệu"
+      content="Công Cụ Tư Vấn Chọn Máy Ảnh Ngân Sách 33 Triệu (Cập nhật R50 V)"
     />
     <meta
       name="twitter:description"
-      content="Khám phá các gói kết hợp máy ảnh & ống kính tối ưu nhất cho nhu cầu du lịch, chân dung, video. So sánh và đưa ra lựa chọn thông minh."
+      content="Khám phá các gói kết hợp máy ảnh & ống kính tối ưu nhất cho nhu cầu du lịch, chân dung, video. So sánh và đưa ra lựa chọn thông minh với dữ liệu mới nhất về Canon R50 V."
     />
     <meta
       name="twitter:image"
@@ -280,7 +280,6 @@
             >
               <img
                 src="https://thucde.dev/logo/thucdedev.png"
-                ,
                 alt="Thucde.dev Logo"
                 class="w-6 h-6"
               />
@@ -303,8 +302,12 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // This is the main budget constraint for filtering and display.
         const budget = 33000000;
 
+        // The core data for the application. Each object represents a camera combo.
+        // It includes technical specs, pricing, and tags for filtering.
+        // ** DATA HAS BEEN UPDATED WITH NEW CANON R50 V COMBOS **
         const comboData = [
           {
             id: 1,
@@ -478,8 +481,54 @@
             purpose:
               "Đường phố, du lịch, ưu tiên sự nhỏ gọn tối đa và chất lượng ảnh từ prime.",
           },
+          // ** NEW DATA FOR CANON R50 V **
+          {
+            id: 17,
+            body: "Canon EOS R50 V",
+            lens: "Canon RF-S 18-45mm f/4.5-6.3 IS STM",
+            price: 27400000,
+            tags: ["video", "du-lich", "canon", "aps-c"],
+            strength:
+              "Chuyên video, AF xuất sắc, có IS, giá phải chăng, lý tưởng cho người mới bắt đầu với R50 V.",
+            purpose:
+              "Vlog, du lịch, đời thường cơ bản, người mới làm quen với quay video chất lượng cao.",
+          },
+          {
+            id: 18,
+            body: "Canon EOS R50 V",
+            lens: "Canon RF-S 14-30mm f/4-6.3 IS STM PZ",
+            price: 27990000,
+            tags: ["video", "canon", "aps-c"],
+            strength:
+              "Góc rộng hơn cho vlog, Power Zoom (PZ) mượt mà cho video, có IS, thiết kế tối ưu cho R50 V.",
+            purpose:
+              "Vlog tự quay, quay sản phẩm, review, du lịch cần góc rộng, sáng tạo nội dung video.",
+          },
+          {
+            id: 19,
+            body: "Canon EOS R50 V",
+            lens: "Canon RF 50mm f/1.8 STM",
+            price: 30400000,
+            tags: ["chan-dung", "video", "canon", "aps-c"],
+            strength:
+              "Chất lượng quang học tốt, khẩu độ lớn f/1.8 xóa phông, chụp thiếu sáng tốt hơn. *Lưu ý: ống kính không có IS*",
+            purpose:
+              "Chân dung, phỏng vấn, quay sản phẩm cần xóa phông, chụp ảnh tĩnh đẹp (cần gimbal/tripod cho video).",
+          },
+          {
+            id: 20,
+            body: "Canon EOS R50 V",
+            lens: "Canon RF-S 10-18mm f/4.5-6.3 IS STM",
+            price: 30000000,
+            tags: ["video", "du-lich", "canon", "aps-c"],
+            strength:
+              "Góc siêu rộng, lý tưởng cho vlog nhóm, kiến trúc, phong cảnh, có IS, nhỏ gọn.",
+            purpose:
+              "Vlog nhóm, bất động sản, kiến trúc, phong cảnh rộng, du lịch khám phá.",
+          },
         ];
 
+        // DOM element references
         const resultsGrid = document.getElementById("results-grid");
         const filterContainer = document.getElementById("filter-container");
         const resultsCountEl = document.getElementById("results-count");
@@ -488,21 +537,25 @@
         let chart;
         let comparedItems = new Set();
 
+        // Utility function to format numbers as Vietnamese currency
         const formatCurrency = (value) =>
           new Intl.NumberFormat("vi-VN", {
             style: "currency",
             currency: "VND",
           }).format(value);
 
+        // Function to render the product cards based on provided data
         function renderCards(data) {
           resultsGrid.innerHTML = "";
-          data.forEach((item) => {
-            if (item.price > budget + 2000000) return;
+          // Filter out items that are significantly over budget before rendering
+          const displayData = data.filter((item) => item.price < budget + 4000000);
 
+          displayData.forEach((item) => {
             const percentage = (item.price / budget) * 100;
             const card = document.createElement("div");
             card.className =
               "card-enter bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col";
+            // Dynamically generate the HTML for each card
             card.innerHTML = `
                         <div class="p-5 flex-grow">
                             <div class="flex justify-between items-start mb-3">
@@ -533,13 +586,13 @@
                                     )}%</span>
                                 </div>
                                 <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                    <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${Math.min(
+                                    <div class="${item.price > budget ? 'bg-red-500' : 'bg-blue-600'} h-2.5 rounded-full" style="width: ${Math.min(
                                       percentage,
                                       100
                                     )}%"></div>
                                 </div>
                             </div>
-                            <p class="text-2xl font-bold text-center text-blue-800 mb-4">${formatCurrency(
+                            <p class="text-2xl font-bold text-center ${item.price > budget ? 'text-red-600' : 'text-blue-800'} mb-4">${formatCurrency(
                               item.price
                             )}</p>
                         </div>
@@ -556,17 +609,20 @@
                     `;
             resultsGrid.appendChild(card);
           });
-          resultsCountEl.textContent = `Tìm thấy ${data.length} kết quả phù hợp.`;
+          resultsCountEl.textContent = `Tìm thấy ${displayData.length} kết quả phù hợp.`;
         }
 
+        // Function to filter data based on the selected tag
         function filterData(filter) {
+          // Update active state of filter buttons
           document
             .querySelectorAll(".filter-btn")
             .forEach((btn) => btn.classList.remove("active"));
           document
             .querySelector(`.filter-btn[data-filter="${filter}"]`)
             .classList.add("active");
-
+          
+          // Perform filtering and re-render cards
           if (filter === "all") {
             renderCards(comboData);
           } else {
@@ -577,10 +633,12 @@
           }
         }
 
+        // Function to display the details modal for a specific item
         function showModal(id) {
           const item = comboData.find((d) => d.id === id);
           if (!item) return;
 
+          // Populate modal with item details
           modalContent.innerHTML = `
                     <div class="p-6">
                         <div class="flex justify-between items-center border-b pb-3 mb-4">
@@ -606,19 +664,23 @@
                         </div>
                     </div>
                 `;
+          // Show the modal and prevent background scrolling
           modal.classList.remove("invisible", "opacity-0");
           document.body.style.overflow = "hidden";
 
+          // Add event listener to the close button inside the modal
           document
             .getElementById("close-modal-btn")
             .addEventListener("click", hideModal);
         }
 
+        // Function to hide the details modal
         function hideModal() {
           modal.classList.add("invisible", "opacity-0");
           document.body.style.overflow = "auto";
         }
 
+        // Function to initialize the comparison chart
         function setupChart() {
           const ctx = document.getElementById("budgetChart").getContext("2d");
           chart = new Chart(ctx, {
@@ -652,7 +714,7 @@
               scales: {
                 x: {
                   beginAtZero: true,
-                  suggestedMax: budget + 5000000, // Gợi ý mức tối đa để trục X luôn hợp lý
+                  suggestedMax: budget + 5000000,
                   ticks: {
                     callback: function (value) {
                       if (typeof value === "number" && value >= 0) {
@@ -698,6 +760,7 @@
           });
         }
 
+        // Function to update the chart with selected items
         function updateChart() {
           const selectedData = Array.from(comparedItems)
             .map((id) => comboData.find((item) => item.id === parseInt(id)))
@@ -713,6 +776,7 @@
           chart.update();
         }
 
+        // Event Listeners Setup
         filterContainer.addEventListener("click", function (e) {
           if (e.target.matches(".filter-btn")) {
             filterData(e.target.dataset.filter);
@@ -757,6 +821,7 @@
           });
         });
 
+        // Initial setup on page load
         filterData("all");
         setupChart();
         updateChart();
