@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Infographic: Phân Tích Thị Trường Máy Ảnh 28-33 Triệu VND</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Be Vietnam Pro", sans-serif;
+        background-color: #f0f4f8;
+      }
+      .chart-container {
+        position: relative;
+        margin: auto;
+        height: 40vh;
+        width: 100%;
+        max-width: 500px;
+      }
+      .flowchart-node {
+        border: 2px solid #0079c2;
+        background-color: #ffffff;
+        color: #004aad;
+        transition: all 0.3s ease;
+      }
+      .flowchart-node:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 121, 194, 0.2),
+          0 4px 6px -2px rgba(0, 121, 194, 0.1);
+      }
+      .flowchart-arrow {
+        position: relative;
+        width: 100%;
+        height: 30px;
+      }
+      .flowchart-arrow::after {
+        content: "▼";
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 24px;
+        color: #0079c2;
+      }
+      .sticky-nav a {
+        transition: all 0.3s ease;
+      }
+      .sticky-nav a.active {
+        color: #ffffff;
+        background-color: #004aad;
+      }
+    </style>
+  </head>
+  <body class="text-gray-800">
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg shadow-md py-2">
+      <div class="container mx-auto px-4">
+        <div
+          id="nav-links"
+          class="flex flex-wrap items-center justify-center gap-2 md:gap-4 text-sm md:text-base"
+        >
+          <a
+            href="#section-hero"
+            class="font-semibold text-gray-600 hover:text-white hover:bg-sky-500 rounded-full px-3 py-1"
+            >Tổng Quan</a
+          >
+          <a
+            href="#section-brands"
+            class="font-semibold text-gray-600 hover:text-white hover:bg-sky-500 rounded-full px-3 py-1"
+            >Các Thương Hiệu</a
+          >
+          <a
+            href="#section-combos"
+            class="font-semibold text-gray-600 hover:text-white hover:bg-sky-500 rounded-full px-3 py-1"
+            >Combo Nổi Bật</a
+          >
+          <a
+            href="#section-lens"
+            class="font-semibold text-gray-600 hover:text-white hover:bg-sky-500 rounded-full px-3 py-1"
+            >Sức Mạnh Ống Kính</a
+          >
+          <a
+            href="#section-decision"
+            class="font-semibold text-gray-600 hover:text-white hover:bg-sky-500 rounded-full px-3 py-1"
+            >Tư Vấn Chọn Mua</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <main class="container mx-auto p-4 md:p-8">
+      <section
+        id="section-hero"
+        class="text-center my-12 md:my-16 scroll-mt-20"
+      >
+        <h1 class="text-4xl md:text-6xl font-extrabold text-[#004AAD] mb-4">
+          Giải Mã Thị Trường Máy Ảnh
+        </h1>
+        <p class="text-xl md:text-2xl font-bold text-[#0079C2] mb-6">
+          Phân Tích Chuyên Sâu Phân Khúc 28-33 Triệu VND
+        </p>
+        <p class="max-w-3xl mx-auto text-base md:text-lg text-gray-600">
+          Với ngân sách này, bạn đang bước vào thế giới sôi động của máy ảnh
+          mirrorless APS-C bán chuyên. Đây là phân khúc mang lại sự cân bằng
+          tuyệt vời giữa chất lượng hình ảnh vượt trội, tính năng cao cấp và
+          tính di động, bỏ xa khả năng của smartphone. Hãy cùng khám phá những
+          lựa chọn tốt nhất dành cho bạn.
+        </p>
+      </section>
+
+      <section id="section-brands" class="my-16 md:my-24 scroll-mt-20">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-[#004AAD] mb-4">
+            Gặp Gỡ 3 "Ông Lớn": Canon vs Sony vs Fujifilm
+          </h2>
+          <p class="max-w-3xl mx-auto text-gray-600">
+            Mỗi thương hiệu mang một triết lý riêng, thể hiện qua thế mạnh về
+            công nghệ và hệ sinh thái sản phẩm. Biểu đồ radar dưới đây so sánh
+            các khía cạnh quan trọng nhất để giúp bạn có cái nhìn tổng quan.
+          </p>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-4 md:p-8">
+          <div class="chart-container mx-auto">
+            <canvas id="brandsRadarChart"></canvas>
+          </div>
+          <p class="text-center mt-6 text-sm text-gray-500 italic">
+            Biểu đồ cho thấy Sony dẫn đầu về hệ sinh thái ống kính, Canon nổi
+            bật với hệ thống lấy nét tự động (AF) và video, trong khi Fujifilm
+            chiếm ưu thế về chất lượng ảnh tĩnh (màu sắc) và thiết kế.
+          </p>
+        </div>
+      </section>
+
+      <section id="section-combos" class="my-16 md:my-24 scroll-mt-20">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-[#004AAD] mb-4">
+            Các Combo "Vàng" Trong Tầm Giá
+          </h2>
+          <p class="max-w-3xl mx-auto text-gray-600">
+            Lựa chọn thông minh không chỉ dừng lại ở thân máy, mà là sự kết hợp
+            hài hòa với ống kính. Dưới đây là những combo được đánh giá cao nhất
+            dựa trên hiệu năng và giá trị mang lại.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div
+            class="bg-white rounded-xl shadow-lg p-6 flex flex-col transition hover:shadow-2xl hover:-translate-y-2"
+          >
+            <h3 class="text-xl font-bold text-[#0079C2] mb-2">
+              Canon R10 + Sigma 18-50mm f/2.8
+            </h3>
+            <p class="font-semibold text-lg text-[#004AAD] mb-4">
+              ~32.580.000 đ
+            </p>
+            <div class="chart-container h-48 mb-4">
+              <canvas id="combo1Donut"></canvas>
+            </div>
+            <p class="text-gray-600 flex-grow">
+              Một sự kết hợp cực kỳ mạnh mẽ và đa năng. Thân máy R10 có tốc độ
+              chụp siêu nhanh và AF hàng đầu, trong khi ống kính Sigma f/2.8
+              mang lại chất lượng quang học vượt trội, khẩu độ lớn cho điều kiện
+              thiếu sáng và hiệu ứng xóa phông đẹp.
+            </p>
+            <p class="mt-4 font-semibold text-sm">
+              Phù hợp cho:
+              <span class="bg-[#B7E5F8] text-[#004AAD] rounded-full px-3 py-1"
+                >Đa dụng, Thể thao, Chân dung</span
+              >
+            </p>
+          </div>
+
+          <div
+            class="bg-white rounded-xl shadow-lg p-6 flex flex-col transition hover:shadow-2xl hover:-translate-y-2"
+          >
+            <h3 class="text-xl font-bold text-[#0079C2] mb-2">
+              Sony ZV-E10 II + Kit 16-50mm
+            </h3>
+            <p class="font-semibold text-lg text-[#004AAD] mb-4">
+              ~28.990.000 đ
+            </p>
+            <div class="chart-container h-48 mb-4">
+              <canvas id="combo2Donut"></canvas>
+            </div>
+            <p class="text-gray-600 flex-grow">
+              "Nhà vô địch" trong làng vlogging. Máy được thiết kế chuyên dụng
+              cho quay video với màn hình xoay lật, mic chất lượng cao, và các
+              tính năng video tiên tiến như 4K 60p, 10-bit. Combo nhỏ gọn, sẵn
+              sàng cho mọi hành trình sáng tạo.
+            </p>
+            <p class="mt-4 font-semibold text-sm">
+              Phù hợp cho:
+              <span class="bg-[#B7E5F8] text-[#004AAD] rounded-full px-3 py-1"
+                >Vlogging, Content Creator</span
+              >
+            </p>
+          </div>
+
+          <div
+            class="bg-white rounded-xl shadow-lg p-6 flex flex-col transition hover:shadow-2xl hover:-translate-y-2"
+          >
+            <h3 class="text-xl font-bold text-[#0079C2] mb-2">
+              Fujifilm X-T30 II + Kit 15-45mm
+            </h3>
+            <p class="font-semibold text-lg text-[#004AAD] mb-4">
+              ~32.490.000 đ
+            </p>
+            <div class="chart-container h-48 mb-4">
+              <canvas id="combo3Donut"></canvas>
+            </div>
+            <p class="text-gray-600 flex-grow">
+              Lựa chọn của người nghệ sĩ. X-T30 II mang đến chất lượng ảnh tĩnh
+              xuất sắc với các giả lập màu phim độc đáo của Fujifilm. Thiết kế
+              retro hoài cổ nhưng bên trong là sức mạnh xử lý và hệ thống AF
+              hiện đại.
+            </p>
+            <p class="mt-4 font-semibold text-sm">
+              Phù hợp cho:
+              <span class="bg-[#B7E5F8] text-[#004AAD] rounded-full px-3 py-1"
+                >Ảnh tĩnh, Đường phố, Du lịch</span
+              >
+            </p>
+          </div>
+
+          <div
+            class="bg-white rounded-xl shadow-lg p-6 flex flex-col transition hover:shadow-2xl hover:-translate-y-2"
+          >
+            <h3 class="text-xl font-bold text-[#0079C2] mb-2">
+              Sony a6400 + Sigma 18-50mm f/2.8
+            </h3>
+            <p class="font-semibold text-lg text-[#004AAD] mb-4">
+              ~31.480.000 đ
+            </p>
+            <div class="chart-container h-48 mb-4">
+              <canvas id="combo4Donut"></canvas>
+            </div>
+            <p class="text-gray-600 flex-grow">
+              Sự kết hợp giữa "vua lấy nét" a6400 và ống kính đa dụng chất lượng
+              cao. Hệ thống Real-time Tracking AF của a6400 gần như không có đối
+              thủ, giúp bạn bắt trọn mọi khoảnh khắc chuyển động. Ống kính Sigma
+              f/2.8 đảm bảo chất lượng hình ảnh luôn ở mức cao nhất.
+            </p>
+            <p class="mt-4 font-semibold text-sm">
+              Phù hợp cho:
+              <span class="bg-[#B7E5F8] text-[#004AAD] rounded-full px-3 py-1"
+                >Chủ thể chuyển động, Đa dụng</span
+              >
+            </p>
+          </div>
+
+          <div
+            class="bg-white rounded-xl shadow-lg p-6 flex flex-col transition hover:shadow-2xl hover:-translate-y-2"
+          >
+            <h3 class="text-xl font-bold text-[#0079C2] mb-2">
+              Canon R50 + Sigma 18-50mm f/2.8
+            </h3>
+            <p class="font-semibold text-lg text-[#004AAD] mb-4">
+              ~30.080.000 đ
+            </p>
+            <div class="chart-container h-48 mb-4">
+              <canvas id="combo5Donut"></canvas>
+            </div>
+            <p class="text-gray-600 flex-grow">
+              Combo tối ưu cho người làm nội dung video muốn chất lượng cao mà
+              không quá phức tạp. R50 cung cấp video 4K không crop tuyệt đẹp, AF
+              mượt mà và giao diện thân thiện. Khẩu độ f/2.8 của Sigma tạo ra
+              những thước phim có chiều sâu, chuyên nghiệp.
+            </p>
+            <p class="mt-4 font-semibold text-sm">
+              Phù hợp cho:
+              <span class="bg-[#B7E5F8] text-[#004AAD] rounded-full px-3 py-1"
+                >Video, Vlogging, Chân dung</span
+              >
+            </p>
+          </div>
+
+          <div
+            class="bg-white rounded-xl shadow-lg p-6 flex flex-col transition hover:shadow-2xl hover:-translate-y-2"
+          >
+            <h3 class="text-xl font-bold text-[#0079C2] mb-2">
+              Fujifilm X-S10 + Kit 15-45mm
+            </h3>
+            <p class="font-semibold text-lg text-[#004AAD] mb-4">
+              ~27.980.000 đ (Khó tìm hàng mới)
+            </p>
+            <div class="chart-container h-48 mb-4">
+              <canvas id="combo6Donut"></canvas>
+            </div>
+            <p class="text-gray-600 flex-grow">
+              "Viên ngọc quý" trong phân khúc nhờ tính năng chống rung trong
+              thân máy (IBIS) 5 trục. Điều này mang lại lợi thế cực lớn khi chụp
+              ảnh và quay video cầm tay trong điều kiện thiếu sáng. Nếu bạn tìm
+              được máy ở tình trạng tốt, đây là một lựa chọn rất đáng giá.
+            </p>
+            <p class="mt-4 font-semibold text-sm">
+              Phù hợp cho:
+              <span class="bg-[#B7E5F8] text-[#004AAD] rounded-full px-3 py-1"
+                >Chụp thiếu sáng, Quay video cầm tay</span
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="section-lens" class="my-16 md:my-24 scroll-mt-20">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-[#004AAD] mb-4">
+            Ống Kính Chiếm Một Nửa "Trận Chiến"
+          </h2>
+          <p class="max-w-3xl mx-auto text-gray-600">
+            Sự khác biệt giữa một ống kính kit tiêu chuẩn và một ống kính nâng
+            cấp như Sigma 18-50mm f/2.8 là rất lớn. Biểu đồ dưới đây cho thấy sự
+            vượt trội của ống kính khẩu độ lớn.
+          </p>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-4 md:p-8">
+          <div class="chart-container h-[50vh] max-w-4xl">
+            <canvas id="lensComparisonChart"></canvas>
+          </div>
+          <p class="text-center mt-6 text-sm text-gray-500 italic">
+            Khẩu độ f/2.8 không chỉ thu sáng tốt hơn gấp 2-4 lần so với ống kính
+            kit, mà còn cho phép tạo hiệu ứng xóa phông (bokeh) chuyên nghiệp,
+            làm nổi bật chủ thể. Đây là một nâng cấp đáng giá, thay đổi hoàn
+            toàn chất lượng hình ảnh của bạn.
+          </p>
+        </div>
+      </section>
+
+      <section id="section-decision" class="my-16 md:my-24 scroll-mt-20">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-[#004AAD] mb-4">
+            Lối Đi Nào Dành Cho Bạn?
+          </h2>
+          <p class="max-w-3xl mx-auto text-gray-600">
+            Vẫn còn phân vân? Hãy trả lời câu hỏi dưới đây để tìm ra combo phù
+            hợp nhất với ưu tiên hàng đầu của bạn.
+          </p>
+        </div>
+
+        <div class="flex flex-col items-center space-y-4">
+          <div
+            class="flowchart-node w-full max-w-md p-4 text-center rounded-lg shadow-md"
+          >
+            <p class="font-bold text-lg">Ưu tiên hàng đầu của bạn là gì?</p>
+          </div>
+
+          <div class="flowchart-arrow"></div>
+
+          <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="flex flex-col items-center">
+              <div
+                class="flowchart-node w-full max-w-xs p-4 text-center rounded-lg shadow-md mb-4"
+              >
+                <p class="font-semibold">Video & Vlogging</p>
+              </div>
+              <div class="flowchart-arrow"></div>
+              <div
+                class="flowchart-node w-full max-w-xs p-4 text-center rounded-lg shadow-md bg-[#B7E5F8]"
+              >
+                <p class="font-bold">Sony ZV-E10 II</p>
+              </div>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <div
+                class="flowchart-node w-full max-w-xs p-4 text-center rounded-lg shadow-md mb-4"
+              >
+                <p class="font-semibold">Tốc độ & Chụp thể thao</p>
+              </div>
+              <div class="flowchart-arrow"></div>
+              <div
+                class="flowchart-node w-full max-w-xs p-4 text-center rounded-lg shadow-md bg-[#B7E5F8]"
+              >
+                <p class="font-bold">Canon EOS R10</p>
+              </div>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <div
+                class="flowchart-node w-full max-w-xs p-4 text-center rounded-lg shadow-md mb-4"
+              >
+                <p class="font-semibold">Màu sắc & Trải nghiệm chụp</p>
+              </div>
+              <div class="flowchart-arrow"></div>
+              <div
+                class="flowchart-node w-full max-w-xs p-4 text-center rounded-lg shadow-md bg-[#B7E5F8]"
+              >
+                <p class="font-bold">Fujifilm X-T30 II</p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="text-center mt-8 p-4 border-2 border-dashed border-[#0079C2] rounded-lg bg-sky-50"
+          >
+            <p class="font-bold text-[#004AAD]">Ghi chú đặc biệt:</p>
+            <p class="text-gray-600">
+              Nếu bạn muốn một hệ thống "cân bằng hoàn hảo" và hiệu suất cao
+              nhất trong tầm giá, hãy cân nhắc các combo kết hợp với ống kính
+              <span class="font-bold">Sigma 18-50mm f/2.8</span>. Đây là lựa
+              chọn nâng cấp mang lại giá trị vượt trội.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="text-center py-8 border-t border-gray-200 mt-16">
+        <p class="text-lg font-bold text-[#004AAD] mb-2">
+          Các nhà bán lẻ uy tín tại Việt Nam:
+        </p>
+        <p class="text-gray-600">
+          zShop, Kyma, TokyoCamera, VJShop, Bình Minh Digital, Giang Duy Đạt
+        </p>
+        <p class="text-xs text-gray-400 mt-6">
+          Infographic được tạo dựa trên phân tích dữ liệu thị trường tháng
+          6/2024. Giá cả có thể thay đổi. <br />Không sử dụng SVG hay MermaidJS
+          trong trang này.
+        </p>
+        <div
+          class="max-w-3xl mx-auto mb-0 p-4 bg-blue-50 border border-blue-200 rounded-lg mt-6"
+        >
+          <h4 class="font-bold text-sm text-blue-800">
+            Lưu ý về Nguồn gốc Nội dung
+          </h4>
+          <p class="text-xs mt-2">
+            Trang web này được tạo ra bởi một AI. Nội dung được tổng hợp, phân
+            tích và trình bày một cách trực quan dựa trên các nguồn báo cáo kỹ
+            thuật công khai. Thông tin được cung cấp nhằm mục đích tham khảo và
+            có thể không phản ánh mọi chi tiết chuyên sâu nhất.
+          </p>
+        </div>
+      </footer>
+    </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const wrapLabel = (str, maxWidth = 16) => {
+          if (str.length <= maxWidth) {
+            return str;
+          }
+          const words = str.split(" ");
+          const lines = [];
+          let currentLine = "";
+          for (const word of words) {
+            if (
+              (currentLine + " " + word).trim().length > maxWidth &&
+              currentLine.length > 0
+            ) {
+              lines.push(currentLine);
+              currentLine = word;
+            } else {
+              currentLine = (currentLine + " " + word).trim();
+            }
+          }
+          if (currentLine.length > 0) {
+            lines.push(currentLine);
+          }
+          return lines;
+        };
+
+        const tooltipTitleCallback = (tooltipItems) => {
+          const item = tooltipItems[0];
+          let label = item.chart.data.labels[item.dataIndex];
+          return Array.isArray(label) ? label.join(" ") : label;
+        };
+
+        const commonChartOptions = {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: "#374151",
+                font: {
+                  family: "'Be Vietnam Pro', sans-serif",
+                },
+              },
+            },
+            tooltip: {
+              callbacks: {
+                title: tooltipTitleCallback,
+              },
+              bodyFont: {
+                family: "'Be Vietnam Pro', sans-serif",
+              },
+              titleFont: {
+                family: "'Be Vietnam Pro', sans-serif",
+              },
+            },
+          },
+        };
+
+        const palette = {
+          blue1: "#004AAD",
+          blue2: "#0079C2",
+          blue3: "#009FDD",
+          blue4: "#72CFF2",
+          blue5: "#B7E5F8",
+        };
+
+        const createRadarChart = () => {
+          const ctx = document
+            .getElementById("brandsRadarChart")
+            ?.getContext("2d");
+          if (!ctx) return;
+          new Chart(ctx, {
+            type: "radar",
+            data: {
+              labels: [
+                wrapLabel("Hệ thống AF"),
+                wrapLabel("Hệ sinh thái Lens"),
+                wrapLabel("Chất lượng Video"),
+                wrapLabel("Chất lượng Ảnh tĩnh"),
+                wrapLabel("Thiết kế & Di động"),
+              ],
+              datasets: [
+                {
+                  label: "Canon",
+                  data: [9, 6, 8, 8, 7],
+                  backgroundColor: "rgba(255, 99, 132, 0.2)",
+                  borderColor: "rgba(255, 99, 132, 1)",
+                  borderWidth: 2,
+                },
+                {
+                  label: "Sony",
+                  data: [8, 9, 9, 7, 8],
+                  backgroundColor: "rgba(54, 162, 235, 0.2)",
+                  borderColor: "rgba(54, 162, 235, 1)",
+                  borderWidth: 2,
+                },
+                {
+                  label: "Fujifilm",
+                  data: [7, 7, 7, 9, 9],
+                  backgroundColor: "rgba(75, 192, 192, 0.2)",
+                  borderColor: "rgba(75, 192, 192, 1)",
+                  borderWidth: 2,
+                },
+              ],
+            },
+            options: {
+              ...commonChartOptions,
+              scales: {
+                r: {
+                  angleLines: { color: "rgba(0, 0, 0, 0.1)" },
+                  grid: { color: "rgba(0, 0, 0, 0.1)" },
+                  pointLabels: {
+                    color: "#1f2937",
+                    font: {
+                      size: 12,
+                      family: "'Be Vietnam Pro', sans-serif",
+                      weight: "600",
+                    },
+                  },
+                  ticks: {
+                    color: "#6b7280",
+                    backdropColor: "rgba(255, 255, 255, 0.75)",
+                    stepSize: 2,
+                  },
+                  min: 0,
+                  max: 10,
+                },
+              },
+            },
+          });
+        };
+
+        const createDonutChart = (canvasId, data, labels) => {
+          const ctx = document.getElementById(canvasId)?.getContext("2d");
+          if (!ctx) return;
+          new Chart(ctx, {
+            type: "doughnut",
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  data: data,
+                  backgroundColor: [palette.blue2, palette.blue4],
+                  borderColor: "#ffffff",
+                  borderWidth: 2,
+                },
+              ],
+            },
+            options: {
+              ...commonChartOptions,
+              cutout: "60%",
+            },
+          });
+        };
+
+        createDonutChart(
+          "combo1Donut",
+          [19990000, 12590000],
+          ["Thân máy R10", "Lens Sigma"]
+        );
+        createDonutChart(
+          "combo2Donut",
+          [25990000, 3000000],
+          ["Thân máy ZV-E10 II", "Lens Kit"]
+        );
+        createDonutChart(
+          "combo3Donut",
+          [28990000, 3500000],
+          ["Thân máy X-T30 II", "Lens Kit"]
+        );
+        createDonutChart(
+          "combo4Donut",
+          [18990000, 12490000],
+          ["Thân máy a6400", "Lens Sigma"]
+        );
+        createDonutChart(
+          "combo5Donut",
+          [17490000, 12590000],
+          ["Thân máy R50", "Lens Sigma"]
+        );
+        createDonutChart(
+          "combo6Donut",
+          [23990000, 3990000],
+          ["Thân máy X-S10", "Lens Kit"]
+        );
+
+        const createLensComparisonChart = () => {
+          const ctx = document
+            .getElementById("lensComparisonChart")
+            ?.getContext("2d");
+          if (!ctx) return;
+          new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: [
+                "Khẩu độ tối đa",
+                wrapLabel("Hiệu suất Thiếu sáng"),
+                "Khả năng Xóa phông (Bokeh)",
+              ],
+              datasets: [
+                {
+                  label: "Ống kính Kit (f/4.5-6.3)",
+                  data: [4, 5, 4],
+                  backgroundColor: palette.blue4,
+                  borderColor: palette.blue2,
+                  borderWidth: 1,
+                },
+                {
+                  label: "Ống kính Sigma (f/2.8)",
+                  data: [9, 9, 9],
+                  backgroundColor: palette.blue1,
+                  borderColor: palette.blue2,
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              ...commonChartOptions,
+              indexAxis: "y",
+              scales: {
+                x: {
+                  beginAtZero: true,
+                  max: 10,
+                  grid: {
+                    color: "rgba(0, 0, 0, 0.05)",
+                  },
+                  ticks: { color: "#374151" },
+                },
+                y: {
+                  grid: {
+                    display: false,
+                  },
+                  ticks: {
+                    color: "#374151",
+                    font: { size: 14, weight: "500" },
+                  },
+                },
+              },
+              plugins: {
+                ...commonChartOptions.plugins,
+                title: {
+                  display: true,
+                  text: "So sánh hiệu suất (thang điểm 10)",
+                  color: "#374151",
+                  font: { size: 16 },
+                },
+              },
+            },
+          });
+        };
+
+        const handleScrollspy = () => {
+          const sections = document.querySelectorAll("section");
+          const navLinks = document.querySelectorAll("#nav-links a");
+
+          window.onscroll = () => {
+            let current = "";
+            sections.forEach((section) => {
+              const sectionTop = section.offsetTop;
+              if (pageYOffset >= sectionTop - 80) {
+                current = section.getAttribute("id");
+              }
+            });
+
+            navLinks.forEach((a) => {
+              a.classList.remove("active");
+              if (a.getAttribute("href") === `#${current}`) {
+                a.classList.add("active");
+              }
+            });
+          };
+        };
+
+        createRadarChart();
+        createLensComparisonChart();
+        handleScrollspy();
+      });
+    </script>
+  </body>
+</html>
