@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tư Vấn Chọn Máy Ảnh Ngân Sách 33 Triệu</title>
+
+    <!-- SEO Meta Tags -->
+    <meta
+      name="description"
+      content="Công cụ tư vấn tương tác giúp bạn chọn combo máy ảnh mirrorless và ống kính tốt nhất trong ngân sách 33 triệu đồng tại Việt Nam. So sánh các gói từ Sony, Canon, Fujifilm, Nikon."
+    />
+    <meta
+      name="keywords"
+      content="tư vấn máy ảnh, chọn máy ảnh, máy ảnh 33 triệu, sony a6400, canon r50, fujifilm x-t30 ii, canon rp, nikon z5, canon r8, sony a7c, máy ảnh mirrorless, ống kính, nhiếp ảnh, Việt Nam"
+    />
+
+    <!-- Open Graph / Facebook Meta Tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="" />
+    <meta
+      property="og:title"
+      content="Công Cụ Tư Vấn Chọn Máy Ảnh Ngân Sách 33 Triệu"
+    />
+    <meta
+      property="og:description"
+      content="Khám phá các gói kết hợp máy ảnh & ống kính tối ưu nhất cho nhu cầu du lịch, chân dung, video. So sánh và đưa ra lựa chọn thông minh."
+    />
+    <meta
+      property="og:image"
+      content="https://res.cloudinary.com/katyperrycbt/image/upload/v1749559575/oiv0ldsfavlhyatbtpne.jpg"
+    />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="" />
+    <meta
+      name="twitter:title"
+      content="Công Cụ Tư Vấn Chọn Máy Ảnh Ngân Sách 33 Triệu"
+    />
+    <meta
+      name="twitter:description"
+      content="Khám phá các gói kết hợp máy ảnh & ống kính tối ưu nhất cho nhu cầu du lịch, chân dung, video. So sánh và đưa ra lựa chọn thông minh."
+    />
+    <meta
+      name="twitter:image"
+      content="https://res.cloudinary.com/katyperrycbt/image/upload/v1749559575/oiv0ldsfavlhyatbtpne.jpg"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Chosen Palette: Warm Neutral with Deep Blue accent -->
+    <!-- Application Structure Plan: The application is designed as an interactive "Combo Builder" tool. Instead of a static report, it allows users to filter camera + lens packages based on their primary use case (e.g., Travel, Portrait, Video). Results are displayed as interactive cards. A key feature is the dynamic bar chart for budget comparison. This user-centric, task-oriented structure simplifies decision-making and makes data consumption more engaging than a linear document. Details are available on-demand in a modal to keep the main interface clean. -->
+    <!-- Visualization & Content Choices: Report Table -> Interactive Cards (HTML/CSS) for better visual hierarchy and mobile experience. User Need -> Filter Buttons (JS) to guide users. Budget Data -> Dynamic Bar Chart (Chart.js/Canvas) for intuitive comparison. Detailed Analysis -> Modal Window (JS) to provide deep-dives without cluttering the UI. Core product info is stored in a structured JS array, enabling dynamic filtering and rendering. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+      body {
+        font-family: "Be Vietnam Pro", sans-serif;
+        background-color: #f8f9fa;
+      }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 400px;
+        max-height: 50vh;
+      }
+      .filter-btn {
+        transition: all 0.3s ease;
+      }
+      .filter-btn.active {
+        background-color: #1e3a8a;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+          0 2px 4px -2px rgb(0 0 0 / 0.1);
+      }
+      .card-enter {
+        animation: card-enter 0.5s ease-out;
+      }
+      @keyframes card-enter {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .modal {
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+    </style>
+  </head>
+  <body class="text-gray-800">
+    <div id="app" class="container mx-auto p-4 md:p-8">
+      <header class="text-center mb-8 md:mb-12">
+        <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-2">
+          Công Cụ Chọn Máy Ảnh
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600">
+          Tìm combo máy ảnh & ống kính tốt nhất trong ngân sách 33 triệu đồng
+        </p>
+      </header>
+
+      <main>
+        <section id="interactive-tool" class="mb-12">
+          <div class="bg-white p-6 rounded-xl shadow-lg">
+            <h2 class="text-xl md:text-2xl font-bold mb-4 text-center">
+              1. Nhu cầu chính của bạn là gì?
+            </h2>
+            <div
+              id="filter-container"
+              class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 mb-8"
+            >
+              <button
+                data-filter="all"
+                class="filter-btn active w-full bg-gray-200 text-gray-700 font-semibold py-3 px-4 rounded-lg hover:bg-blue-800 hover:text-white"
+              >
+                Tất Cả
+              </button>
+              <button
+                data-filter="du-lich"
+                class="filter-btn w-full bg-gray-200 text-gray-700 font-semibold py-3 px-4 rounded-lg hover:bg-blue-800 hover:text-white"
+              >
+                ✈️ Du Lịch
+              </button>
+              <button
+                data-filter="chan-dung"
+                class="filter-btn w-full bg-gray-200 text-gray-700 font-semibold py-3 px-4 rounded-lg hover:bg-blue-800 hover:text-white"
+              >
+                🧑 Chân Dung
+              </button>
+              <button
+                data-filter="video"
+                class="filter-btn w-full bg-gray-200 text-gray-700 font-semibold py-3 px-4 rounded-lg hover:bg-blue-800 hover:text-white"
+              >
+                🎬 Quay Video
+              </button>
+              <button
+                data-filter="full-frame"
+                class="filter-btn w-full bg-gray-200 text-gray-700 font-semibold py-3 px-4 rounded-lg hover:bg-blue-800 hover:text-white"
+              >
+                🌟 Full-Frame
+              </button>
+            </div>
+
+            <h2 class="text-xl md:text-2xl font-bold mb-4 text-center">
+              2. Các gói kết hợp đề xuất
+            </h2>
+            <p id="results-count" class="text-center text-gray-600 mb-6"></p>
+            <div
+              id="results-grid"
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            ></div>
+          </div>
+        </section>
+
+        <section id="comparison-section" class="mb-12">
+          <div class="bg-white p-6 rounded-xl shadow-lg">
+            <h2 class="text-xl md:text-2xl font-bold mb-2 text-center">
+              3. So Sánh Ngân Sách
+            </h2>
+            <p class="text-center text-gray-600 mb-6">
+              Chọn các gói từ danh sách trên để so sánh chi phí.
+            </p>
+            <div class="chart-container">
+              <canvas id="budgetChart"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <section id="knowledge-base" class="mb-12">
+          <div class="bg-white p-6 rounded-xl shadow-lg">
+            <h2 class="text-xl md:text-2xl font-bold mb-4 text-center">
+              Kiến Thức Cơ Bản
+            </h2>
+            <div class="space-y-4">
+              <div class="border border-gray-200 rounded-lg">
+                <button
+                  class="accordion-toggle w-full flex justify-between items-center p-4 font-semibold text-left"
+                >
+                  Cảm biến APS-C và Full-Frame
+                  <span class="transform transition-transform duration-300"
+                    >▼</span
+                  >
+                </button>
+                <div
+                  class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out"
+                >
+                  <div class="p-4 border-t border-gray-200">
+                    <h4 class="font-bold">Cảm biến APS-C:</h4>
+                    <p class="text-gray-700">
+                      Kích thước nhỏ hơn, giúp máy và ống kính nhỏ gọn, giá dễ
+                      tiếp cận hơn. Hệ số crop (1.5x-1.6x) làm thay đổi tiêu cự
+                      hiệu dụng. Chất lượng ảnh rất tốt, đặc biệt ở các mẫu đời
+                      mới.
+                    </p>
+                    <h4 class="font-bold mt-2">Cảm biến Full-Frame:</h4>
+                    <p class="text-gray-700">
+                      Kích thước lớn hơn, chụp thiếu sáng tốt hơn, dải tương
+                      phản động rộng, xóa phông tốt hơn. Máy và ống kính thường
+                      đắt và lớn hơn.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="border border-gray-200 rounded-lg">
+                <button
+                  class="accordion-toggle w-full flex justify-between items-center p-4 font-semibold text-left"
+                >
+                  Các Loại Ống Kính Phổ Biến
+                  <span class="transform transition-transform duration-300"
+                    >▼</span
+                  >
+                </button>
+                <div
+                  class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out"
+                >
+                  <div class="p-4 border-t border-gray-200">
+                    <h4 class="font-bold">Ống kính Kit:</h4>
+                    <p class="text-gray-700">
+                      Đi kèm thân máy, đa dụng, lựa chọn tốt để bắt đầu nhưng
+                      chất lượng quang học và khẩu độ ở mức cơ bản.
+                    </p>
+                    <h4 class="font-bold mt-2">
+                      Ống kính Prime (một tiêu cự):
+                    </h4>
+                    <p class="text-gray-700">
+                      Tiêu cự cố định, khẩu độ lớn (f/1.8, f/1.4), ảnh sắc nét
+                      vượt trội, chụp thiếu sáng tốt, xóa phông đẹp. Lý tưởng
+                      cho chân dung, đường phố.
+                    </p>
+                    <h4 class="font-bold mt-2">Ống kính Zoom:</h4>
+                    <p class="text-gray-700">
+                      Dải tiêu cự thay đổi được, linh hoạt cao. Ống kính zoom
+                      cao cấp có thể cho chất lượng tốt nhưng thường đắt và
+                      nặng.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="py-8 mt-12 border-t border-gray-200">
+        <div class="container mx-auto px-4 text-center">
+          <div
+            class="max-w-3xl mx-auto mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg"
+          >
+            <h4 class="font-bold text-sm text-blue-800">
+              Lưu ý về Nguồn gốc Nội dung
+            </h4>
+            <p class="text-xs mt-2">
+              Trang web này được tạo ra bởi một AI. Nội dung được tổng hợp, phân
+              tích và trình bày một cách trực quan dựa trên các nguồn báo cáo kỹ
+              thuật công khai. Thông tin được cung cấp nhằm mục đích tham khảo
+              và có thể không phản ánh mọi chi tiết chuyên sâu nhất.
+            </p>
+          </div>
+          <a
+            href="https://thucde.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center space-x-2 text-gray-500 hover:text-blue-600 transition-colors"
+          >
+            <span
+              class="w-6 h-6 flex items-center justify-center rounded-md font-bold text-sm"
+            >
+              <img
+                src="https://thucde.dev/logo/thucdedev.png"
+                ,
+                alt="Thucde.dev Logo"
+                class="w-6 h-6"
+              />
+            </span>
+            <span class="font-semibold">Một sản phẩm của Thucde.dev</span>
+          </a>
+        </div>
+      </footer>
+    </div>
+
+    <div
+      id="details-modal"
+      class="modal invisible opacity-0 fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50"
+    >
+      <div
+        class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+        id="modal-content"
+      ></div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const budget = 33000000;
+
+        const comboData = [
+          {
+            id: 1,
+            body: "Sony a6400",
+            lens: "Sony E PZ 16-50mm f/3.5-5.6 OSS + Sony E 50mm f/1.8 OSS",
+            price: 26850000,
+            tags: ["du-lich", "chan-dung", "video", "sony", "aps-c"],
+            strength:
+              "AF siêu nhanh, nhỏ gọn, kit đa dụng, prime 50mm f/1.8 chụp chân dung xóa phông tốt.",
+            purpose: "Du lịch, đời thường, chân dung, vlog cơ bản.",
+          },
+          {
+            id: 2,
+            body: "Sony a6400",
+            lens: "Sigma 30mm f/1.4 DC DN",
+            price: 26800000,
+            tags: ["chan-dung", "sony", "aps-c"],
+            strength:
+              "AF siêu nhanh, ống kính Sigma khẩu lớn f/1.4 cho chất lượng ảnh vượt trội, chụp thiếu sáng tốt, xóa phông đẹp.",
+            purpose: "Đường phố, chân dung, sản phẩm, thiếu sáng.",
+          },
+          {
+            id: 3,
+            body: "Sony a6400",
+            lens: "Tamron 17-70mm f/2.8 VC RXD",
+            price: 35700000,
+            tags: ["du-lich", "chan-dung", "video", "sony", "aps-c"],
+            strength:
+              "Ống kính zoom đa dụng khẩu độ f/2.8 toàn dải, chống rung VC, chất lượng quang học tốt. *Vượt nhẹ ngân sách, cần săn sale.*",
+            purpose: "Du lịch, sự kiện, chân dung, quay video đa năng.",
+          },
+          {
+            id: 4,
+            body: "Canon EOS R50",
+            lens: "Canon RF-S 18-45mm IS STM + Canon RF 50mm f/1.8 STM",
+            price: 26500000,
+            tags: ["du-lich", "chan-dung", "video", "canon", "aps-c"],
+            strength:
+              "AF hiện đại, dễ dùng, kit nhỏ gọn, prime 50mm f/1.8 chụp chân dung tốt, lý tưởng cho người mới.",
+            purpose:
+              "Vlogging, du lịch, đời thường, chân dung, người mới bắt đầu.",
+          },
+          {
+            id: 5,
+            body: "Canon EOS R50",
+            lens: "Sigma 30mm f/1.4 DC DN (RF)",
+            price: 24550000,
+            tags: ["chan-dung", "canon", "aps-c"],
+            strength:
+              "AF hiện đại, ống kính Sigma f/1.4 chất lượng cao cho ảnh sắc nét, xóa phông tốt.",
+            purpose:
+              "Đường phố, chân dung, sản phẩm, ưu tiên chất lượng ảnh tĩnh với máy Canon nhỏ gọn.",
+          },
+          {
+            id: 6,
+            body: "Fujifilm X-T30 II",
+            lens: "XC 15-45mm PZ + XF 35mm f/2 R WR",
+            price: 32500000,
+            tags: ["du-lich", "chan-dung", "fujifilm", "aps-c"],
+            strength:
+              "Màu sắc Fujifilm đặc trưng, kit nhỏ gọn, prime XF 35mm f/2 chất lượng cao, kháng thời tiết.",
+            purpose:
+              "Du lịch, đường phố, chân dung, người yêu thích màu ảnh Fujifilm.",
+          },
+          {
+            id: 7,
+            body: "Fujifilm X-T30 II",
+            lens: "Viltrox 56mm f/1.4 XF",
+            price: 32750000,
+            tags: ["chan-dung", "fujifilm", "aps-c"],
+            strength:
+              "Màu sắc Fujifilm, ống kính chân dung Viltrox khẩu lớn f/1.4 cho bokeh đẹp, giá tốt.",
+            purpose: "Chuyên chụp chân dung với chất ảnh Fujifilm.",
+          },
+          {
+            id: 8,
+            body: "Nikon Z50",
+            lens: "Nikon Z DX 16-50mm VR + Nikon Z 40mm f/2",
+            price: 25750000,
+            tags: ["du-lich", "video", "nikon", "aps-c"],
+            strength:
+              "Cầm nắm tốt, kit ổn định, prime 40mm f/2 nhỏ gọn, đa dụng (tương đương 60mm trên full-frame).",
+            purpose:
+              "Du lịch, đời thường, vlog, người dùng thích hệ sinh thái Nikon.",
+          },
+          {
+            id: 9,
+            body: "Canon EOS RP",
+            lens: "Canon RF 50mm f/1.8 STM",
+            price: 26100000,
+            tags: ["chan-dung", "full-frame", "canon"],
+            strength:
+              "Full-frame giá tốt nhất, nhỏ gọn, ống kính 50mm f/1.8 chất lượng tốt, lý tưởng để trải nghiệm full-frame.",
+            purpose:
+              "Chân dung, đường phố, người muốn bắt đầu với full-frame với chi phí thấp.",
+          },
+          {
+            id: 10,
+            body: "Canon EOS RP",
+            lens: "Canon RF 35mm f/1.8 IS Macro STM",
+            price: 32850000,
+            tags: ["du-lich", "chan-dung", "full-frame", "canon"],
+            strength:
+              "Full-frame giá tốt, ống kính 35mm f/1.8 đa dụng, có chống rung, khả năng macro 0.5x.",
+            purpose:
+              "Đường phố, đời thường, chân dung môi trường, macro cơ bản.",
+          },
+          {
+            id: 11,
+            body: "Nikon Z5",
+            lens: "Nikon Z 24-50mm f/4-6.3",
+            price: 31600000,
+            tags: ["du-lich", "full-frame", "nikon"],
+            strength:
+              "Full-frame có IBIS, hai khe thẻ, ống kính kit nhỏ gọn, chất lượng hoàn thiện tốt.",
+            purpose:
+              "Du lịch, phong cảnh, người muốn máy full-frame Nikon có IBIS.",
+          },
+          {
+            id: 12,
+            body: "Nikon Z5",
+            lens: "Nikon Z 40mm f/2",
+            price: 33800000,
+            tags: ["du-lich", "chan-dung", "full-frame", "nikon"],
+            strength:
+              "Full-frame có IBIS, ống kính prime 40mm f/2 nhỏ gọn, chất lượng tốt. *Vượt nhẹ ngân sách, cần săn sale.*",
+            purpose:
+              "Đường phố, đời thường, du lịch, ưu tiên sự nhỏ gọn và IBIS.",
+          },
+          {
+            id: 13,
+            body: "Canon EOS R8",
+            lens: "Canon RF 24-50mm IS STM",
+            price: 31850000,
+            tags: ["du-lich", "video", "full-frame", "canon"],
+            strength:
+              "Full-frame hiện đại, AF từ R6II, quay 4K60p không crop, ống kit nhỏ gọn đa dụng.",
+            purpose:
+              "Người mới lên full-frame, du lịch, vlog, ưu tiên công nghệ mới và video.",
+          },
+          {
+            id: 14,
+            body: "Canon EOS R8",
+            lens: "Canon RF 50mm f/1.8 STM",
+            price: 33100000,
+            tags: ["chan-dung", "video", "full-frame", "canon"],
+            strength:
+              "Full-frame hiện đại, AF mạnh mẽ, ống prime 50mm f/1.8 chất lượng cao. *Vượt nhẹ ngân sách, cần săn sale.*",
+            purpose:
+              "Chân dung, đường phố, ưu tiên chất lượng ảnh tĩnh và hiệu năng cao.",
+          },
+          {
+            id: 15,
+            body: "Sony a7C",
+            lens: "Sony FE 28-60mm f/4-5.6",
+            price: 33700000,
+            tags: ["du-lich", "video", "full-frame", "sony"],
+            strength:
+              "Full-frame siêu nhỏ gọn có IBIS, kit đa dụng, lý tưởng cho tính di động cao. *Vượt nhẹ ngân sách, cần săn sale.*",
+            purpose:
+              "Du lịch, vlog, người dùng cần máy full-frame nhỏ nhất có thể.",
+          },
+          {
+            id: 16,
+            body: "Sony a7C",
+            lens: "Samyang AF 35mm f/2.8 FE",
+            price: 33450000,
+            tags: ["du-lich", "chan-dung", "full-frame", "sony"],
+            strength:
+              "Full-frame siêu nhỏ gọn có IBIS, ống prime 35mm f/2.8 nhỏ gọn, đa dụng.",
+            purpose:
+              "Đường phố, du lịch, ưu tiên sự nhỏ gọn tối đa và chất lượng ảnh từ prime.",
+          },
+        ];
+
+        const resultsGrid = document.getElementById("results-grid");
+        const filterContainer = document.getElementById("filter-container");
+        const resultsCountEl = document.getElementById("results-count");
+        const modal = document.getElementById("details-modal");
+        const modalContent = document.getElementById("modal-content");
+        let chart;
+        let comparedItems = new Set();
+
+        const formatCurrency = (value) =>
+          new Intl.NumberFormat("vi-VN", {
+            style: "currency",
+            currency: "VND",
+          }).format(value);
+
+        function renderCards(data) {
+          resultsGrid.innerHTML = "";
+          data.forEach((item) => {
+            if (item.price > budget + 2000000) return;
+
+            const percentage = (item.price / budget) * 100;
+            const card = document.createElement("div");
+            card.className =
+              "card-enter bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col";
+            card.innerHTML = `
+                        <div class="p-5 flex-grow">
+                            <div class="flex justify-between items-start mb-3">
+                                <h3 class="text-lg font-bold text-gray-900">${
+                                  item.body
+                                }</h3>
+                                <div class="flex space-x-2">
+                                     ${
+                                       item.tags.includes("aps-c")
+                                         ? '<span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">APS-C</span>'
+                                         : ""
+                                     }
+                                     ${
+                                       item.tags.includes("full-frame")
+                                         ? '<span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Full-Frame</span>'
+                                         : ""
+                                     }
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4 h-10">${
+                              item.lens
+                            }</p>
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-sm font-medium text-gray-700">Ngân sách</span>
+                                    <span class="text-sm font-medium text-blue-700">${Math.round(
+                                      percentage
+                                    )}%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${Math.min(
+                                      percentage,
+                                      100
+                                    )}%"></div>
+                                </div>
+                            </div>
+                            <p class="text-2xl font-bold text-center text-blue-800 mb-4">${formatCurrency(
+                              item.price
+                            )}</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 border-t border-gray-200 rounded-b-xl grid grid-cols-2 gap-3">
+                            <button data-id="${
+                              item.id
+                            }" class="view-details-btn w-full bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-800 transition-colors">Xem Chi Tiết</button>
+                             <label class="compare-label flex items-center justify-center bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors cursor-pointer">
+                                <input type="checkbox" data-id="${
+                                  item.id
+                                }" class="compare-checkbox mr-2 accent-blue-600"> So Sánh
+                            </label>
+                        </div>
+                    `;
+            resultsGrid.appendChild(card);
+          });
+          resultsCountEl.textContent = `Tìm thấy ${data.length} kết quả phù hợp.`;
+        }
+
+        function filterData(filter) {
+          document
+            .querySelectorAll(".filter-btn")
+            .forEach((btn) => btn.classList.remove("active"));
+          document
+            .querySelector(`.filter-btn[data-filter="${filter}"]`)
+            .classList.add("active");
+
+          if (filter === "all") {
+            renderCards(comboData);
+          } else {
+            const filtered = comboData.filter((item) =>
+              item.tags.includes(filter)
+            );
+            renderCards(filtered);
+          }
+        }
+
+        function showModal(id) {
+          const item = comboData.find((d) => d.id === id);
+          if (!item) return;
+
+          modalContent.innerHTML = `
+                    <div class="p-6">
+                        <div class="flex justify-between items-center border-b pb-3 mb-4">
+                            <h2 class="text-2xl font-bold">${item.body}</h2>
+                            <button id="close-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+                        </div>
+                        <p class="text-gray-700 mb-4"><span class="font-semibold">Ống kính:</span> ${
+                          item.lens
+                        }</p>
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                             <p class="text-3xl font-bold text-center text-blue-800">${formatCurrency(
+                               item.price
+                             )}</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h4 class="font-bold text-lg mb-2">Điểm Mạnh Nổi Bật</h4>
+                            <p class="text-gray-700">${item.strength}</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">Mục Đích Sử Dụng Phù Hợp</h4>
+                            <p class="text-gray-700">${item.purpose}</p>
+                        </div>
+                    </div>
+                `;
+          modal.classList.remove("invisible", "opacity-0");
+          document.body.style.overflow = "hidden";
+
+          document
+            .getElementById("close-modal-btn")
+            .addEventListener("click", hideModal);
+        }
+
+        function hideModal() {
+          modal.classList.add("invisible", "opacity-0");
+          document.body.style.overflow = "auto";
+        }
+
+        function setupChart() {
+          const ctx = document.getElementById("budgetChart").getContext("2d");
+          chart = new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: [],
+              datasets: [
+                {
+                  label: "Chi Phí Gói (VNĐ)",
+                  data: [],
+                  backgroundColor: "rgba(30, 64, 175, 0.7)",
+                  borderColor: "rgba(30, 58, 138, 1)",
+                  borderWidth: 1,
+                },
+                {
+                  type: "line",
+                  label: "Ngân sách (33M)",
+                  data: [],
+                  borderColor: "rgba(217, 70, 239, 1)",
+                  backgroundColor: "rgba(217, 70, 239, 0.2)",
+                  borderWidth: 2,
+                  pointRadius: 0,
+                  fill: false,
+                },
+              ],
+            },
+            options: {
+              indexAxis: "y",
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                x: {
+                  beginAtZero: true,
+                  suggestedMax: budget + 5000000, // Gợi ý mức tối đa để trục X luôn hợp lý
+                  ticks: {
+                    callback: function (value) {
+                      if (typeof value === "number" && value >= 0) {
+                        return (value / 1000000).toFixed(0) + "M";
+                      }
+                      return "";
+                    },
+                  },
+                },
+              },
+              plugins: {
+                tooltip: {
+                  callbacks: {
+                    title: function (tooltipItems) {
+                      if (!tooltipItems.length) return "";
+                      const index = tooltipItems[0].dataIndex;
+                      const selectedData = Array.from(comparedItems)
+                        .map((id) =>
+                          comboData.find((item) => item.id === parseInt(id))
+                        )
+                        .filter(Boolean)
+                        .sort((a, b) => a.price - b.price);
+                      const item = selectedData[index];
+                      return item ? `${item.body} + ${item.lens}` : "";
+                    },
+                    label: function (context) {
+                      let label = context.dataset.label || "";
+                      if (label) {
+                        label += ": ";
+                      }
+                      if (context.parsed.x !== null) {
+                        label += formatCurrency(context.parsed.x);
+                      }
+                      return label;
+                    },
+                  },
+                },
+                legend: {
+                  display: true,
+                },
+              },
+            },
+          });
+        }
+
+        function updateChart() {
+          const selectedData = Array.from(comparedItems)
+            .map((id) => comboData.find((item) => item.id === parseInt(id)))
+            .filter(Boolean)
+            .sort((a, b) => a.price - b.price);
+
+          chart.data.labels = selectedData.map(
+            (item) => `${item.body.substring(0, 12)}...`
+          );
+          chart.data.datasets[0].data = selectedData.map((item) => item.price);
+          chart.data.datasets[1].data = selectedData.map(() => budget);
+
+          chart.update();
+        }
+
+        filterContainer.addEventListener("click", function (e) {
+          if (e.target.matches(".filter-btn")) {
+            filterData(e.target.dataset.filter);
+          }
+        });
+
+        resultsGrid.addEventListener("click", function (e) {
+          if (e.target.matches(".view-details-btn")) {
+            showModal(parseInt(e.target.dataset.id));
+          }
+        });
+
+        resultsGrid.addEventListener("change", function (e) {
+          if (e.target.matches(".compare-checkbox")) {
+            const id = e.target.dataset.id;
+            if (e.target.checked) {
+              comparedItems.add(id);
+            } else {
+              comparedItems.delete(id);
+            }
+            updateChart();
+          }
+        });
+
+        modal.addEventListener("click", function (e) {
+          if (e.target === modal) {
+            hideModal();
+          }
+        });
+
+        document.querySelectorAll(".accordion-toggle").forEach((button) => {
+          button.addEventListener("click", () => {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector("span");
+            if (content.style.maxHeight) {
+              content.style.maxHeight = null;
+              icon.style.transform = "rotate(0deg)";
+            } else {
+              content.style.maxHeight = content.scrollHeight + "px";
+              icon.style.transform = "rotate(180deg)";
+            }
+          });
+        });
+
+        filterData("all");
+        setupChart();
+        updateChart();
+      });
+    </script>
+  </body>
+</html>
