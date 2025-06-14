@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lựa chọn máy ảnh ngân sách tầm 30-32 triệu (tháng 6/2025)</title>
+
+    <!-- SEO Meta Tags -->
+    <meta
+      name="description"
+      content="Hướng dẫn tương tác giúp bạn chọn mua máy ảnh mirrorless tốt nhất trong tầm giá 30-32 triệu. So sánh Sony, Canon, Nikon, Fujifilm, Panasonic và các gói sản phẩm tối ưu."
+    />
+    <meta
+      name="keywords"
+      content="tư vấn máy ảnh, máy ảnh mirrorless, 30 triệu, sony a7 iii, canon r8, nikon z6 ii, fujifilm x-t4, panasonic s5 ii, mua máy ảnh, nhiếp ảnh, tư vấn mua máy ảnh 2025"
+    />
+
+    <!-- Open Graph / Facebook Preview -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Lựa chọn máy ảnh ngân sách tầm 30-32 triệu (tháng 6/2025)"
+    />
+    <meta
+      property="og:description"
+      content="Hướng dẫn tương tác giúp bạn chọn mua máy ảnh mirrorless tốt nhất trong tầm giá 30-32 triệu. So sánh Sony, Canon, Nikon, Fujifilm, Panasonic và các gói sản phẩm tối ưu."
+    />
+    <meta
+      property="og:image"
+      content="https://res.cloudinary.com/katyperrycbt/image/upload/v1749879853/cv5srfa3tqtthgce4ipz.jpg"
+    />
+
+    <!-- Twitter Preview -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Lựa chọn máy ảnh ngân sách tầm 30-32 triệu (tháng 6/2025)"
+    />
+    <meta
+      name="twitter:description"
+      content="Hướng dẫn tương tác giúp bạn chọn mua máy ảnh mirrorless tốt nhất trong tầm giá 30-32 triệu. So sánh Sony, Canon, Nikon, Fujifilm, Panasonic và các gói sản phẩm tối ưu."
+    />
+    <meta
+      name="twitter:image"
+      content="https://res.cloudinary.com/katyperrycbt/image/upload/v1749879853/cv5srfa3tqtthgce4ipz.jpg"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Chosen Palette: Warm Neutrals with a touch of Slate Blue -->
+    <!-- Application Structure Plan: A user-guided journey from broad choices to specific recommendations. 1. Hero Introduction. 2. Core Decision (Full-Frame vs. APS-C). 3. Interactive Contenders Dashboard (Filter by brand, click for details). 4. Dynamic Detail & Comparison View (with a Radar Chart for visual comparison). 5. Recommended Kits section (Filter by user need). 6. Final Verdict & Retailers. This structure transforms passive reading into an active, choice-driven exploration, which is more effective for a purchasing guide. The dynamic comparison section is key, allowing users to instantly see how cameras stack up without getting lost in tables. -->
+    <!-- Visualization & Content Choices: 1. Full-Frame vs. APS-C: Side-by-side info cards to clarify the initial, most important trade-off. 2. Camera Specs Comparison: A dynamic Radar Chart (Chart.js) to compare multiple facets (Image Quality, Video, AF, Ergonomics, Ecosystem) of several cameras at once. This is far more intuitive than a static data table. Goal: Compare. Method: Chart.js Canvas. 3. Lens Ecosystem Strength: Simple styled bar-like divs to visually represent ratings. Goal: Organize/Inform. Method: HTML/Tailwind. 4. Recommended Kits: Interactive filter buttons that reveal curated product packages. Goal: Guide. Method: JS DOM manipulation. This approach breaks down a complex decision into manageable, interactive steps. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+      body {
+        font-family: "Be Vietnam Pro", sans-serif;
+        background-color: #f8f5f2; /* Warm off-white */
+        color: #383838;
+      }
+      .bg-primary {
+        background-color: #f8f5f2;
+      }
+      .bg-secondary {
+        background-color: #efeae6;
+      } /* Slightly darker neutral */
+      .bg-accent {
+        background-color: #4a5568;
+      } /* Slate blue */
+      .text-accent {
+        color: #4a5568;
+      }
+      .border-accent {
+        border-color: #4a5568;
+      }
+      .btn-accent {
+        background-color: #4a5568;
+        color: #ffffff;
+        transition: background-color 0.3s ease;
+      }
+      .btn-accent:hover {
+        background-color: #2d3748;
+      }
+      .btn-filter {
+        background-color: #efeae6;
+        color: #383838;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+      }
+      .btn-filter.active,
+      .btn-filter:hover {
+        background-color: #4a5568;
+        color: #ffffff;
+        border-color: #2d3748;
+      }
+      .card {
+        background-color: #ffffff;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+          0 2px 4px -2px rgb(0 0 0 / 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+          0 4px 6px -2px rgb(0 0 0 / 0.1);
+      }
+      .section-title {
+        font-size: 2.25rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: #2d3748;
+      }
+      .section-subtitle {
+        font-size: 1.125rem;
+        color: #4a5568;
+        max-width: 800px;
+        margin: 0 auto 2.5rem auto;
+      }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 350px;
+        max-height: 450px;
+      }
+      @media (min-width: 768px) {
+        .chart-container {
+          height: 450px;
+        }
+      }
+      .fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-primary">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Header -->
+      <header class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-bold text-accent mb-4">
+          Tư Vấn Chọn Máy Ảnh Mirrorless
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600">
+          Hướng dẫn tương tác cho ngân sách 30-32 triệu đồng
+        </p>
+      </header>
+
+      <!-- Section 1: The Core Decision -->
+      <section id="core-decision" class="mb-16">
+        <h2 class="section-title text-center">
+          Lựa Chọn Nền Tảng: Full-Frame hay APS-C?
+        </h2>
+        <p class="section-subtitle text-center">
+          Trong tầm giá này, bạn đứng trước một ngã rẽ quan trọng: đầu tư vào
+          công nghệ mới nhất trên cảm biến APS-C, hay tiếp cận chất lượng hình
+          ảnh vượt trội của Full-Frame qua các model cũ hơn hoặc đã qua sử dụng.
+          Lựa chọn này định hình toàn bộ hệ thống của bạn trong tương lai.
+        </p>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div
+            class="p-8 rounded-xl bg-white shadow-md border-l-4 border-slate-700"
+          >
+            <h3 class="text-2xl font-bold mb-3 text-accent">Full-Frame</h3>
+            <p class="text-gray-600 mb-4">
+              Lựa chọn cho chất lượng hình ảnh tối đa, đặc biệt trong điều kiện
+              thiếu sáng và khả năng xóa phông ấn tượng.
+            </p>
+            <ul class="space-y-2 list-disc list-inside">
+              <li>
+                <span class="font-semibold"
+                  >Hiệu suất thiếu sáng & Dynamic Range:</span
+                >
+                Vượt trội nhờ cảm biến lớn hơn, ít nhiễu ở ISO cao.
+              </li>
+              <li>
+                <span class="font-semibold">Kiểm soát độ sâu trường ảnh:</span>
+                Dễ dàng tạo hiệu ứng xóa phông chuyên nghiệp.
+              </li>
+              <li>
+                <span class="font-semibold">Giá trị đầu tư:</span> Thường là các
+                model "likenew" hoặc thế hệ cũ hơn, nhưng mang lại tiềm năng
+                hình ảnh lớn.
+              </li>
+            </ul>
+          </div>
+          <div
+            class="p-8 rounded-xl bg-white shadow-md border-l-4 border-teal-700"
+          >
+            <h3 class="text-2xl font-bold mb-3 text-teal-800">APS-C</h3>
+            <p class="text-gray-600 mb-4">
+              Lựa chọn vì sự nhỏ gọn, chi phí hợp lý và công nghệ mới nhất được
+              tích hợp.
+            </p>
+            <ul class="space-y-2 list-disc list-inside">
+              <li>
+                <span class="font-semibold">Kích thước & Chi phí:</span> Thân
+                máy và ống kính thường nhỏ, nhẹ và rẻ hơn đáng kể.
+              </li>
+              <li>
+                <span class="font-semibold">Lợi thế "tầm xa":</span> Hệ số crop
+                1.5x-1.6x giúp ống kính tele vươn xa hơn, lý tưởng cho thể thao,
+                động vật hoang dã.
+              </li>
+              <li>
+                <span class="font-semibold">Công nghệ tiên tiến:</span> Thường
+                được trang bị các tính năng mới nhất (AF, video) vì là máy đời
+                mới.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: The Contenders -->
+      <section id="contenders" class="mb-16">
+        <h2 class="section-title text-center">Các "Ứng Cử Viên" Sáng Giá</h2>
+        <p class="section-subtitle text-center">
+          Khám phá các mẫu máy ảnh nổi bật nhất trong tầm giá. Nhấp vào một máy
+          để xem phân tích chi tiết và so sánh trực quan với các đối thủ.
+        </p>
+        <div class="flex flex-wrap justify-center gap-2 mb-8" id="filters">
+          <button
+            class="btn-filter active px-4 py-2 rounded-full font-semibold"
+            data-filter="all"
+          >
+            Tất cả
+          </button>
+          <button
+            class="btn-filter px-4 py-2 rounded-full font-semibold"
+            data-filter="full-frame"
+          >
+            Full-Frame
+          </button>
+          <button
+            class="btn-filter px-4 py-2 rounded-full font-semibold"
+            data-filter="aps-c"
+          >
+            APS-C
+          </button>
+          <button
+            class="btn-filter px-4 py-2 rounded-full font-semibold"
+            data-filter="sony"
+          >
+            Sony
+          </button>
+          <button
+            class="btn-filter px-4 py-2 rounded-full font-semibold"
+            data-filter="canon"
+          >
+            Canon
+          </button>
+          <button
+            class="btn-filter px-4 py-2 rounded-full font-semibold"
+            data-filter="nikon"
+          >
+            Nikon
+          </button>
+          <button
+            class="btn-filter px-4 py-2 rounded-full font-semibold"
+            data-filter="fujifilm"
+          >
+            Fujifilm
+          </button>
+          <button
+            class="btn-filter px-4 py-2 rounded-full font-semibold"
+            data-filter="panasonic"
+          >
+            Panasonic
+          </button>
+        </div>
+
+        <div
+          id="camera-grid"
+          class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        >
+          <!-- Camera cards will be injected here by JS -->
+        </div>
+      </section>
+
+      <!-- Section 3: Detailed Comparison -->
+      <section id="detail-view" class="mb-16 hidden">
+        <div class="bg-secondary p-8 rounded-2xl">
+          <h2 class="section-title text-center" id="detail-camera-name">
+            So Sánh Chi Tiết
+          </h2>
+          <p class="section-subtitle text-center">
+            Đây là nơi chúng tôi phân tích sâu hơn về chiếc máy bạn đã chọn.
+            Biểu đồ radar bên dưới sẽ so sánh hiệu năng của nó với các đối thủ
+            chính, giúp bạn có cái nhìn tổng thể và cân bằng nhất.
+          </p>
+          <div class="grid lg:grid-cols-5 gap-8">
+            <div class="lg:col-span-2">
+              <h3 class="text-2xl font-bold mb-4">Phân Tích Chuyên Sâu</h3>
+              <div id="detail-content" class="space-y-4 text-gray-700">
+                <!-- Detailed text will be injected here -->
+              </div>
+            </div>
+            <div class="lg:col-span-3">
+              <h3 class="text-2xl font-bold mb-4 text-center">
+                Biểu Đồ Hiệu Năng
+              </h3>
+              <div class="chart-container bg-white rounded-xl p-4 shadow-inner">
+                <canvas id="comparisonChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Recommended Kits -->
+      <section id="kits" class="mb-16">
+        <h2 class="section-title text-center">Xây Dựng Gói Sản Phẩm Tối Ưu</h2>
+        <p class="section-subtitle text-center">
+          Một chiếc máy ảnh tốt cần có ống kính phù hợp. Dựa trên nhu cầu của
+          bạn, chúng tôi đề xuất các gói sản phẩm (thân máy + ống kính) khả thi
+          và hiệu quả nhất trong ngân sách 30-32 triệu đồng.
+        </p>
+        <div class="flex flex-wrap justify-center gap-2 mb-8" id="kit-filters">
+          <button
+            class="btn-filter active px-4 py-2 rounded-full font-semibold"
+            data-kit-filter="all"
+          >
+            Tất cả nhu cầu
+          </button>
+          <button
+            class="btn-filter px-4 py-2 rounded-full font-semibold"
+            data-kit-filter="hybrid"
+          >
+            Sáng tạo Hybrid
+          </button>
+          <button
+            class="btn-filter px-4 py-2 rounded-full font-semibold"
+            data-kit-filter="portrait"
+          >
+            Chuyên gia Chân dung
+          </button>
+          <button
+            class="btn-filter px-4 py-2 rounded-full font-semibold"
+            data-kit-filter="video"
+          >
+            Nhà quay phim
+          </button>
+          <button
+            class="btn-filter px-4 py-2 rounded-full font-semibold"
+            data-kit-filter="travel"
+          >
+            Du lịch & Đường phố
+          </button>
+        </div>
+        <div id="kit-grid" class="grid md:grid-cols-2 gap-6">
+          <!-- Kit cards will be injected here -->
+        </div>
+      </section>
+
+      <!-- Section 5: Final Verdict -->
+      <section id="verdict" class="text-center">
+        <h2 class="section-title text-center">Phán Quyết Cuối Cùng</h2>
+        <p class="section-subtitle text-center">
+          Lựa chọn cuối cùng phụ thuộc vào ưu tiên cá nhân của bạn. Dưới đây là
+          tóm tắt các khuyến nghị để giúp bạn đưa ra quyết định.
+        </p>
+        <div class="max-w-4xl mx-auto space-y-4 text-left">
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <p>
+              <strong class="text-accent"
+                >Nếu ưu tiên #1 là Lấy nét tự động & Video hiện đại
+                nhất:</strong
+              >
+              chọn <b class="font-semibold">Canon EOS R8</b>. Hãy sẵn sàng cho
+              việc không có IBIS và pin yếu.
+            </p>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <p>
+              <strong class="text-accent"
+                >Nếu ưu tiên #1 là Giá trị tổng thể & Hệ sinh thái ống kính linh
+                hoạt:</strong
+              >
+              chọn <b class="font-semibold">Sony A7 III (Likenew)</b>. Đây là
+              lựa chọn chiến lược và tiết kiệm chi phí nhất về lâu dài.
+            </p>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <p>
+              <strong class="text-accent"
+                >Nếu ưu tiên #1 là Cảm giác cầm nắm & Trải nghiệm nhiếp ảnh
+                thuần túy:</strong
+              >
+              chọn <b class="font-semibold">Nikon Z6 II (Likenew)</b>. Một cỗ
+              máy bền bỉ với EVF tuyệt vời.
+            </p>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <p>
+              <strong class="text-accent"
+                >Nếu ưu tiên #1 là Sản xuất video chuyên nghiệp:</strong
+              >
+              chọn <b class="font-semibold">Panasonic Lumix S5 II</b>. Vô đối về
+              tính năng video trong tầm giá.
+            </p>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <p>
+              <strong class="text-accent"
+                >Nếu ưu tiên #1 là Màu sắc JPEG đẹp & Hệ thống nhỏ gọn, phong
+                cách:</strong
+              >
+              chọn <b class="font-semibold">Fujifilm X-T4/X-T3 (Likenew)</b>.
+              Lựa chọn của cảm xúc và sự sáng tạo.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer
+        class="mt-16 pt-8 border-t border-gray-300 text-center text-gray-500"
+      >
+        <p class="font-semibold text-lg mb-2">
+          Các nhà bán lẻ uy tín tại Việt Nam
+        </p>
+        <p>
+          zShop, Kyma, VJShop, Mayanh24h, Giang Duy Đạt, Tokyo Camera, Khánh
+          Long
+        </p>
+        <p class="mt-4 text-sm">
+          Thông tin được tổng hợp và phân tích cho mục đích tham khảo. Giá cả có
+          thể thay đổi.
+        </p>
+
+        <div class="container mx-auto px-4 text-center mt-6">
+          <div
+            class="max-w-3xl mx-auto mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg"
+          >
+            <h4 class="font-bold text-sm text-blue-800">
+              Lưu ý về Nguồn gốc Nội dung
+            </h4>
+            <p class="text-xs mt-2">
+              Trang web này được tạo ra bởi một AI. Nội dung được tổng hợp, phân
+              tích và trình bày một cách trực quan dựa trên các nguồn báo cáo kỹ
+              thuật công khai. Thông tin được cung cấp nhằm mục đích tham khảo
+              và có thể không phản ánh mọi chi tiết chuyên sâu nhất.
+            </p>
+          </div>
+          <a
+            href="https://thucde.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center space-x-2 text-gray-500 hover:text-blue-600 transition-colors"
+          >
+            <span
+              class="w-6 h-6 flex items-center justify-center rounded-md font-bold text-sm"
+            >
+              <img
+                src="https://thucde.dev/logo/thucdedev.png"
+                alt="Thucde.dev Logo"
+                class="w-6 h-6"
+              />
+            </span>
+            <span class="font-semibold">Một sản phẩm của Thucde.dev</span>
+          </a>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      const cameraData = {
+        a7iii: {
+          name: "Sony A7 III",
+          brand: "sony",
+          sensor: "full-frame",
+          tagline: "Vua giá trị & Hệ sinh thái",
+          price: "~28-29 Triệu (Likenew)",
+          analysis: `
+            <p class="mb-2"><strong class="text-gray-800">Thế mạnh cốt lõi:</strong> Cảm biến 24MP xuất sắc, dải động 15 stops, hiệu suất ISO cao. Hệ thống AF 693 điểm đáng tin cậy với Eye AF tốt. Video 4K/30p chất lượng. Pin trâu, 2 khe cắm thẻ và IBIS 5 trục là những lợi thế phần cứng lớn.</p>
+            <p class="mb-2"><strong class="text-gray-800">Điểm yếu:</strong> Công nghệ đã 4-5 năm tuổi. EVF và màn hình có độ phân giải thấp hơn so với các đối thủ mới. Video chỉ 8-bit, thua kém các máy mới hơn.</p>
+            <p><strong class="text-gray-800">Hệ sinh thái:</strong> Sức mạnh lớn nhất. Ngàm E-mount có sự hỗ trợ vô song từ các bên thứ ba như Sigma, Tamron, giúp xây dựng bộ kit chất lượng cao với chi phí hợp lý.</p>`,
+          scores: {
+            "Ảnh tĩnh": 9,
+            Video: 7,
+            "Lấy nét": 8,
+            Ergonomics: 8,
+            "Hệ sinh thái": 10,
+          },
+          competitors: ["r8", "z6ii"],
+        },
+        r8: {
+          name: "Canon EOS R8",
+          brand: "canon",
+          sensor: "full-frame",
+          tagline: "Cỗ máy công nghệ hiện đại",
+          price: "~27.5-28.5 Triệu (Mới)",
+          analysis: `
+            <p class="mb-2"><strong class="text-gray-800">Thế mạnh cốt lõi:</strong> Hệ thống AF Dual Pixel CMOS AF II với AI nhận diện chủ thể là tốt nhất trong nhóm. Video 4K/60p không crop 10-bit 4:2:2 vượt trội. Tốc độ chụp 40fps (điện tử) đáng kinh ngạc.</p>
+            <p class="mb-2"><strong class="text-gray-800">Điểm yếu (lớn):</strong> Không có IBIS (chống rung thân máy). Pin LP-E17 rất yếu. Chỉ có một khe cắm thẻ nhớ. Build bằng nhựa, cảm giác không cao cấp bằng.</p>
+            <p><strong class="text-gray-800">Hệ sinh thái:</strong> Thách thức lớn. Ống kính RF dòng L rất đắt, và thiếu vắng các lựa chọn AF giá rẻ từ bên thứ ba. Phải dựa vào lens kit hoặc lens fix giá rẻ của Canon.</p>`,
+          scores: {
+            "Ảnh tĩnh": 8,
+            Video: 10,
+            "Lấy nét": 10,
+            Ergonomics: 6,
+            "Hệ sinh thái": 6,
+          },
+          competitors: ["a7iii", "s5ii"],
+        },
+        z6ii: {
+          name: "Nikon Z6 II",
+          brand: "nikon",
+          sensor: "full-frame",
+          tagline: "Máy ảnh của nhiếp ảnh gia",
+          price: "~30-32 Triệu (Likenew)",
+          analysis: `
+            <p class="mb-2"><strong class="text-gray-800">Thế mạnh cốt lõi:</strong> Build hợp kim Magie chắc chắn, cảm giác cầm nắm (ergonomics) được đánh giá cao nhất. EVF 3.69 triệu điểm cho trải nghiệm ngắm chụp vượt trội. Hai khe cắm thẻ (CFexpress + SD) linh hoạt.</p>
+            <p class="mb-2"><strong class="text-gray-800">Điểm yếu:</strong> Hệ thống AF dù đã cải thiện nhưng vẫn đi sau A7 III và thua xa R8, đặc biệt là tracking. Video 4K/60p bị crop.</p>
+            <p><strong class="text-gray-800">Hệ sinh thái:</strong> Ngàm Z đang phát triển nhanh với các lens S-Line chất lượng cao. Đã có sự hỗ trợ từ bên thứ ba nhưng chưa thể so sánh với Sony.</p>`,
+          scores: {
+            "Ảnh tĩnh": 9,
+            Video: 8,
+            "Lấy nét": 7,
+            Ergonomics: 10,
+            "Hệ sinh thái": 7,
+          },
+          competitors: ["a7iii", "s5ii"],
+        },
+        s5ii: {
+          name: "Panasonic Lumix S5 II",
+          brand: "panasonic",
+          sensor: "full-frame",
+          tagline: "Nhà vô địch Video Hybrid",
+          price: "~32-34 Triệu (Mới)",
+          analysis: `
+            <p class="mb-2"><strong class="text-gray-800">Thế mạnh cốt lõi:</strong> Vô đối về video trong tầm giá. Ghi hình 6K Open Gate, 4K/60p 10-bit không giới hạn thời gian nhờ quạt tản nhiệt. Chống rung Active I.S. siêu mượt. AF theo pha mới là một cải tiến lớn.</p>
+            <p class="mb-2"><strong class="text-gray-800">Điểm yếu:</strong> AF dù tốt nhưng khả năng nhận diện chủ thể chưa tinh vi bằng Canon/Sony. Tốc độ chụp liên tục (cơ) chậm hơn đối thủ.</p>
+            <p><strong class="text-gray-800">Hệ sinh thái:</strong> Liên minh L-Mount với Sigma và Leica là một lợi thế chiến lược, cho phép truy cập vào hệ thống ống kính chất lượng cao, đặc biệt là dòng Sigma Art.</p>`,
+          scores: {
+            "Ảnh tĩnh": 8,
+            Video: 10,
+            "Lấy nét": 8,
+            Ergonomics: 9,
+            "Hệ sinh thái": 9,
+          },
+          competitors: ["r8", "a7iii"],
+        },
+        xt4: {
+          name: "Fujifilm X-T4",
+          brand: "fujifilm",
+          sensor: "aps-c",
+          tagline: "Thẩm mỹ & Trải nghiệm",
+          price: "~27-30 Triệu (Likenew)",
+          analysis: `
+            <p class="mb-2"><strong class="text-gray-800">Thế mạnh cốt lõi:</strong> Các giả lập màu phim cho ra ảnh JPEG đẹp độc đáo. Trải nghiệm chụp với các vòng xoay cơ học rất thú vị. Thân máy build chắc chắn, chống chịu thời tiết, có IBIS và 2 khe cắm thẻ.</p>
+            <p class="mb-2"><strong class="text-gray-800">Điểm yếu:</strong> Là máy APS-C, hiệu năng thiếu sáng và khả năng xóa phông không bằng Full-Frame. AF tốt nhưng không phải top đầu về tracking.</p>
+            <p><strong class="text-gray-800">Hệ sinh thái:</strong> Ngàm X có hệ thống ống kính APS-C rất hoàn chỉnh, nhỏ gọn và chất lượng, cùng sự hỗ trợ tốt từ Viltrox, Sigma.</p>`,
+          scores: {
+            "Ảnh tĩnh": 8,
+            Video: 8,
+            "Lấy nét": 7,
+            Ergonomics: 9,
+            "Hệ sinh thái": 8,
+          },
+          competitors: ["a6700", "a7iii"],
+        },
+        a6700: {
+          name: "Sony a6700",
+          brand: "sony",
+          sensor: "aps-c",
+          tagline: "Nhà công nghệ nhỏ gọn",
+          price: "~34.5-36 Triệu (Mới)",
+          analysis: `
+            <p class="mb-2"><strong class="text-gray-800">Thế mạnh cốt lõi:</strong> Hệ thống AF với chip AI chuyên dụng là điểm sáng nhất, nhận diện và tracking chủ thể cực kỳ "dính", có lẽ chỉ sau R8. Video rất mạnh với 4K/60p (lấy mẫu từ 6K) và 4K/120p.</p>
+            <p class="mb-2"><strong class="text-gray-800">Điểm yếu:</strong> Thân máy nhỏ gọn có thể gây mất cân bằng với ống kính lớn. Chỉ có 1 khe cắm thẻ. EVF và màn hình độ phân giải không cao.</p>
+            <p><strong class="text-gray-800">Hệ sinh thái:</strong> Hưởng lợi từ ngàm E-mount khổng lồ của Sony, cả ống kính Full-Frame và APS-C.</p>`,
+          scores: {
+            "Ảnh tĩnh": 8,
+            Video: 9,
+            "Lấy nét": 10,
+            Ergonomics: 7,
+            "Hệ sinh thái": 10,
+          },
+          competitors: ["xt4", "r8"],
+        },
+      };
+
+      const kitData = [
+        {
+          id: "hybrid1",
+          category: "hybrid",
+          title: "Gói Hybrid Sony",
+          content:
+            "<b>Sony A7 II (Likenew, ~14tr) + Tamron 28-75mm f/2.8 G2 (Mới, ~17.3tr) = ~31.3tr</b>. Hy sinh thân máy mới để có một ống kính zoom f/2.8 đa dụng, chất lượng cao. Chất lượng ảnh Full-Frame tuyệt vời nhưng công nghệ thân máy cũ hơn.",
+        },
+        {
+          id: "hybrid2",
+          category: "hybrid",
+          title: "Gói Hybrid Canon",
+          content:
+            "<b>Canon EOS R8 (Mới, ~28tr) + Canon RF 50mm f/1.8 (Mới, ~5.5tr) = ~33.5tr</b>. Thân máy mới nhất với AF/Video đỉnh cao, đi cùng lens fix giá rẻ, sắc nét. Đánh đổi sự linh hoạt của zoom và không có IBIS.",
+        },
+        {
+          id: "portrait1",
+          category: "portrait",
+          title: "Gói Chân dung Fuji",
+          content:
+            "<b>Fujifilm X-T3 (Likenew, ~21tr) + Viltrox 56mm f/1.4 (Mới, ~6.5tr) = ~27.5tr</b>. Màu da đẹp đặc trưng của Fuji kết hợp với lens chân dung khẩu độ lớn sắc nét. Một gói có giá trị tuyệt vời.",
+        },
+        {
+          id: "portrait2",
+          category: "portrait",
+          title: "Gói Chân dung Sony FF",
+          content:
+            "<b>Sony A7 II (Likenew, ~14tr) + Sony FE 85mm f/1.8 (Mới, ~13tr) = ~27tr</b>. Bộ kit Full-Frame chân dung kinh điển. Lens 85mm f/1.8 của Sony là huyền thoại về độ sắc nét/giá. Thân máy cũ nhưng đủ dùng cho chụp chân dung.",
+        },
+        {
+          id: "video1",
+          category: "video",
+          title: "Nền tảng Video chuyên nghiệp",
+          content:
+            "<b>Panasonic Lumix S5 II (Mới, ~32tr, chỉ thân máy)</b>. Ưu tiên thân máy video tốt nhất có thể trong tầm giá. Lựa chọn cho người nghiêm túc về quay phim, cần Open Gate, Active IS và quạt tản nhiệt.",
+        },
+        {
+          id: "travel1",
+          category: "travel",
+          title: "Gói Du lịch Fuji",
+          content:
+            "<b>Fujifilm X-T3 (Likenew, ~21tr) + Fuji XF 27mm f/2.8 (Likenew, ~8tr) = ~29tr</b>. Bộ kit siêu nhỏ gọn, kín đáo. Ống kính pancake làm cho cả bộ máy có thể bỏ túi. Giả lập màu của Fuji hoàn hảo cho ảnh đường phố.",
+        },
+        {
+          id: "travel2",
+          category: "travel",
+          title: "Gói Du lịch Sony",
+          content:
+            '<b>Sony a6400 (Likenew, ~15.5tr) + Sigma 18-50mm f/2.8 (Mới, ~13.5tr) = ~29tr</b>. Bộ kit APS-C mạnh mẽ, nhỏ gọn. a6400 có AF xuất sắc, lens Sigma là zoom đa dụng "tất cả trong một" lý tưởng.',
+        },
+      ];
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const cameraGrid = document.getElementById("camera-grid");
+        const filters = document.getElementById("filters");
+        const detailView = document.getElementById("detail-view");
+        const detailName = document.getElementById("detail-camera-name");
+        const detailContent = document.getElementById("detail-content");
+        const kitGrid = document.getElementById("kit-grid");
+        const kitFilters = document.getElementById("kit-filters");
+
+        let comparisonChart;
+
+        function renderCameras(filter = "all") {
+          cameraGrid.innerHTML = "";
+          Object.keys(cameraData).forEach((key) => {
+            const camera = cameraData[key];
+            const tags = [camera.brand, camera.sensor];
+            if (filter === "all" || tags.includes(filter)) {
+              const card = document.createElement("div");
+              card.className = "card p-6 camera-card fade-in";
+              card.setAttribute("data-key", key);
+              card.setAttribute("data-tags", tags.join(" "));
+              card.innerHTML = `
+                    <h3 class="text-xl font-bold text-accent">${camera.name}</h3>
+                    <p class="text-gray-500 font-medium mb-2">${camera.tagline}</p>
+                    <div class="text-lg font-semibold text-gray-800">${camera.price}</div>
+                    <div class="mt-4 flex gap-2">
+                        <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200">${camera.brand}</span>
+                        <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-green-600 bg-green-200">${camera.sensor}</span>
+                    </div>
+                `;
+              cameraGrid.appendChild(card);
+            }
+          });
+        }
+
+        function renderKits(category = "all") {
+          kitGrid.innerHTML = "";
+          kitData.forEach((kit) => {
+            if (category === "all" || kit.category === category) {
+              const card = document.createElement("div");
+              card.className = "bg-white p-6 rounded-lg shadow-sm fade-in";
+              card.innerHTML = `<h4 class="text-lg font-bold text-accent mb-2">${kit.title}</h4><p class="text-gray-700">${kit.content}</p>`;
+              kitGrid.appendChild(card);
+            }
+          });
+        }
+
+        function updateChart(selectedKey) {
+          const selectedCamera = cameraData[selectedKey];
+          const competitorKeys = selectedCamera.competitors;
+
+          const labels = Object.keys(selectedCamera.scores);
+          const datasets = [
+            {
+              label: selectedCamera.name,
+              data: Object.values(selectedCamera.scores),
+              backgroundColor: "rgba(74, 85, 104, 0.2)",
+              borderColor: "rgba(45, 55, 72, 1)",
+              pointBackgroundColor: "rgba(45, 55, 72, 1)",
+              pointBorderColor: "#fff",
+              pointHoverBackgroundColor: "#fff",
+              pointHoverBorderColor: "rgba(45, 55, 72, 1)",
+            },
+          ];
+
+          const competitorColors = [
+            { bg: "rgba(255, 99, 132, 0.2)", border: "rgba(255, 99, 132, 1)" },
+            { bg: "rgba(54, 162, 235, 0.2)", border: "rgba(54, 162, 235, 1)" },
+          ];
+
+          competitorKeys.forEach((key, index) => {
+            const competitor = cameraData[key];
+            if (competitor) {
+              datasets.push({
+                label: competitor.name,
+                data: Object.values(competitor.scores),
+                backgroundColor: competitorColors[index].bg,
+                borderColor: competitorColors[index].border,
+                pointBackgroundColor: competitorColors[index].border,
+                pointBorderColor: "#fff",
+                pointHoverBackgroundColor: "#fff",
+                pointHoverBorderColor: competitorColors[index].border,
+              });
+            }
+          });
+
+          const chartCtx = document
+            .getElementById("comparisonChart")
+            .getContext("2d");
+          if (comparisonChart) {
+            comparisonChart.destroy();
+          }
+
+          comparisonChart = new Chart(chartCtx, {
+            type: "radar",
+            data: { labels, datasets },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: "top",
+                },
+                tooltip: {
+                  callbacks: {
+                    label: function (context) {
+                      let label = context.dataset.label || "";
+                      if (label) {
+                        label += ": ";
+                      }
+                      label += context.raw;
+                      return label;
+                    },
+                  },
+                },
+              },
+              scales: {
+                r: {
+                  angleLines: { color: "rgba(0, 0, 0, 0.1)" },
+                  grid: { color: "rgba(0, 0, 0, 0.1)" },
+                  pointLabels: { font: { size: 12, weight: "bold" } },
+                  suggestedMin: 0,
+                  suggestedMax: 10,
+                },
+              },
+            },
+          });
+        }
+
+        filters.addEventListener("click", (e) => {
+          if (e.target.tagName === "BUTTON") {
+            document
+              .querySelector("#filters .active")
+              .classList.remove("active");
+            e.target.classList.add("active");
+            const filterValue = e.target.getAttribute("data-filter");
+            renderCameras(filterValue);
+          }
+        });
+
+        kitFilters.addEventListener("click", (e) => {
+          if (e.target.tagName === "BUTTON") {
+            document
+              .querySelector("#kit-filters .active")
+              .classList.remove("active");
+            e.target.classList.add("active");
+            const filterValue = e.target.getAttribute("data-kit-filter");
+            renderKits(filterValue);
+          }
+        });
+
+        cameraGrid.addEventListener("click", (e) => {
+          const card = e.target.closest(".camera-card");
+          if (card) {
+            const key = card.getAttribute("data-key");
+            const camera = cameraData[key];
+
+            detailName.textContent = `So Sánh Chi Tiết: ${camera.name}`;
+            detailContent.innerHTML = camera.analysis;
+            detailView.classList.remove("hidden");
+            detailView.classList.add("fade-in");
+
+            updateChart(key);
+
+            detailView.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        });
+
+        renderCameras();
+        renderKits();
+      });
+    </script>
+  </body>
+</html>
