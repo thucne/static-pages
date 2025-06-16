@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Tương Tác: Thị trường Vàng TP.HCM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- Chosen Palette: Golden Neutral -->
     <!-- Application Structure Plan: Tôi đã thiết kế ứng dụng theo mô hình dashboard với thanh điều hướng bên cạnh. Cấu trúc này cho phép người dùng truy cập nhanh vào các phần thông tin quan trọng thay vì phải đọc tuần tự. Luồng người dùng bắt đầu tại "Tổng quan" với các số liệu chính, sau đó họ có thể tự do khám phá các mục tiêu cụ thể: "So sánh giá" để xem biểu đồ tương tác, "Xu hướng" để hiểu về biến động, "Dự báo" để nhìn về tương lai, và "Tư vấn" để có chiến lược hành động. Cấu trúc này tối ưu hóa khả năng tiếp cận và tiêu thụ thông tin phức tạp. -->
     <!-- Visualization & Content Choices: 
@@ -26,935 +23,608 @@
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <style>
-      body {
-        font-family: "Be Vietnam Pro", sans-serif;
-        background-color: #fdfdfd;
-        color: #1a202c;
-      }
-      .chart-container {
-        position: relative;
-        width: 100%;
-        height: 400px;
-        max-height: 50vh;
-      }
-      .nav-link {
-        display: flex;
-        align-items: center;
-        padding: 0.75rem 1rem;
-        border-radius: 0.5rem;
-        transition: background-color 0.2s, color 0.2s;
-        font-weight: 500;
-      }
-      .nav-link:hover,
-      .nav-link.active {
-        background-color: #fffbeb;
-        color: #b45309;
-      }
-      .nav-link .icon {
-        margin-right: 0.75rem;
-        width: 1.25rem;
-        height: 1.25rem;
-      }
-      .content-section {
-        display: none;
-      }
-      .content-section.active {
-        display: block;
-      }
-      .stat-card {
-        background-color: white;
-        border-radius: 0.75rem;
-        padding: 1.5rem;
-        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1),
-          0 2px 4px -2px rgb(0 0 0 / 0.1);
-        border: 1px solid #f3f4f6;
-      }
-      .accordion-header {
-        cursor: pointer;
-      }
-      .accordion-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease-in-out;
-      }
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #FDFDFD;
+            color: #1a202c;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s, color 0.2s;
+            font-weight: 500;
+        }
+        .nav-link:hover, .nav-link.active {
+            background-color: #FFFBEB;
+            color: #B45309;
+        }
+        .nav-link .icon {
+            margin-right: 0.75rem;
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .stat-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            border: 1px solid #F3F4F6;
+        }
+        .accordion-header {
+            cursor: pointer;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
     </style>
-  </head>
-  <body class="antialiased">
+</head>
+<body class="antialiased">
+
     <div class="flex h-screen bg-gray-50">
-      <!-- Sidebar -->
-      <aside
-        class="z-20 hidden w-64 overflow-y-auto bg-white md:block flex-shrink-0"
-      >
-        <div class="py-4 text-gray-500">
-          <a class="ml-6 text-lg font-bold text-gray-800" href="#">
-            Thị Trường Vàng
-          </a>
-          <ul class="mt-6" id="navigation">
-            <li class="relative px-6 py-3">
-              <a
-                class="nav-link active"
-                href="#tong-quan"
-                data-section="tong-quan"
-              >
-                <span class="icon">
-                  <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                    ></path>
-                  </svg>
-                </span>
-                Tổng quan
-              </a>
-            </li>
-            <li class="relative px-6 py-3">
-              <a class="nav-link" href="#so-sanh" data-section="so-sanh">
-                <span class="icon">
-                  <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                    ></path>
-                  </svg>
-                </span>
-                So sánh Giá
-              </a>
-            </li>
-            <li class="relative px-6 py-3">
-              <a class="nav-link" href="#xu-huong" data-section="xu-huong">
-                <span class="icon">
-                  <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                    ></path>
-                  </svg>
-                </span>
-                Xu hướng & Phân tích
-              </a>
-            </li>
-            <li class="relative px-6 py-3">
-              <a class="nav-link" href="#du-bao" data-section="du-bao">
-                <span class="icon">
-                  <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0-1V4m0 2.01M18 10a6 6 0 11-12 0 6 6 0 0112 0z"
-                    ></path>
-                  </svg>
-                </span>
-                Dự báo & Rủi ro
-              </a>
-            </li>
-            <li class="relative px-6 py-3">
-              <a class="nav-link" href="#tu-van" data-section="tu-van">
-                <span class="icon">
-                  <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    ></path>
-                  </svg>
-                </span>
-                Tư vấn Đầu tư
-              </a>
-            </li>
-          </ul>
-        </div>
-      </aside>
-
-      <div class="flex flex-col flex-1 w-full">
-        <header class="z-10 py-4 bg-white shadow-md">
-          <div
-            class="container flex items-center justify-between h-full px-6 mx-auto text-yellow-600"
-          >
-            <button
-              class="p-1 mr-5 -ml-1 rounded-md md:hidden focus:outline-none focus:shadow-outline-yellow"
-              aria-label="Menu"
-              id="mobile-menu-button"
-            >
-              <svg
-                class="w-6 h-6"
-                aria-hidden="true"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </button>
-            <div class="flex-1">
-              <h1 class="text-xl font-semibold text-gray-700">
-                Toàn cảnh Thị trường Vàng TP.HCM
-              </h1>
-              <p class="text-xs text-gray-500">
-                Cập nhật lúc 14:18, 16/06/2025
-              </p>
+        <!-- Sidebar -->
+        <aside class="z-20 hidden w-64 overflow-y-auto bg-white md:block flex-shrink-0">
+            <div class="py-4 text-gray-500">
+                <a class="ml-6 text-lg font-bold text-gray-800" href="#">
+                    Thị Trường Vàng
+                </a>
+                <ul class="mt-6" id="navigation">
+                    <li class="relative px-6 py-3">
+                        <a class="nav-link active" href="#tong-quan" data-section="tong-quan">
+                            <span class="icon">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                            </span>
+                            Tổng quan
+                        </a>
+                    </li>
+                    <li class="relative px-6 py-3">
+                        <a class="nav-link" href="#so-sanh" data-section="so-sanh">
+                            <span class="icon">
+                               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                            </span>
+                            So sánh Giá
+                        </a>
+                    </li>
+                     <li class="relative px-6 py-3">
+                        <a class="nav-link" href="#xu-huong" data-section="xu-huong">
+                            <span class="icon">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            </span>
+                            Xu hướng & Phân tích
+                        </a>
+                    </li>
+                    <li class="relative px-6 py-3">
+                        <a class="nav-link" href="#du-bao" data-section="du-bao">
+                           <span class="icon">
+                               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0-1V4m0 2.01M18 10a6 6 0 11-12 0 6 6 0 0112 0z"></path></svg>
+                           </span>
+                            Dự báo & Rủi ro
+                        </a>
+                    </li>
+                     <li class="relative px-6 py-3">
+                        <a class="nav-link" href="#tu-van" data-section="tu-van">
+                            <span class="icon">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </span>
+                            Tư vấn Đầu tư
+                        </a>
+                    </li>
+                </ul>
             </div>
-          </div>
-        </header>
-
-        <main class="h-full overflow-y-auto">
-          <div class="container px-6 mx-auto grid">
-            <!-- Tổng quan Section -->
-            <section id="tong-quan" class="content-section active py-8">
-              <h2 class="text-2xl font-semibold text-gray-700">
-                Tổng quan Thị trường
-              </h2>
-              <p class="text-gray-600 mt-2 mb-6">
-                Thông tin tổng hợp nhanh về giá vàng và các chỉ số quan trọng
-                tại TP.HCM tính đến giữa tháng 6/2025. Đây là bức tranh toàn
-                cảnh giúp bạn nắm bắt tình hình thị trường một cách nhanh chóng.
-              </p>
-
-              <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
-                <!-- Card 1 -->
-                <div class="stat-card flex items-center">
-                  <div>
-                    <p class="mb-2 text-sm font-medium text-gray-600">
-                      Giá Vàng miếng SJC (Bán ra)
-                    </p>
-                    <p class="text-2xl font-bold text-gray-700">120,200,000</p>
-                    <p class="text-xs text-gray-500">VNĐ/Lượng (tại SJC)</p>
-                  </div>
-                </div>
-                <!-- Card 2 -->
-                <div class="stat-card flex items-center">
-                  <div>
-                    <p class="mb-2 text-sm font-medium text-gray-600">
-                      Giá Vàng nhẫn 9999 (Bán ra)
-                    </p>
-                    <p class="text-2xl font-bold text-gray-700">117,000,000</p>
-                    <p class="text-xs text-gray-500">VNĐ/Lượng (tại PNJ)</p>
-                  </div>
-                </div>
-                <!-- Card 3 -->
-                <div class="stat-card flex items-center">
-                  <div>
-                    <p class="mb-2 text-sm font-medium text-gray-600">
-                      Chênh lệch SJC & Thế giới
-                    </p>
-                    <p class="text-2xl font-bold text-red-600">+11,200,000</p>
-                    <p class="text-xs text-gray-500">VNĐ/Lượng (~10.3%)</p>
-                  </div>
-                </div>
-                <!-- Card 4 -->
-                <div class="stat-card flex items-center">
-                  <div>
-                    <p class="mb-2 text-sm font-medium text-gray-600">
-                      Chênh lệch Mua-Bán SJC
-                    </p>
-                    <p class="text-2xl font-bold text-gray-700">2,000,000</p>
-                    <p class="text-xs text-gray-500">VNĐ/Lượng (Phổ biến)</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="bg-white p-6 rounded-lg shadow">
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">
-                  Chênh lệch giá vàng trong nước và thế giới
-                </h3>
-                <p class="text-gray-600 mb-4">
-                  Biểu đồ dưới đây minh họa sự chênh lệch đáng kể giữa giá vàng
-                  SJC trong nước và giá vàng thế giới đã quy đổi. Đây là yếu tố
-                  rủi ro then chốt cho các nhà đầu tư tại Việt Nam.
-                </p>
-                <div class="chart-container">
-                  <canvas id="priceGapChart"></canvas>
-                </div>
-              </div>
-            </section>
-
-            <!-- So sánh Section -->
-            <section id="so-sanh" class="content-section py-8">
-              <h2 class="text-2xl font-semibold text-gray-700">
-                So sánh Giá Vàng
-              </h2>
-              <p class="text-gray-600 mt-2 mb-6">
-                Phần này giúp bạn so sánh trực quan giá mua vào và bán ra của
-                các loại vàng phổ biến tại những thương hiệu lớn ở TP.HCM. Sử
-                dụng các nút bấm để chuyển đổi dữ liệu và tìm ra lựa chọn tốt
-                nhất cho nhu cầu của bạn.
-              </p>
-
-              <div class="bg-white p-6 rounded-lg shadow">
-                <div class="flex justify-center space-x-4 mb-4">
-                  <button
-                    id="sjcBtn"
-                    class="px-4 py-2 text-sm font-medium text-white bg-yellow-600 rounded-md hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-                  >
-                    Vàng miếng SJC
-                  </button>
-                  <button
-                    id="ringBtn"
-                    class="px-4 py-2 text-sm font-medium text-yellow-700 bg-yellow-100 rounded-md hover:bg-yellow-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-                  >
-                    Vàng nhẫn 9999
-                  </button>
-                </div>
-                <div class="chart-container">
-                  <canvas id="priceComparisonChart"></canvas>
-                </div>
-              </div>
-            </section>
-
-            <!-- Xu hướng Section -->
-            <section id="xu-huong" class="content-section py-8">
-              <h2 class="text-2xl font-semibold text-gray-700">
-                Xu hướng & Phân tích
-              </h2>
-              <p class="text-gray-600 mt-2 mb-6">
-                Khám phá diễn biến giá vàng đầy kịch tính trong tháng qua và tìm
-                hiểu các yếu tố vĩ mô đã tác động đến thị trường, từ chính sách
-                tiền tệ quốc tế đến các đặc thù của thị trường Việt Nam.
-              </p>
-
-              <div class="bg-white p-6 rounded-lg shadow mb-8">
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">
-                  Diễn biến giá vàng SJC (Tháng 5 - 6/2025)
-                </h3>
-                <div class="chart-container">
-                  <canvas id="trendChart"></canvas>
-                </div>
-              </div>
-
-              <div class="bg-white p-6 rounded-lg shadow">
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">
-                  Các Yếu Tố Tác Động Chính
-                </h3>
-                <div id="accordion-container" class="space-y-4">
-                  <!-- Accordion Item 1 -->
-                  <div class="border rounded-lg">
-                    <div
-                      class="accordion-header flex justify-between items-center p-4 bg-gray-50"
-                    >
-                      <h4 class="font-semibold text-gray-800">
-                        Yếu tố Quốc tế (Động lực chính)
-                      </h4>
-                      <span class="transform transition-transform duration-300"
-                        >▼</span
-                      >
+        </aside>
+        
+        <div class="flex flex-col flex-1 w-full">
+            <header class="z-10 py-4 bg-white shadow-md">
+                <div class="container flex items-center justify-between h-full px-6 mx-auto text-yellow-600">
+                    <button class="p-1 mr-5 -ml-1 rounded-md md:hidden focus:outline-none focus:shadow-outline-yellow" aria-label="Menu" id="mobile-menu-button">
+                        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <div class="flex-1">
+                       <h1 class="text-xl font-semibold text-gray-700">Toàn cảnh Thị trường Vàng TP.HCM</h1>
+                       <p class="text-xs text-gray-500">Cập nhật lúc 14:18, 16/06/2025</p>
                     </div>
-                    <div class="accordion-content p-4 border-t">
-                      <ul class="list-disc list-inside space-y-2 text-gray-600">
-                        <li>
-                          <b>Bất ổn Địa chính trị:</b> Căng thẳng ở Trung Đông
-                          làm tăng nhu cầu vàng như một tài sản trú ẩn an toàn.
-                        </li>
-                        <li>
-                          <b>Chính sách của FED:</b> Kỳ vọng cắt giảm lãi suất
-                          vào cuối năm 2025 hỗ trợ giá vàng, nhưng các dữ liệu
-                          kinh tế Mỹ tốt có thể trì hoãn kế hoạch này và gây áp
-                          lực giảm giá.
-                        </li>
-                        <li>
-                          <b>Sức mạnh Đồng USD:</b> Đồng USD yếu hơn làm vàng
-                          trở nên rẻ hơn đối với các nhà đầu tư quốc tế, kích
-                          thích lực cầu.
-                        </li>
-                        <li>
-                          <b>Nhu cầu từ Ngân hàng Trung ương:</b> Các NHTW, đặc
-                          biệt là Trung Quốc, liên tục mua vào, tạo ra một "sàn
-                          giá" vững chắc cho vàng.
-                        </li>
-                      </ul>
+                </div>
+            </header>
+
+            <main class="h-full overflow-y-auto">
+                <div id="warning-banner" class="m-6 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 rounded-lg flex justify-between items-center shadow-sm">
+                    <div>
+                        <p class="font-bold">Lưu ý quan trọng</p>
+                        <p class="text-sm">Dữ liệu và phân tích trong dashboard này chỉ mang tính chất minh họa và không phản ánh giá thị trường theo thời gian thực. Vui lòng không sử dụng thông tin này cho các quyết định đầu tư tài chính.</p>
                     </div>
-                  </div>
-                  <!-- Accordion Item 2 -->
-                  <div class="border rounded-lg">
-                    <div
-                      class="accordion-header flex justify-between items-center p-4 bg-gray-50"
-                    >
-                      <h4 class="font-semibold text-gray-800">
-                        Yếu tố Trong nước (Yếu tố khuếch đại)
-                      </h4>
-                      <span class="transform transition-transform duration-300"
-                        >▼</span
-                      >
-                    </div>
-                    <div class="accordion-content p-4 border-t">
-                      <ul class="list-disc list-inside space-y-2 text-gray-600">
-                        <li>
-                          <b>Nghị định 24:</b> Việc nhà nước độc quyền sản xuất
-                          vàng miếng SJC và không nhập khẩu vàng nguyên liệu gây
-                          thiếu hụt nguồn cung, khiến giá trong nước bị đẩy lên
-                          cao vô lý mỗi khi có biến động.
-                        </li>
-                        <li>
-                          <b>Tâm lý Đầu tư:</b> Vàng là kênh trú ẩn ưa thích của
-                          người Việt. Tâm lý FOMO (sợ bỏ lỡ cơ hội) và hiệu ứng
-                          đám đông tạo ra các cơn sốt mua cục bộ.
-                        </li>
-                        <li>
-                          <b>Vòng lặp Chênh lệch giá - Buôn lậu - Tỷ giá:</b>
-                          Chênh lệch giá cao kích thích buôn lậu, buôn lậu gây
-                          áp lực lên tỷ giá USD, tỷ giá tăng lại càng làm giá
-                          vàng quy đổi tăng cao.
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+                    <button id="close-warning" class="text-2xl font-semibold hover:text-yellow-900 focus:outline-none">&times;</button>
                 </div>
-              </div>
-            </section>
+                <div class="container px-6 mx-auto grid">
+                    
+                    <!-- Tổng quan Section -->
+                    <section id="tong-quan" class="content-section active py-8">
+                        <h2 class="text-2xl font-semibold text-gray-700">Tổng quan Thị trường</h2>
+                        <p class="text-gray-600 mt-2 mb-6">Thông tin tổng hợp nhanh về giá vàng và các chỉ số quan trọng tại TP.HCM tính đến giữa tháng 6/2025. Đây là bức tranh toàn cảnh giúp bạn nắm bắt tình hình thị trường một cách nhanh chóng.</p>
+                        
+                        <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
+                            <!-- Card 1 -->
+                            <div class="stat-card flex items-center">
+                                <div>
+                                    <p class="mb-2 text-sm font-medium text-gray-600">Giá Vàng miếng SJC (Bán ra)</p>
+                                    <p class="text-2xl font-bold text-gray-700">120,200,000</p>
+                                    <p class="text-xs text-gray-500">VNĐ/Lượng (tại SJC)</p>
+                                </div>
+                            </div>
+                            <!-- Card 2 -->
+                            <div class="stat-card flex items-center">
+                                <div>
+                                    <p class="mb-2 text-sm font-medium text-gray-600">Giá Vàng nhẫn 9999 (Bán ra)</p>
+                                    <p class="text-2xl font-bold text-gray-700">117,000,000</p>
+                                     <p class="text-xs text-gray-500">VNĐ/Lượng (tại PNJ)</p>
+                                </div>
+                            </div>
+                             <!-- Card 3 -->
+                            <div class="stat-card flex items-center">
+                                <div>
+                                    <p class="mb-2 text-sm font-medium text-gray-600">Chênh lệch SJC & Thế giới</p>
+                                    <p class="text-2xl font-bold text-red-600">+11,200,000</p>
+                                    <p class="text-xs text-gray-500">VNĐ/Lượng (~10.3%)</p>
+                                </div>
+                            </div>
+                             <!-- Card 4 -->
+                            <div class="stat-card flex items-center">
+                                <div>
+                                    <p class="mb-2 text-sm font-medium text-gray-600">Chênh lệch Mua-Bán SJC</p>
+                                    <p class="text-2xl font-bold text-gray-700">2,000,000</p>
+                                     <p class="text-xs text-gray-500">VNĐ/Lượng (Phổ biến)</p>
+                                </div>
+                            </div>
+                        </div>
 
-            <!-- Dự báo Section -->
-            <section id="du-bao" class="content-section py-8">
-              <h2 class="text-2xl font-semibold text-gray-700">
-                Dự báo & Rủi ro
-              </h2>
-              <p class="text-gray-600 mt-2 mb-6">
-                Thị trường vàng đang đứng trước một ngã rẽ quan trọng. Xem xét
-                các kịch bản dự báo từ các tổ chức uy tín và nhận diện rõ những
-                cơ hội cũng như rủi ro tiềm ẩn, đặc biệt là rủi ro từ sự thay
-                đổi chính sách sắp tới.
-              </p>
+                        <div class="bg-white p-6 rounded-lg shadow">
+                             <h3 class="text-xl font-semibold text-gray-700 mb-4">Chênh lệch giá vàng trong nước và thế giới</h3>
+                             <p class="text-gray-600 mb-4">Biểu đồ dưới đây minh họa sự chênh lệch đáng kể giữa giá vàng SJC trong nước và giá vàng thế giới đã quy đổi. Đây là yếu tố rủi ro then chốt cho các nhà đầu tư tại Việt Nam.</p>
+                            <div class="chart-container">
+                                <canvas id="priceGapChart"></canvas>
+                            </div>
+                        </div>
 
-              <div class="bg-white p-6 rounded-lg shadow mb-8">
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">
-                  Tổng hợp Dự báo Giá vàng Tháng 7/2025
-                </h3>
-                <div class="overflow-x-auto">
-                  <table class="w-full text-sm text-left text-gray-500">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                      <tr>
-                        <th scope="col" class="px-6 py-3">Nguồn dự báo</th>
-                        <th scope="col" class="px-6 py-3">Đối tượng</th>
-                        <th scope="col" class="px-6 py-3">Dự báo Thấp nhất</th>
-                        <th scope="col" class="px-6 py-3">Dự báo Cao nhất</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="bg-white border-b">
-                        <td class="px-6 py-4 font-medium">LiteFinance</td>
-                        <td class="px-6 py-4">Vàng Thế giới (USD/oz)</td>
-                        <td class="px-6 py-4">2,701</td>
-                        <td class="px-6 py-4">2,932</td>
-                      </tr>
-                      <tr class="bg-gray-50 border-b">
-                        <td class="px-6 py-4 font-medium">LongForecast</td>
-                        <td class="px-6 py-4">Vàng Thế giới (USD/oz)</td>
-                        <td class="px-6 py-4">2,873</td>
-                        <td class="px-6 py-4">3,180</td>
-                      </tr>
-                      <tr class="bg-white border-b">
-                        <td class="px-6 py-4 font-medium">Gov Capital</td>
-                        <td class="px-6 py-4">Vàng Thế giới (USD/oz)</td>
-                        <td class="px-6 py-4">3,148</td>
-                        <td class="px-6 py-4">3,848</td>
-                      </tr>
-                      <tr class="bg-gray-50 border-b">
-                        <td class="px-6 py-4 font-medium text-yellow-700">
-                          Tierra.vn (Tổng hợp)
-                        </td>
-                        <td class="px-6 py-4 text-yellow-700">
-                          Vàng SJC (VNĐ/lượng)
-                        </td>
-                        <td class="px-6 py-4 text-yellow-700">123,000,000</td>
-                        <td class="px-6 py-4 text-yellow-700">125,000,000</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <p class="text-xs text-gray-500 mt-2">
-                    *Lưu ý: Các dự báo giá trong nước chưa tính đến tác động từ
-                    việc sửa đổi Nghị định 24.
-                  </p>
+                    </section>
+
+                    <!-- So sánh Section -->
+                    <section id="so-sanh" class="content-section py-8">
+                        <h2 class="text-2xl font-semibold text-gray-700">So sánh Giá Vàng</h2>
+                        <p class="text-gray-600 mt-2 mb-6">Phần này giúp bạn so sánh trực quan giá mua vào và bán ra của các loại vàng phổ biến tại những thương hiệu lớn ở TP.HCM. Sử dụng các nút bấm để chuyển đổi dữ liệu và tìm ra lựa chọn tốt nhất cho nhu cầu của bạn.</p>
+                        
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <div class="flex justify-center space-x-4 mb-4">
+                                <button id="sjcBtn" class="px-4 py-2 text-sm font-medium text-white bg-yellow-600 rounded-md hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">Vàng miếng SJC</button>
+                                <button id="ringBtn" class="px-4 py-2 text-sm font-medium text-yellow-700 bg-yellow-100 rounded-md hover:bg-yellow-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">Vàng nhẫn 9999</button>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="priceComparisonChart"></canvas>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Xu hướng Section -->
+                    <section id="xu-huong" class="content-section py-8">
+                        <h2 class="text-2xl font-semibold text-gray-700">Xu hướng & Phân tích</h2>
+                        <p class="text-gray-600 mt-2 mb-6">Khám phá diễn biến giá vàng đầy kịch tính trong tháng qua và tìm hiểu các yếu tố vĩ mô đã tác động đến thị trường, từ chính sách tiền tệ quốc tế đến các đặc thù của thị trường Việt Nam.</p>
+
+                        <div class="bg-white p-6 rounded-lg shadow mb-8">
+                            <h3 class="text-xl font-semibold text-gray-700 mb-4">Diễn biến giá vàng SJC (Tháng 5 - 6/2025)</h3>
+                             <div class="chart-container">
+                                <canvas id="trendChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white p-6 rounded-lg shadow">
+                             <h3 class="text-xl font-semibold text-gray-700 mb-4">Các Yếu Tố Tác Động Chính</h3>
+                             <div id="accordion-container" class="space-y-4">
+                                <!-- Accordion Item 1 -->
+                                <div class="border rounded-lg">
+                                    <div class="accordion-header flex justify-between items-center p-4 bg-gray-50">
+                                        <h4 class="font-semibold text-gray-800">Yếu tố Quốc tế (Động lực chính)</h4>
+                                        <span class="transform transition-transform duration-300">▼</span>
+                                    </div>
+                                    <div class="accordion-content p-4 border-t">
+                                        <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                            <li><b>Bất ổn Địa chính trị:</b> Căng thẳng ở Trung Đông làm tăng nhu cầu vàng như một tài sản trú ẩn an toàn.</li>
+                                            <li><b>Chính sách của FED:</b> Kỳ vọng cắt giảm lãi suất vào cuối năm 2025 hỗ trợ giá vàng, nhưng các dữ liệu kinh tế Mỹ tốt có thể trì hoãn kế hoạch này và gây áp lực giảm giá.</li>
+                                            <li><b>Sức mạnh Đồng USD:</b> Đồng USD yếu hơn làm vàng trở nên rẻ hơn đối với các nhà đầu tư quốc tế, kích thích lực cầu.</li>
+                                            <li><b>Nhu cầu từ Ngân hàng Trung ương:</b> Các NHTW, đặc biệt là Trung Quốc, liên tục mua vào, tạo ra một "sàn giá" vững chắc cho vàng.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- Accordion Item 2 -->
+                                <div class="border rounded-lg">
+                                    <div class="accordion-header flex justify-between items-center p-4 bg-gray-50">
+                                        <h4 class="font-semibold text-gray-800">Yếu tố Trong nước (Yếu tố khuếch đại)</h4>
+                                        <span class="transform transition-transform duration-300">▼</span>
+                                    </div>
+                                    <div class="accordion-content p-4 border-t">
+                                        <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                            <li><b>Nghị định 24:</b> Việc nhà nước độc quyền sản xuất vàng miếng SJC và không nhập khẩu vàng nguyên liệu gây thiếu hụt nguồn cung, khiến giá trong nước bị đẩy lên cao vô lý mỗi khi có biến động.</li>
+                                            <li><b>Tâm lý Đầu tư:</b> Vàng là kênh trú ẩn ưa thích của người Việt. Tâm lý FOMO (sợ bỏ lỡ cơ hội) và hiệu ứng đám đông tạo ra các cơn sốt mua cục bộ.</li>
+                                            <li><b>Vòng lặp Chênh lệch giá - Buôn lậu - Tỷ giá:</b> Chênh lệch giá cao kích thích buôn lậu, buôn lậu gây áp lực lên tỷ giá USD, tỷ giá tăng lại càng làm giá vàng quy đổi tăng cao.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
+
+                    </section>
+                    
+                    <!-- Dự báo Section -->
+                    <section id="du-bao" class="content-section py-8">
+                        <h2 class="text-2xl font-semibold text-gray-700">Dự báo & Rủi ro</h2>
+                        <p class="text-gray-600 mt-2 mb-6">Thị trường vàng đang đứng trước một ngã rẽ quan trọng. Xem xét các kịch bản dự báo từ các tổ chức uy tín và nhận diện rõ những cơ hội cũng như rủi ro tiềm ẩn, đặc biệt là rủi ro từ sự thay đổi chính sách sắp tới.</p>
+                        
+                        <div class="bg-white p-6 rounded-lg shadow mb-8">
+                            <h3 class="text-xl font-semibold text-gray-700 mb-4">Tổng hợp Dự báo Giá vàng Tháng 7/2025</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left text-gray-500">
+                                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3">Nguồn dự báo</th>
+                                            <th scope="col" class="px-6 py-3">Đối tượng</th>
+                                            <th scope="col" class="px-6 py-3">Dự báo Thấp nhất</th>
+                                            <th scope="col" class="px-6 py-3">Dự báo Cao nhất</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">LiteFinance</td><td class="px-6 py-4">Vàng Thế giới (USD/oz)</td><td class="px-6 py-4">2,701</td><td class="px-6 py-4">2,932</td></tr>
+                                        <tr class="bg-gray-50 border-b"><td class="px-6 py-4 font-medium">LongForecast</td><td class="px-6 py-4">Vàng Thế giới (USD/oz)</td><td class="px-6 py-4">2,873</td><td class="px-6 py-4">3,180</td></tr>
+                                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">Gov Capital</td><td class="px-6 py-4">Vàng Thế giới (USD/oz)</td><td class="px-6 py-4">3,148</td><td class="px-6 py-4">3,848</td></tr>
+                                        <tr class="bg-gray-50 border-b"><td class="px-6 py-4 font-medium text-yellow-700">Tierra.vn (Tổng hợp)</td><td class="px-6 py-4 text-yellow-700">Vàng SJC (VNĐ/lượng)</td><td class="px-6 py-4 text-yellow-700">123,000,000</td><td class="px-6 py-4 text-yellow-700">125,000,000</td></tr>
+                                    </tbody>
+                                </table>
+                                <p class="text-xs text-gray-500 mt-2">*Lưu ý: Các dự báo giá trong nước chưa tính đến tác động từ việc sửa đổi Nghị định 24.</p>
+                            </div>
+                        </div>
+
+                         <div class="p-4 border-l-4 border-red-500 bg-red-50 rounded-lg">
+                            <h4 class="text-lg font-bold text-red-800">Rủi ro Lớn nhất: Thay đổi Chính sách</h4>
+                            <p class="text-red-700 mt-1">Yếu tố có khả năng tác động mạnh và đột ngột nhất là việc sửa đổi Nghị định 24. Mục tiêu xóa bỏ độc quyền SJC và cho phép nhập khẩu vàng sẽ giúp thu hẹp chênh lệch giá. Điều này có thể khiến <strong class="font-semibold">giá vàng miếng SJC giảm mạnh</strong> để tiệm cận với giá thế giới, bất chấp xu hướng của thị trường toàn cầu. Nhà đầu tư nắm giữ vàng SJC cần hết sức cẩn trọng với rủi ro này.</p>
+                        </div>
+
+                    </section>
+                    
+                     <!-- Tư vấn Section -->
+                    <section id="tu-van" class="content-section py-8">
+                        <h2 class="text-2xl font-semibold text-gray-700">Tư vấn Đầu tư</h2>
+                        <p class="text-gray-600 mt-2 mb-6">Trong một thị trường đầy biến động, việc lựa chọn nơi giao dịch uy tín và xây dựng chiến lược phù hợp là yếu tố sống còn. Dưới đây là so sánh các thương hiệu lớn và khuyến nghị chiến lược cho từng mục tiêu đầu tư.</p>
+                        
+                        <div class="bg-white p-6 rounded-lg shadow mb-8">
+                            <h3 class="text-xl font-semibold text-gray-700 mb-4">So sánh các "Ông Lớn": PNJ, DOJI, và Mi Hồng</h3>
+                             <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left text-gray-500">
+                                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3">Tiêu chí</th>
+                                            <th scope="col" class="px-6 py-3">PNJ</th>
+                                            <th scope="col" class="px-6 py-3">DOJI</th>
+                                            <th scope="col" class="px-6 py-3">Mi Hồng</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">Sản phẩm chủ lực</td><td class="px-6 py-4">Trang sức, Vàng tài lộc</td><td class="px-6 py-4">Vàng ép vỉ, Kim cương</td><td class="px-6 py-4">Vàng SJC, Vàng nhẫn 999</td></tr>
+                                        <tr class="bg-gray-50 border-b"><td class="px-6 py-4 font-medium">Điểm mạnh</td><td class="px-6 py-4">Thương hiệu mạnh, đa dạng mẫu mã</td><td class="px-6 py-4">Công nghệ hiện đại, giao dịch online 24/7 (eGold)</td><td class="px-6 py-4">Giá cạnh tranh, chênh lệch mua-bán thấp</td></tr>
+                                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">Chính sách thu đổi</td><td class="px-6 py-4">Phức tạp, phụ thuộc hóa đơn, lỗ cao cho trang sức</td><td class="px-6 py-4">Rõ ràng, theo giá nguyên liệu</td><td class="px-6 py-4">Linh hoạt, thu cả vàng thương hiệu khác</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-8">
+                             <div class="p-6 border rounded-lg bg-white">
+                                <h4 class="text-lg font-bold text-green-800">Chiến lược cho nhà đầu tư DÀI HẠN</h4>
+                                <p class="text-gray-600 mt-2 text-sm">Mục tiêu là tích sản và bảo toàn tài sản.</p>
+                                <ul class="list-disc list-inside space-y-2 mt-4 text-gray-700">
+                                    <li><b>Ưu tiên sản phẩm:</b> Chọn <strong class="font-semibold">Vàng nhẫn trơn 9999</strong> thay vì vàng miếng SJC để giảm thiểu rủi ro từ việc thay đổi chính sách.</li>
+                                    <li><b>Chiến lược mua:</b> Áp dụng chiến lược mua trung bình giá (DCA) - mua định kỳ một lượng cố định để giảm rủi ro mua phải đỉnh.</li>
+                                    <li><b>Nơi mua:</b> Cân nhắc nơi có chênh lệch mua-bán thấp như Mi Hồng để tối ưu chi phí.</li>
+                                </ul>
+                             </div>
+                              <div class="p-6 border rounded-lg bg-white">
+                                <h4 class="text-lg font-bold text-blue-800">Chiến lược cho nhà đầu tư NGẮN HẠN</h4>
+                                <p class="text-gray-600 mt-2 text-sm">Mục tiêu là "lướt sóng", tìm kiếm lợi nhuận nhanh.</p>
+                                <ul class="list-disc list-inside space-y-2 mt-4 text-gray-700">
+                                     <li class="text-red-600"><strong class="font-semibold">Cảnh báo:</strong> Giai đoạn này cực kỳ rủi ro cho giao dịch ngắn hạn. Tuyệt đối không dùng đòn bẩy.</li>
+                                    <li><b>Sản phẩm giao dịch:</b> Vàng miếng SJC có biên độ lớn, tiềm ẩn lợi nhuận cao nhưng rủi ro cũng tương ứng.</li>
+                                    <li><b>Chiến lược giao dịch:</b> Theo dõi tin tức liên tục, đặc biệt là về Nghị định 24. Đặt kỷ luật chốt lời/cắt lỗ nghiêm ngặt.</li>
+                                </ul>
+                             </div>
+                        </div>
+
+                    </section>
                 </div>
-              </div>
-
-              <div class="p-4 border-l-4 border-red-500 bg-red-50 rounded-lg">
-                <h4 class="text-lg font-bold text-red-800">
-                  Rủi ro Lớn nhất: Thay đổi Chính sách
-                </h4>
-                <p class="text-red-700 mt-1">
-                  Yếu tố có khả năng tác động mạnh và đột ngột nhất là việc sửa
-                  đổi Nghị định 24. Mục tiêu xóa bỏ độc quyền SJC và cho phép
-                  nhập khẩu vàng sẽ giúp thu hẹp chênh lệch giá. Điều này có thể
-                  khiến
-                  <strong class="font-semibold"
-                    >giá vàng miếng SJC giảm mạnh</strong
-                  >
-                  để tiệm cận với giá thế giới, bất chấp xu hướng của thị trường
-                  toàn cầu. Nhà đầu tư nắm giữ vàng SJC cần hết sức cẩn trọng
-                  với rủi ro này.
-                </p>
-              </div>
-            </section>
-
-            <!-- Tư vấn Section -->
-            <section id="tu-van" class="content-section py-8">
-              <h2 class="text-2xl font-semibold text-gray-700">
-                Tư vấn Đầu tư
-              </h2>
-              <p class="text-gray-600 mt-2 mb-6">
-                Trong một thị trường đầy biến động, việc lựa chọn nơi giao dịch
-                uy tín và xây dựng chiến lược phù hợp là yếu tố sống còn. Dưới
-                đây là so sánh các thương hiệu lớn và khuyến nghị chiến lược cho
-                từng mục tiêu đầu tư.
-              </p>
-
-              <div class="bg-white p-6 rounded-lg shadow mb-8">
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">
-                  So sánh các "Ông Lớn": PNJ, DOJI, và Mi Hồng
-                </h3>
-                <div class="overflow-x-auto">
-                  <table class="w-full text-sm text-left text-gray-500">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                      <tr>
-                        <th scope="col" class="px-6 py-3">Tiêu chí</th>
-                        <th scope="col" class="px-6 py-3">PNJ</th>
-                        <th scope="col" class="px-6 py-3">DOJI</th>
-                        <th scope="col" class="px-6 py-3">Mi Hồng</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="bg-white border-b">
-                        <td class="px-6 py-4 font-medium">Sản phẩm chủ lực</td>
-                        <td class="px-6 py-4">Trang sức, Vàng tài lộc</td>
-                        <td class="px-6 py-4">Vàng ép vỉ, Kim cương</td>
-                        <td class="px-6 py-4">Vàng SJC, Vàng nhẫn 999</td>
-                      </tr>
-                      <tr class="bg-gray-50 border-b">
-                        <td class="px-6 py-4 font-medium">Điểm mạnh</td>
-                        <td class="px-6 py-4">
-                          Thương hiệu mạnh, đa dạng mẫu mã
-                        </td>
-                        <td class="px-6 py-4">
-                          Công nghệ hiện đại, giao dịch online 24/7 (eGold)
-                        </td>
-                        <td class="px-6 py-4">
-                          Giá cạnh tranh, chênh lệch mua-bán thấp
-                        </td>
-                      </tr>
-                      <tr class="bg-white border-b">
-                        <td class="px-6 py-4 font-medium">
-                          Chính sách thu đổi
-                        </td>
-                        <td class="px-6 py-4">
-                          Phức tạp, phụ thuộc hóa đơn, lỗ cao cho trang sức
-                        </td>
-                        <td class="px-6 py-4">Rõ ràng, theo giá nguyên liệu</td>
-                        <td class="px-6 py-4">
-                          Linh hoạt, thu cả vàng thương hiệu khác
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div class="grid md:grid-cols-2 gap-8">
-                <div class="p-6 border rounded-lg bg-white">
-                  <h4 class="text-lg font-bold text-green-800">
-                    Chiến lược cho nhà đầu tư DÀI HẠN
-                  </h4>
-                  <p class="text-gray-600 mt-2 text-sm">
-                    Mục tiêu là tích sản và bảo toàn tài sản.
-                  </p>
-                  <ul
-                    class="list-disc list-inside space-y-2 mt-4 text-gray-700"
-                  >
-                    <li>
-                      <b>Ưu tiên sản phẩm:</b> Chọn
-                      <strong class="font-semibold">Vàng nhẫn trơn 9999</strong>
-                      thay vì vàng miếng SJC để giảm thiểu rủi ro từ việc thay
-                      đổi chính sách.
-                    </li>
-                    <li>
-                      <b>Chiến lược mua:</b> Áp dụng chiến lược mua trung bình
-                      giá (DCA) - mua định kỳ một lượng cố định để giảm rủi ro
-                      mua phải đỉnh.
-                    </li>
-                    <li>
-                      <b>Nơi mua:</b> Cân nhắc nơi có chênh lệch mua-bán thấp
-                      như Mi Hồng để tối ưu chi phí.
-                    </li>
-                  </ul>
-                </div>
-                <div class="p-6 border rounded-lg bg-white">
-                  <h4 class="text-lg font-bold text-blue-800">
-                    Chiến lược cho nhà đầu tư NGẮN HẠN
-                  </h4>
-                  <p class="text-gray-600 mt-2 text-sm">
-                    Mục tiêu là "lướt sóng", tìm kiếm lợi nhuận nhanh.
-                  </p>
-                  <ul
-                    class="list-disc list-inside space-y-2 mt-4 text-gray-700"
-                  >
-                    <li class="text-red-600">
-                      <strong class="font-semibold">Cảnh báo:</strong> Giai đoạn
-                      này cực kỳ rủi ro cho giao dịch ngắn hạn. Tuyệt đối không
-                      dùng đòn bẩy.
-                    </li>
-                    <li>
-                      <b>Sản phẩm giao dịch:</b> Vàng miếng SJC có biên độ lớn,
-                      tiềm ẩn lợi nhuận cao nhưng rủi ro cũng tương ứng.
-                    </li>
-                    <li>
-                      <b>Chiến lược giao dịch:</b> Theo dõi tin tức liên tục,
-                      đặc biệt là về Nghị định 24. Đặt kỷ luật chốt lời/cắt lỗ
-                      nghiêm ngặt.
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </section>
-          </div>
-        </main>
-      </div>
+            </main>
+        </div>
     </div>
-
+    
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const priceData = {
-          sjc: {
-            labels: ["SJC", "DOJI", "PNJ", "Mi Hồng"],
-            buy: [118.2, 118.5, 118.2, 119.3],
-            sell: [120.2, 120.5, 120.2, 120.3],
-          },
-          ring: {
-            labels: ["SJC", "DOJI", "PNJ", "Mi Hồng"],
-            buy: [113.9, 116.0, 115.0, 114.5],
-            sell: [116.4, 118.0, 117.0, 116.0],
-          },
-        };
-
-        const trendData = {
-          labels: [
-            "Cuối T4",
-            "Đầu T5",
-            "Giữa T5",
-            "Cuối T5",
-            "Đầu T6",
-            "Giữa T6",
-          ],
-          prices: [121.3, 119.0, 121.0, 118.5, 117.2, 120.2],
-        };
-
-        const gapData = {
-          worldPrice: 109,
-          sjcPrice: 120.2,
-          ringPrice: 117.0,
-        };
-
-        const formatCurrency = (value) =>
-          `${(value * 1000000).toLocaleString("vi-VN")} VNĐ`;
-        const formatMillion = (value) => `${value}tr`;
-
-        let priceComparisonChart, trendChart, priceGapChart;
-
-        function createPriceGapChart() {
-          const ctx = document.getElementById("priceGapChart").getContext("2d");
-          priceGapChart = new Chart(ctx, {
-            type: "bar",
-            data: {
-              labels: [
-                "Giá Thế giới (Quy đổi)",
-                "Giá Vàng nhẫn 9999",
-                "Giá Vàng miếng SJC",
-              ],
-              datasets: [
-                {
-                  label: "Giá Bán ra (triệu VNĐ/lượng)",
-                  data: [
-                    gapData.worldPrice,
-                    gapData.ringPrice,
-                    gapData.sjcPrice,
-                  ],
-                  backgroundColor: ["#6EE7B7", "#FBBF24", "#F87171"],
-                  borderColor: ["#34D399", "#F59E0B", "#EF4444"],
-                  borderWidth: 1,
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const priceData = {
+                sjc: {
+                    labels: ['SJC', 'DOJI', 'PNJ', 'Mi Hồng'],
+                    buy: [118.2, 118.5, 118.2, 119.3],
+                    sell: [120.2, 120.5, 120.2, 120.3]
                 },
-              ],
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: { display: false },
-                title: { display: false },
-                tooltip: {
-                  callbacks: {
-                    label: (context) =>
-                      `${context.dataset.label}: ${context.raw.toLocaleString(
-                        "vi-VN"
-                      )} triệu VNĐ`,
-                  },
-                },
-              },
-              scales: {
-                y: {
-                  beginAtZero: false,
-                  ticks: {
-                    callback: (value) => `${value}tr`,
-                  },
-                  title: {
-                    display: true,
-                    text: "Triệu VNĐ / Lượng",
-                  },
-                },
-              },
-            },
-          });
-        }
+                ring: {
+                    labels: ['SJC', 'DOJI', 'PNJ', 'Mi Hồng'],
+                    buy: [113.9, 116.0, 115.0, 114.5],
+                    sell: [116.4, 118.0, 117.0, 116.0]
+                }
+            };
+            
+            const trendData = {
+                labels: ['Cuối T4', 'Đầu T5', 'Giữa T5', 'Cuối T5', 'Đầu T6', 'Giữa T6'],
+                prices: [121.3, 119.0, 121.0, 118.5, 117.2, 120.2]
+            };
 
-        function createPriceComparisonChart(type) {
-          const data = priceData[type];
-          const ctx = document
-            .getElementById("priceComparisonChart")
-            .getContext("2d");
+            const gapData = {
+                worldPrice: 109,
+                sjcPrice: 120.2,
+                ringPrice: 117.0,
+            };
 
-          if (priceComparisonChart) {
-            priceComparisonChart.destroy();
-          }
+            const formatCurrency = (value) => `${(value * 1000000).toLocaleString('vi-VN')} VNĐ`;
+            const formatMillion = (value) => `${value}tr`;
 
-          priceComparisonChart = new Chart(ctx, {
-            type: "bar",
-            data: {
-              labels: data.labels,
-              datasets: [
-                {
-                  label: "Giá Mua vào",
-                  data: data.buy,
-                  backgroundColor: "rgba(54, 162, 235, 0.6)",
-                  borderColor: "rgba(54, 162, 235, 1)",
-                  borderWidth: 1,
-                },
-                {
-                  label: "Giá Bán ra",
-                  data: data.sell,
-                  backgroundColor: "rgba(255, 99, 132, 0.6)",
-                  borderColor: "rgba(255, 99, 132, 1)",
-                  borderWidth: 1,
-                },
-              ],
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              scales: {
-                y: {
-                  beginAtZero: false,
-                  ticks: {
-                    callback: function (value) {
-                      return formatMillion(value);
+            let priceComparisonChart, trendChart, priceGapChart;
+
+            function createPriceGapChart() {
+                const ctx = document.getElementById('priceGapChart').getContext('2d');
+                priceGapChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Giá Thế giới (Quy đổi)', 'Giá Vàng nhẫn 9999', 'Giá Vàng miếng SJC'],
+                        datasets: [{
+                            label: 'Giá Bán ra (triệu VNĐ/lượng)',
+                            data: [gapData.worldPrice, gapData.ringPrice, gapData.sjcPrice],
+                            backgroundColor: ['#6EE7B7', '#FBBF24', '#F87171'],
+                            borderColor: ['#34D399', '#F59E0B', '#EF4444'],
+                            borderWidth: 1
+                        }]
                     },
-                  },
-                  title: {
-                    display: true,
-                    text: "Triệu VNĐ / Lượng",
-                  },
-                },
-              },
-              plugins: {
-                title: {
-                  display: true,
-                  text: `So sánh giá ${
-                    type === "sjc" ? "Vàng miếng SJC" : "Vàng nhẫn 9999"
-                  }`,
-                  font: { size: 16 },
-                },
-                tooltip: {
-                  callbacks: {
-                    label: function (context) {
-                      return `${context.dataset.label}: ${formatCurrency(
-                        context.raw
-                      )}`;
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            title: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => `${context.dataset.label}: ${context.raw.toLocaleString('vi-VN')} triệu VNĐ`
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                ticks: {
+                                    callback: value => `${value}tr`
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Triệu VNĐ / Lượng'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function createPriceComparisonChart(type) {
+                const data = priceData[type];
+                const ctx = document.getElementById('priceComparisonChart').getContext('2d');
+                
+                if (priceComparisonChart) {
+                    priceComparisonChart.destroy();
+                }
+
+                priceComparisonChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [
+                            {
+                                label: 'Giá Mua vào',
+                                data: data.buy,
+                                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Giá Bán ra',
+                                data: data.sell,
+                                backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }
+                        ]
                     },
-                  },
-                },
-              },
-            },
-          });
-        }
-
-        function createTrendChart() {
-          const ctx = document.getElementById("trendChart").getContext("2d");
-          trendChart = new Chart(ctx, {
-            type: "line",
-            data: {
-              labels: trendData.labels,
-              datasets: [
-                {
-                  label: "Giá SJC Bán Ra (Triệu VNĐ/Lượng)",
-                  data: trendData.prices,
-                  fill: true,
-                  backgroundColor: "rgba(252, 211, 77, 0.2)",
-                  borderColor: "rgba(245, 158, 11, 1)",
-                  tension: 0.3,
-                  pointBackgroundColor: "rgba(245, 158, 11, 1)",
-                  pointBorderColor: "#fff",
-                  pointHoverBackgroundColor: "#fff",
-                  pointHoverBorderColor: "rgba(245, 158, 11, 1)",
-                },
-              ],
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              scales: {
-                y: {
-                  beginAtZero: false,
-                  ticks: {
-                    callback: function (value) {
-                      return formatMillion(value);
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                ticks: {
+                                    callback: function(value) {
+                                        return formatMillion(value);
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Triệu VNĐ / Lượng'
+                                }
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: `So sánh giá ${type === 'sjc' ? 'Vàng miếng SJC' : 'Vàng nhẫn 9999'}`,
+                                font: { size: 16 }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.dataset.label}: ${formatCurrency(context.raw)}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function createTrendChart() {
+                const ctx = document.getElementById('trendChart').getContext('2d');
+                trendChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: trendData.labels,
+                        datasets: [{
+                            label: 'Giá SJC Bán Ra (Triệu VNĐ/Lượng)',
+                            data: trendData.prices,
+                            fill: true,
+                            backgroundColor: 'rgba(252, 211, 77, 0.2)',
+                            borderColor: 'rgba(245, 158, 11, 1)',
+                            tension: 0.3,
+                            pointBackgroundColor: 'rgba(245, 158, 11, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(245, 158, 11, 1)'
+                        }]
                     },
-                  },
-                  title: {
-                    display: true,
-                    text: "Triệu VNĐ / Lượng",
-                  },
-                },
-              },
-              plugins: {
-                tooltip: {
-                  callbacks: {
-                    label: function (context) {
-                      return `${context.dataset.label}: ${formatCurrency(
-                        context.raw
-                      )}`;
-                    },
-                  },
-                },
-              },
-            },
-          });
-        }
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                             y: {
+                                beginAtZero: false,
+                                ticks: {
+                                    callback: function(value) {
+                                        return formatMillion(value);
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Triệu VNĐ / Lượng'
+                                }
+                            }
+                        },
+                         plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.dataset.label}: ${formatCurrency(context.raw)}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
 
-        document.getElementById("sjcBtn").addEventListener("click", () => {
-          createPriceComparisonChart("sjc");
-          document
-            .getElementById("sjcBtn")
-            .classList.add("bg-yellow-600", "text-white");
-          document
-            .getElementById("sjcBtn")
-            .classList.remove("bg-yellow-100", "text-yellow-700");
-          document
-            .getElementById("ringBtn")
-            .classList.add("bg-yellow-100", "text-yellow-700");
-          document
-            .getElementById("ringBtn")
-            .classList.remove("bg-yellow-600", "text-white");
-        });
+            document.getElementById('sjcBtn').addEventListener('click', () => {
+                createPriceComparisonChart('sjc');
+                document.getElementById('sjcBtn').classList.add('bg-yellow-600', 'text-white');
+                document.getElementById('sjcBtn').classList.remove('bg-yellow-100', 'text-yellow-700');
+                document.getElementById('ringBtn').classList.add('bg-yellow-100', 'text-yellow-700');
+                 document.getElementById('ringBtn').classList.remove('bg-yellow-600', 'text-white');
+            });
+            
+            document.getElementById('ringBtn').addEventListener('click', () => {
+                createPriceComparisonChart('ring');
+                document.getElementById('ringBtn').classList.add('bg-yellow-600', 'text-white');
+                document.getElementById('ringBtn').classList.remove('bg-yellow-100', 'text-yellow-700');
+                document.getElementById('sjcBtn').classList.add('bg-yellow-100', 'text-yellow-700');
+                document.getElementById('sjcBtn').classList.remove('bg-yellow-600', 'text-white');
+            });
+            
+            // Navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.content-section');
+            const navigation = document.getElementById('navigation');
+            
+            navigation.addEventListener('click', (e) => {
+                e.preventDefault();
+                const link = e.target.closest('a');
+                if (!link) return;
 
-        document.getElementById("ringBtn").addEventListener("click", () => {
-          createPriceComparisonChart("ring");
-          document
-            .getElementById("ringBtn")
-            .classList.add("bg-yellow-600", "text-white");
-          document
-            .getElementById("ringBtn")
-            .classList.remove("bg-yellow-100", "text-yellow-700");
-          document
-            .getElementById("sjcBtn")
-            .classList.add("bg-yellow-100", "text-yellow-700");
-          document
-            .getElementById("sjcBtn")
-            .classList.remove("bg-yellow-600", "text-white");
-        });
+                const sectionId = link.dataset.section;
+                if (!sectionId) return;
 
-        // Navigation
-        const navLinks = document.querySelectorAll(".nav-link");
-        const sections = document.querySelectorAll(".content-section");
-        const navigation = document.getElementById("navigation");
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                
+                sections.forEach(s => s.classList.remove('active'));
+                document.getElementById(sectionId).classList.add('active');
 
-        navigation.addEventListener("click", (e) => {
-          e.preventDefault();
-          const link = e.target.closest("a");
-          if (!link) return;
+                // Re-initialize charts if they are in the activated section to prevent rendering issues
+                if (sectionId === 'so-sanh' && !priceComparisonChart) createPriceComparisonChart('sjc');
+                if (sectionId === 'xu-huong' && !trendChart) createTrendChart();
+                if (sectionId === 'tong-quan' && !priceGapChart) createPriceGapChart();
+            });
 
-          const sectionId = link.dataset.section;
-          if (!sectionId) return;
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const sidebar = document.querySelector('aside');
+            mobileMenuButton.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+            });
 
-          navLinks.forEach((l) => l.classList.remove("active"));
-          link.classList.add("active");
+            // Accordion
+            const accordionContainer = document.getElementById('accordion-container');
+            accordionContainer.addEventListener('click', (e) => {
+                const header = e.target.closest('.accordion-header');
+                if (!header) return;
+                
+                const content = header.nextElementSibling;
+                const icon = header.querySelector('span');
 
-          sections.forEach((s) => s.classList.remove("active"));
-          document.getElementById(sectionId).classList.add("active");
+                if(content.style.maxHeight){
+                    content.style.maxHeight = null;
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+            
+            // Warning Banner
+            const warningBanner = document.getElementById('warning-banner');
+            const closeWarningBtn = document.getElementById('close-warning');
 
-          // Re-initialize charts if they are in the activated section to prevent rendering issues
-          if (sectionId === "so-sanh" && !priceComparisonChart)
-            createPriceComparisonChart("sjc");
-          if (sectionId === "xu-huong" && !trendChart) createTrendChart();
-          if (sectionId === "tong-quan" && !priceGapChart)
+            if(closeWarningBtn) {
+                closeWarningBtn.addEventListener('click', () => {
+                    warningBanner.style.display = 'none';
+                });
+            }
+
+
+            // Initial chart creations
+            createPriceComparisonChart('sjc');
+            createTrendChart();
             createPriceGapChart();
         });
-
-        // Mobile menu toggle
-        const mobileMenuButton = document.getElementById("mobile-menu-button");
-        const sidebar = document.querySelector("aside");
-        mobileMenuButton.addEventListener("click", () => {
-          sidebar.classList.toggle("hidden");
-        });
-
-        // Accordion
-        const accordionContainer = document.getElementById(
-          "accordion-container"
-        );
-        accordionContainer.addEventListener("click", (e) => {
-          const header = e.target.closest(".accordion-header");
-          if (!header) return;
-
-          const content = header.nextElementSibling;
-          const icon = header.querySelector("span");
-
-          if (content.style.maxHeight) {
-            content.style.maxHeight = null;
-            icon.style.transform = "rotate(0deg)";
-          } else {
-            content.style.maxHeight = content.scrollHeight + "px";
-            icon.style.transform = "rotate(180deg)";
-          }
-        });
-
-        // Initial chart creations
-        createPriceComparisonChart("sjc");
-        createTrendChart();
-        createPriceGapChart();
-      });
     </script>
-  </body>
+</body>
 </html>
