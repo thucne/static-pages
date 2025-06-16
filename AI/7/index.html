@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO Meta Tags -->
+    <title>
+      Review Canon R8 + RF 50mm f1.8 | Phân tích và đánh giá chuyên sâu
+    </title>
+    <meta
+      name="description"
+      content="Khám phá phân tích chuyên sâu & tương tác về Canon R8 và RF 50mm f/1.8. So sánh hiệu năng, video, AF với Sony A7C II & Nikon Zf. Quyết định đúng đắn cho bạn."
+    />
+    <meta
+      name="keywords"
+      content="Canon R8, RF 50mm f/1.8, đánh giá Canon R8, so sánh Canon R8, Canon R8 Việt Nam, máy ảnh full-frame, Canon R8 video, nhiếp ảnh, Sony A7C II, Nikon Zf"
+    />
+    <meta name="author" content="Interactive Analysis" />
+
+    <!-- Open Graph / Facebook Preview Meta Tags -->
+    <meta
+      property="og:title"
+      content="Review Canon R8 + RF 50mm f1.8 | Phân tích và đánh giá chuyên sâu"
+    />
+    <meta
+      property="og:description"
+      content="Khám phá phân tích chuyên sâu & tương tác về Canon R8 và RF 50mm f/1.8. So sánh hiệu năng, video, AF với Sony A7C II & Nikon Zf."
+    />
+    <meta
+      property="og:image"
+      content="https://res.cloudinary.com/katyperrycbt/image/upload/v1750057028/yb9w3jfvpxyqpk1vepzt.jpg"
+    />
+    <meta property="og:url" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Phân Tích Tương Tác Canon R8" />
+
+    <!-- Twitter Preview Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Review Canon R8 + RF 50mm f1.8 | Phân tích và đánh giá chuyên sâu"
+    />
+    <meta
+      name="twitter:description"
+      content="Khám phá phân tích chuyên sâu & tương tác về Canon R8 và RF 50mm f/1.8. So sánh hiệu năng, video, AF với Sony A7C II & Nikon Zf."
+    />
+    <meta
+      name="twitter:image"
+      content="https://res.cloudinary.com/katyperrycbt/image/upload/v1750057028/yb9w3jfvpxyqpk1vepzt.jpg"
+    />
+
+    <!-- Chosen Palette: Warm Neutral & Subtle Gold -->
+    <!-- Application Structure Plan: Tôi đã thiết kế một cấu trúc ứng dụng một trang, theo chủ đề thay vì theo cấu trúc tuyến tính của báo cáo. Người dùng bắt đầu với phần giới thiệu tổng quan, sau đó có thể tự do khám phá các phần chính thông qua thanh điều hướng: "Tổng Quan", "Hiệu Năng", "So Sánh", và "Hệ Sinh Thái". Phần "Hiệu Năng" sử dụng các tab tương tác để phân tích sâu về Cảm biến, AF và Video. Phần "So Sánh" sử dụng biểu đồ động để so sánh trực quan R8 với các đối thủ. Cấu trúc này ưu tiên sự khám phá của người dùng, cho phép họ đi thẳng vào thông tin họ quan tâm nhất, giúp việc tiêu thụ thông tin phức tạp trở nên dễ dàng và hiệu quả hơn. -->
+    <!-- Visualization & Content Choices: 
+        - So sánh đối thủ (Thân máy & Ống kính): Report Info -> Bảng so sánh tĩnh -> Goal: So sánh nhanh chóng, dễ hiểu -> Viz/Presentation: Biểu đồ thanh ngang tương tác (Chart.js) -> Interaction: Người dùng nhấn vào các nút để thay đổi chỉ số so sánh (Giá, Trọng lượng, Video, v.v.). -> Justification: Biến dữ liệu dày đặc thành một trải nghiệm so sánh trực quan, hấp dẫn và dễ tiêu hóa. 
+        - Điểm mạnh & Yếu: Report Info -> Các đoạn văn mô tả -> Goal: Làm nổi bật các ưu/nhược điểm cốt lõi -> Viz/Presentation: Bố cục thẻ hai cột (HTML/Tailwind) với các biểu tượng Unicode đơn giản. -> Interaction: Không có, tập trung vào việc trình bày thông tin rõ ràng. -> Justification: Cấu trúc trực quan giúp người dùng nhanh chóng cân nhắc các yếu tố quan trọng nhất.
+        - Thông số kỹ thuật: Report Info -> Bảng thông số tĩnh -> Goal: Cung cấp thông tin chi tiết khi cần -> Viz/Presentation: Bảng HTML được định dạng gọn gàng, ẩn/hiện bằng JS. -> Interaction: Nhấn nút để xem chi tiết. -> Justification: Giữ cho giao diện chính sạch sẽ, không làm người dùng choáng ngợp với quá nhiều dữ liệu.
+        - Library/Method: Chart.js cho biểu đồ, Vanilla JS cho các tương tác UI (tabs, toggles).
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Be Vietnam Pro", sans-serif;
+        background-color: #fdfcf9;
+        color: #1c1917;
+      }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 350px;
+        max-height: 50vh;
+      }
+      @media (min-width: 768px) {
+        .chart-container {
+          height: 450px;
+        }
+      }
+      .nav-link {
+        transition: color 0.3s, border-color 0.3s;
+      }
+      .nav-link.active,
+      .nav-link:hover {
+        color: #c89c54;
+        border-color: #c89c54;
+      }
+      .tab-button.active {
+        background-color: #c89c54;
+        color: #ffffff;
+      }
+      .btn-primary {
+        background-color: #2c2a29;
+        color: #ffffff;
+        transition: background-color 0.3s;
+      }
+      .btn-primary:hover {
+        background-color: #44403c;
+      }
+      .btn-secondary {
+        background-color: transparent;
+        color: #2c2a29;
+        border: 1px solid #2c2a29;
+        transition: background-color 0.3s, color 0.3s;
+      }
+      .btn-secondary:hover {
+        background-color: #2c2a29;
+        color: #ffffff;
+      }
+      .metric-button.active {
+        background-color: #c89c54;
+        color: #fff;
+        border-color: #c89c54;
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex-shrink-0">
+            <a href="#" class="text-xl font-bold text-stone-800"
+              >Canon R8 Analysis</a
+            >
+          </div>
+          <div class="hidden md:block">
+            <div class="ml-10 flex items-baseline space-x-4">
+              <a
+                href="#overview"
+                class="nav-link px-3 py-2 rounded-md text-sm font-medium text-stone-600 border-b-2 border-transparent"
+                >Tổng Quan</a
+              >
+              <a
+                href="#performance"
+                class="nav-link px-3 py-2 rounded-md text-sm font-medium text-stone-600 border-b-2 border-transparent"
+                >Hiệu Năng</a
+              >
+              <a
+                href="#comparison"
+                class="nav-link px-3 py-2 rounded-md text-sm font-medium text-stone-600 border-b-2 border-transparent"
+                >So Sánh</a
+              >
+              <a
+                href="#ecosystem"
+                class="nav-link px-3 py-2 rounded-md text-sm font-medium text-stone-600 border-b-2 border-transparent"
+                >Hệ Sinh Thái</a
+              >
+              <a
+                href="#conclusion"
+                class="nav-link px-3 py-2 rounded-md text-sm font-medium text-stone-600 border-b-2 border-transparent"
+                >Kết Luận</a
+              >
+            </div>
+          </div>
+          <div class="md:hidden">
+            <button
+              id="mobile-menu-button"
+              class="inline-flex items-center justify-center p-2 rounded-md text-stone-500 hover:text-white hover:bg-stone-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-stone-800 focus:ring-white"
+            >
+              <span class="sr-only">Open main menu</span>
+              <svg
+                class="block h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </nav>
+      <div id="mobile-menu" class="md:hidden hidden">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a
+            href="#overview"
+            class="nav-link block px-3 py-2 rounded-md text-base font-medium text-stone-600"
+            >Tổng Quan</a
+          >
+          <a
+            href="#performance"
+            class="nav-link block px-3 py-2 rounded-md text-base font-medium text-stone-600"
+            >Hiệu Năng</a
+          >
+          <a
+            href="#comparison"
+            class="nav-link block px-3 py-2 rounded-md text-base font-medium text-stone-600"
+            >So Sánh</a
+          >
+          <a
+            href="#ecosystem"
+            class="nav-link block px-3 py-2 rounded-md text-base font-medium text-stone-600"
+            >Hệ Sinh Thái</a
+          >
+          <a
+            href="#conclusion"
+            class="nav-link block px-3 py-2 rounded-md text-base font-medium text-stone-600"
+            >Kết Luận</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+      <section id="hero" class="text-center py-16">
+        <h1
+          class="text-4xl md:text-6xl font-extrabold tracking-tight text-stone-900"
+        >
+          Canon EOS R8 & RF 50mm f/1.8
+        </h1>
+        <p class="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-stone-600">
+          Hiệu năng đỉnh cao. Những đánh đổi có chủ đích.
+        </p>
+        <p class="mt-6 max-w-3xl mx-auto text-stone-500">
+          Một phân tích tương tác về bộ đôi "nhỏ mà có võ", khám phá cách Canon
+          tích hợp công nghệ cao cấp vào một thân máy giá phổ thông và những
+          điều bạn cần biết trước khi quyết định.
+        </p>
+        <div class="mt-8 flex justify-center gap-4">
+          <a
+            href="#performance"
+            class="btn-primary px-8 py-3 rounded-md font-semibold"
+            >Khám Phá Hiệu Năng</a
+          >
+          <a
+            href="#comparison"
+            class="btn-secondary px-8 py-3 rounded-md font-semibold"
+            >So Sánh Đối Thủ</a
+          >
+        </div>
+      </section>
+
+      <div class="border-t border-stone-200 my-12"></div>
+
+      <section id="overview" class="scroll-mt-20">
+        <div class="text-center mb-12">
+          <h2
+            class="text-3xl font-bold tracking-tight text-stone-800 sm:text-4xl"
+          >
+            Tổng Quan Chiến Lược
+          </h2>
+          <p class="mt-4 text-lg text-stone-600">
+            Sự kết hợp giữa một "kẻ thay đổi cuộc chơi" và một ống kính "huyền
+            thoại tái sinh".
+          </p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-8 items-start">
+          <div
+            class="bg-white p-6 rounded-lg shadow-md border border-stone-100"
+          >
+            <h3 class="text-2xl font-semibold text-stone-800">
+              Canon EOS R8: Dân chủ hóa Full-Frame
+            </h3>
+            <p class="mt-3 text-stone-600">
+              Kế thừa thân hình nhỏ gọn của EOS RP, R8 tạo ra một cú sốc trên
+              thị trường khi được trang bị "trái tim và bộ não" của người đàn
+              anh đắt giá R6 Mark II. Đây là một động thái chiến lược của Canon,
+              tập trung tối đa vào hiệu năng cốt lõi (cảm biến, bộ xử lý, AF) để
+              tạo ra một tỷ lệ hiệu năng/giá thành vô đối.
+            </p>
+            <ul class="mt-4 space-y-2 text-stone-700">
+              <li class="flex items-start">
+                <span class="text-amber-600 mr-2 mt-1">▶</span>
+                <span
+                  ><strong class="font-semibold">Cảm biến & Xử lý:</strong> Lấy
+                  từ R6 Mark II, cho chất lượng ảnh và video xuất sắc.</span
+                >
+              </li>
+              <li class="flex items-start">
+                <span class="text-amber-600 mr-2 mt-1">▶</span>
+                <span
+                  ><strong class="font-semibold">Hệ thống AF:</strong> Dual
+                  Pixel CMOS AF II thông minh, nhận diện đa dạng chủ thể.</span
+                >
+              </li>
+              <li class="flex items-start">
+                <span class="text-amber-600 mr-2 mt-1">▶</span>
+                <span
+                  ><strong class="font-semibold">Video 4K/60p:</strong> Không
+                  crop, lấy mẫu từ 6K, chất lượng hàng đầu phân khúc.</span
+                >
+              </li>
+            </ul>
+          </div>
+          <div
+            class="bg-white p-6 rounded-lg shadow-md border border-stone-100"
+          >
+            <h3 class="text-2xl font-semibold text-stone-800">
+              RF 50mm f/1.8: "Nifty Fifty" cho Ngàm RF
+            </h3>
+            <p class="mt-3 text-stone-600">
+              Sự tái sinh của ống kính 50mm f/1.8 huyền thoại, được cải tiến
+              quang học với thấu kính phi cầu lần đầu tiên sau nhiều thập kỷ.
+              Với trọng lượng siêu nhẹ và kích thước nhỏ gọn, nó là người bạn
+              đồng hành hoàn hảo cho R8, lý tưởng cho chụp ảnh đời thường, chân
+              dung và thiếu sáng.
+            </p>
+            <ul class="mt-4 space-y-2 text-stone-700">
+              <li class="flex items-start">
+                <span class="text-amber-600 mr-2 mt-1">▶</span>
+                <span
+                  ><strong class="font-semibold">Nhỏ gọn:</strong> Chỉ 160g, tạo
+                  nên một bộ đôi cực kỳ di động.</span
+                >
+              </li>
+              <li class="flex items-start">
+                <span class="text-amber-600 mr-2 mt-1">▶</span>
+                <span
+                  ><strong class="font-semibold">Khẩu độ lớn f/1.8:</strong>
+                  Hiệu quả trong điều kiện thiếu sáng và xóa phông ấn
+                  tượng.</span
+                >
+              </li>
+              <li class="flex items-start">
+                <span class="text-amber-600 mr-2 mt-1">▶</span>
+                <span
+                  ><strong class="font-semibold">Giá cả phải chăng:</strong> Cửa
+                  ngõ tuyệt vời để bước vào hệ sinh thái ống kính RF.</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <div class="border-t border-stone-200 my-12"></div>
+
+      <section id="performance" class="scroll-mt-20">
+        <div class="text-center mb-12">
+          <h2
+            class="text-3xl font-bold tracking-tight text-stone-800 sm:text-4xl"
+          >
+            Khám Phá Hiệu Năng Cốt Lõi
+          </h2>
+          <p class="mt-4 text-lg text-stone-600">
+            Nơi sức mạnh của R6 Mark II thực sự tỏa sáng.
+          </p>
+        </div>
+
+        <div>
+          <div
+            class="mb-6 flex justify-center space-x-2 md:space-x-4 p-1 bg-stone-100 rounded-lg"
+          >
+            <button
+              class="tab-button flex-1 md:flex-initial px-4 py-2 text-sm font-semibold rounded-md active"
+              data-tab="sensor"
+            >
+              Cảm biến & ISO
+            </button>
+            <button
+              class="tab-button flex-1 md:flex-initial px-4 py-2 text-sm font-semibold rounded-md"
+              data-tab="af"
+            >
+              Lấy nét Tự động
+            </button>
+            <button
+              class="tab-button flex-1 md:flex-initial px-4 py-2 text-sm font-semibold rounded-md"
+              data-tab="video"
+            >
+              Năng lực Video
+            </button>
+            <button
+              class="tab-button flex-1 md:flex-initial px-4 py-2 text-sm font-semibold rounded-md"
+              data-tab="tradeoffs"
+            >
+              Những Đánh Đổi
+            </button>
+          </div>
+
+          <div
+            id="sensor"
+            class="tab-content bg-white p-6 rounded-lg shadow-sm"
+          >
+            <h3 class="text-xl font-bold mb-4">
+              Trái tim của R6 Mark II: Cảm biến 24.2MP & DIGIC X
+            </h3>
+            <p class="text-stone-600 mb-4">
+              Sức mạnh của R8 nằm ở việc kế thừa nguyên vẹn cụm cảm biến và bộ
+              xử lý từ R6 Mark II. Điều này mang lại chất lượng hình ảnh xuất
+              sắc với màu sắc đặc trưng của Canon và khả năng xử lý nhiễu ấn
+              tượng ở ISO cao. Hình ảnh sạch, giữ chi tiết tốt ngay cả ở mức ISO
+              12,800 - 25,600.
+            </p>
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <strong class="font-semibold text-stone-800"
+                  >Dải ISO gốc:</strong
+                >
+                <p class="text-stone-600">
+                  100 - 102,400 (Mở rộng đến 204,800)
+                </p>
+                <strong class="font-semibold text-stone-800 mt-4 block"
+                  >Tốc độ chụp:</strong
+                >
+                <p class="text-stone-600">
+                  Lên đến
+                  <span class="font-bold text-amber-700">40 fps</span> (màn trập
+                  điện tử)
+                </p>
+                <strong class="font-semibold text-stone-800 mt-4 block"
+                  >Chất lượng JPEG:</strong
+                >
+                <p class="text-stone-600">
+                  Màu sắc sống động, tông da người trung thực, có thể sử dụng
+                  ngay mà không cần chỉnh sửa nhiều.
+                </p>
+              </div>
+              <div class="chart-container h-64 md:h-auto">
+                <canvas id="isoChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div
+            id="af"
+            class="tab-content bg-white p-6 rounded-lg shadow-sm hidden"
+          >
+            <h3 class="text-xl font-bold mb-4">
+              Dual Pixel CMOS AF II: Tốc độ và Trí tuệ
+            </h3>
+            <p class="text-stone-600 mb-6">
+              R8 được trang bị hệ thống AF tiên tiến nhất của Canon, kế thừa từ
+              các dòng máy chuyên nghiệp. Với các thuật toán học sâu, máy có thể
+              nhận diện và bám nét chủ thể một cách đáng kinh ngạc, cho phép
+              người dùng chỉ cần tập trung vào khoảnh khắc.
+            </p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+              <div class="bg-stone-50 p-4 rounded-lg">
+                <div class="text-4xl mb-2">👤</div>
+                <h4 class="font-semibold">Con người</h4>
+                <p class="text-sm text-stone-500">Mắt, mặt, đầu, thân</p>
+              </div>
+              <div class="bg-stone-50 p-4 rounded-lg">
+                <div class="text-4xl mb-2">🐾</div>
+                <h4 class="font-semibold">Động vật</h4>
+                <p class="text-sm text-stone-500">Chó, mèo, chim, ngựa</p>
+              </div>
+              <div class="bg-stone-50 p-4 rounded-lg">
+                <div class="text-4xl mb-2">🚗</div>
+                <h4 class="font-semibold">Phương tiện</h4>
+                <p class="text-sm text-stone-500">Ô tô, xe máy</p>
+              </div>
+              <div class="bg-stone-50 p-4 rounded-lg">
+                <div class="text-4xl mb-2">✈️</div>
+                <h4 class="font-semibold">Phương tiện</h4>
+                <p class="text-sm text-stone-500">Máy bay, tàu hỏa</p>
+              </div>
+            </div>
+            <p class="text-center mt-6 text-stone-600">
+              Độ nhạy sáng AF xuống đến
+              <strong class="font-semibold text-stone-800">-6.5 EV</strong>, cho
+              phép lấy nét trong điều kiện gần như tối đen.
+            </p>
+          </div>
+
+          <div
+            id="video"
+            class="tab-content bg-white p-6 rounded-lg shadow-sm hidden"
+          >
+            <h3 class="text-xl font-bold mb-4">
+              Sức mạnh Video vượt trội phân khúc
+            </h3>
+            <p class="text-stone-600 mb-6">
+              Đây là điểm mà R8 thực sự "knock-out" các đối thủ. Khả năng quay
+              4K/60p không crop được lấy mẫu dư từ toàn bộ cảm biến 6K mang lại
+              độ chi tiết và chất lượng hình ảnh vượt trội.
+            </p>
+            <ul class="space-y-3 text-stone-600">
+              <li class="flex items-center">
+                <span class="text-green-500 mr-3 text-2xl">✓</span
+                ><strong>4K UHD 60fps Không Crop:</strong> Lợi thế độc nhất
+                trong tầm giá.
+              </li>
+              <li class="flex items-center">
+                <span class="text-green-500 mr-3 text-2xl">✓</span
+                ><strong>10-bit 4:2:2 & C-Log 3:</strong> Cung cấp dải màu rộng
+                và sự linh hoạt tối đa cho hậu kỳ.
+              </li>
+              <li class="flex items-center">
+                <span class="text-green-500 mr-3 text-2xl">✓</span
+                ><strong>Full HD 180fps:</strong> Tạo ra những cảnh quay
+                slow-motion ấn tượng.
+              </li>
+              <li class="flex items-center">
+                <span class="text-green-500 mr-3 text-2xl">✓</span
+                ><strong>Ghi hình không giới hạn 30 phút:</strong> Cho phép quay
+                liên tục lên đến 2 giờ (ở 4K30p).
+              </li>
+              <li class="flex items-center">
+                <span class="text-green-500 mr-3 text-2xl">✓</span
+                ><strong>Đầy đủ cổng Audio:</strong> Cổng cắm micro và tai nghe
+                để kiểm soát âm thanh chuyên nghiệp.
+              </li>
+            </ul>
+          </div>
+
+          <div
+            id="tradeoffs"
+            class="tab-content bg-white p-6 rounded-lg shadow-sm hidden"
+          >
+            <h3 class="text-xl font-bold mb-4">Những Đánh Đổi Có Chủ Đích</h3>
+            <p class="text-stone-600 mb-6">
+              Để đạt được hiệu năng cao trong một mức giá hấp dẫn, Canon đã phải
+              hy sinh một số tính năng phần cứng quan trọng. Người dùng cần nhận
+              thức rõ những thiếu sót này.
+            </p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="border border-red-200 bg-red-50 p-4 rounded-lg">
+                <div class="flex items-center">
+                  <span class="text-2xl mr-3">🚫</span>
+                  <h4 class="font-bold text-red-800">Không có IBIS</h4>
+                </div>
+                <p class="text-sm text-red-700 mt-2">
+                  Thiếu chống rung trong thân máy. Đây là điểm yếu lớn nhất, ảnh
+                  hưởng đến quay video cầm tay và chụp ảnh tốc độ chậm.
+                </p>
+              </div>
+              <div class="border border-red-200 bg-red-50 p-4 rounded-lg">
+                <div class="flex items-center">
+                  <span class="text-2xl mr-3">🔋</span>
+                  <h4 class="font-bold text-red-800">Pin LP-E17 Yếu</h4>
+                </div>
+                <p class="text-sm text-red-700 mt-2">
+                  Dung lượng pin thấp, yêu cầu phải mang theo pin dự phòng cho
+                  các buổi chụp dài.
+                </p>
+              </div>
+              <div class="border border-red-200 bg-red-50 p-4 rounded-lg">
+                <div class="flex items-center">
+                  <span class="text-2xl mr-3">💾</span>
+                  <h4 class="font-bold text-red-800">Một khe cắm thẻ</h4>
+                </div>
+                <p class="text-sm text-red-700 mt-2">
+                  Rủi ro cho các công việc chuyên nghiệp đòi hỏi sao lưu dữ liệu
+                  tức thời (đám cưới, sự kiện).
+                </p>
+              </div>
+              <div class="border border-red-200 bg-red-50 p-4 rounded-lg">
+                <div class="flex items-center">
+                  <span class="text-2xl mr-3">🕹️</span>
+                  <h4 class="font-bold text-red-800">Thiếu Joystick</h4>
+                </div>
+                <p class="text-sm text-red-700 mt-2">
+                  Thao tác di chuyển điểm AF chậm hơn, phải dựa vào màn hình cảm
+                  ứng hoặc D-pad.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="border-t border-stone-200 my-12"></div>
+
+      <section id="comparison" class="scroll-mt-20">
+        <div class="text-center mb-12">
+          <h2
+            class="text-3xl font-bold tracking-tight text-stone-800 sm:text-4xl"
+          >
+            So Sánh Đối Thủ Cạnh Tranh
+          </h2>
+          <p class="mt-4 text-lg text-stone-600">
+            Xem R8 đứng ở đâu trong cuộc chiến full-frame phổ thông và "nifty
+            fifty".
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+          <h3 class="text-xl font-bold mb-4 text-center">
+            Cuộc chiến Thân máy: R8 vs Sony A7C II vs Nikon Zf
+          </h3>
+          <div class="flex justify-center flex-wrap gap-2 mb-4">
+            <button
+              class="metric-button btn-secondary text-xs px-3 py-1 rounded-full active"
+              data-chart="camera"
+              data-metric="price"
+            >
+              Giá ($)
+            </button>
+            <button
+              class="metric-button btn-secondary text-xs px-3 py-1 rounded-full"
+              data-chart="camera"
+              data-metric="weight"
+            >
+              Trọng lượng (g)
+            </button>
+            <button
+              class="metric-button btn-secondary text-xs px-3 py-1 rounded-full"
+              data-chart="camera"
+              data-metric="burst"
+            >
+              Tốc độ chụp (fps)
+            </button>
+            <button
+              class="metric-button btn-secondary text-xs px-3 py-1 rounded-full"
+              data-chart="camera"
+              data-metric="video"
+            >
+              Video 4K/60p
+            </button>
+            <button
+              class="metric-button btn-secondary text-xs px-3 py-1 rounded-full"
+              data-chart="camera"
+              data-metric="battery"
+            >
+              Pin (CIPA)
+            </button>
+          </div>
+          <div class="chart-container">
+            <canvas id="cameraComparisonChart"></canvas>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-bold mb-4 text-center">
+            Cuộc chiến Ống kính 50mm f/1.8
+          </h3>
+          <div class="flex justify-center flex-wrap gap-2 mb-4">
+            <button
+              class="metric-button btn-secondary text-xs px-3 py-1 rounded-full active"
+              data-chart="lens"
+              data-metric="price"
+            >
+              Giá ($)
+            </button>
+            <button
+              class="metric-button btn-secondary text-xs px-3 py-1 rounded-full"
+              data-chart="lens"
+              data-metric="weight"
+            >
+              Trọng lượng (g)
+            </button>
+            <button
+              class="metric-button btn-secondary text-xs px-3 py-1 rounded-full"
+              data-chart="lens"
+              data-metric="size"
+            >
+              Kích thước (Dài mm)
+            </button>
+          </div>
+          <div class="chart-container">
+            <canvas id="lensComparisonChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <div class="border-t border-stone-200 my-12"></div>
+
+      <section id="ecosystem" class="scroll-mt-20">
+        <div class="text-center mb-12">
+          <h2
+            class="text-3xl font-bold tracking-tight text-stone-800 sm:text-4xl"
+          >
+            Hệ Sinh Thái tại Việt Nam
+          </h2>
+          <p class="mt-4 text-lg text-stone-600">
+            Giá tham khảo và các phụ kiện cần thiết để tối ưu hóa trải nghiệm.
+          </p>
+        </div>
+        <div class="grid lg:grid-cols-2 gap-8">
+          <div>
+            <h3 class="text-xl font-bold mb-4">Bảng giá tham khảo (VNĐ)</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left bg-white rounded-lg shadow-md">
+                <thead class="bg-stone-100">
+                  <tr>
+                    <th class="p-3 font-semibold">Sản phẩm</th>
+                    <th class="p-3 font-semibold">Tình trạng</th>
+                    <th class="p-3 font-semibold">Giá tham khảo</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-stone-100">
+                  <tr class="hover:bg-stone-50">
+                    <td class="p-3 font-medium">Canon R8 (Body)</td>
+                    <td class="p-3">Mới chính hãng</td>
+                    <td class="p-3">27.5 - 30 triệu</td>
+                  </tr>
+                  <tr class="hover:bg-stone-50">
+                    <td class="p-3 font-medium">Canon R8 (Body)</td>
+                    <td class="p-3">Cũ (Likenew)</td>
+                    <td class="p-3">25 - 26 triệu</td>
+                  </tr>
+                  <tr class="hover:bg-stone-50">
+                    <td class="p-3 font-medium">RF 50mm f/1.8 STM</td>
+                    <td class="p-3">Mới chính hãng</td>
+                    <td class="p-3">5.2 - 5.8 triệu</td>
+                  </tr>
+                  <tr class="hover:bg-stone-50">
+                    <td class="p-3 font-medium">RF 50mm f/1.8 STM</td>
+                    <td class="p-3">Cũ (Likenew)</td>
+                    <td class="p-3">4.8 - 5 triệu</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold mb-4">Phụ kiện Tối ưu</h3>
+            <div class="space-y-4">
+              <div class="bg-white p-4 rounded-lg shadow-md flex items-center">
+                <span class="text-3xl mr-4">🔋</span>
+                <div>
+                  <h4 class="font-semibold">Pin dự phòng (LP-E17)</h4>
+                  <p class="text-sm text-stone-500">
+                    Gần như bắt buộc cho các buổi chụp dài. Cân nhắc pin hãng
+                    thứ ba để tiết kiệm chi phí.
+                  </p>
+                </div>
+              </div>
+              <div class="bg-white p-4 rounded-lg shadow-md flex items-center">
+                <span class="text-3xl mr-4">⚙️</span>
+                <div>
+                  <h4 class="font-semibold">Gimbal nhỏ gọn</h4>
+                  <p class="text-sm text-stone-500">
+                    Cần thiết để có cảnh quay cầm tay mượt mà. Các mẫu như DJI
+                    RS 3 Mini rất phù hợp.
+                  </p>
+                </div>
+              </div>
+              <div class="bg-white p-4 rounded-lg shadow-md flex items-center">
+                <span class="text-3xl mr-4">⚡</span>
+                <div>
+                  <h4 class="font-semibold">Thẻ nhớ UHS-II V60/V90</h4>
+                  <p class="text-sm text-stone-500">
+                    Đảm bảo hiệu suất cho video 4K và chụp liên tục 40fps.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="border-t border-stone-200 my-12"></div>
+
+      <section id="conclusion" class="scroll-mt-20">
+        <div class="text-center mb-12">
+          <h2
+            class="text-3xl font-bold tracking-tight text-stone-800 sm:text-4xl"
+          >
+            Kết Luận & Khuyến Nghị
+          </h2>
+          <p class="mt-4 text-lg text-stone-600">Bộ đôi này có dành cho bạn?</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="bg-green-50 border border-green-200 p-6 rounded-lg">
+            <h3 class="text-2xl font-semibold text-green-800">
+              Ai NÊN mua? ✅
+            </h3>
+            <ul class="mt-4 space-y-3 text-green-700">
+              <li class="flex">
+                <strong class="w-36 flex-shrink-0 font-semibold"
+                  >Người nâng cấp:</strong
+                >
+                Từ máy crop/DSLR muốn trải nghiệm sức mạnh full-frame với ngân
+                sách hợp lý.
+              </li>
+              <li class="flex">
+                <strong class="w-36 flex-shrink-0 font-semibold"
+                  >Nhà sáng tạo nội dung:</strong
+                >
+                YouTuber, vlogger ưu tiên video 4K/60p không crop và quay trên
+                tripod/gimbal.
+              </li>
+              <li class="flex">
+                <strong class="w-36 flex-shrink-0 font-semibold"
+                  >Nhiếp ảnh gia đam mê:</strong
+                >
+                Chụp du lịch, đường phố, chân dung, đề cao sự nhỏ gọn và chất
+                lượng ảnh.
+              </li>
+            </ul>
+          </div>
+          <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+            <h3 class="text-2xl font-semibold text-red-800">
+              Ai KHÔNG NÊN mua? ❌
+            </h3>
+            <ul class="mt-4 space-y-3 text-red-700">
+              <li class="flex">
+                <strong class="w-36 flex-shrink-0 font-semibold"
+                  >Nhiếp ảnh gia sự kiện chuyên nghiệp:</strong
+                >
+                Rủi ro từ một khe cắm thẻ và pin yếu là quá lớn.
+              </li>
+              <li class="flex">
+                <strong class="w-36 flex-shrink-0 font-semibold"
+                  >Nhà làm phim "Run-and-gun":</strong
+                >
+                Thiếu IBIS khiến video cầm tay rất rung lắc.
+              </li>
+              <li class="flex">
+                <strong class="w-36 flex-shrink-0 font-semibold"
+                  >Người đòi hỏi công thái học cao:</strong
+                >
+                Sẽ cảm thấy bất tiện vì thiếu joystick và nút tùy chỉnh.
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-10 bg-white p-6 rounded-lg shadow-md text-center">
+          <p class="text-stone-600">
+            Bộ đôi Canon R8 và RF 50mm f/1.8 là một trong những đề xuất giá trị
+            nhất trên thị trường full-frame hiện nay. Nếu bạn hiểu và chấp nhận
+            những sự đánh đổi của nó, đây là một khoản đầu tư cực kỳ thông minh,
+            mang lại kết quả vượt xa mong đợi trong tầm giá.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bg-stone-800 text-white mt-16 text-center py-4">
+      <div
+        class="max-w-3xl mx-auto mb-6 p-4 border border-blue-200 rounded-lg"
+      >
+        <h4 class="font-bold text-sm text-blue-200">
+          Lưu ý về Nguồn gốc Nội dung
+        </h4>
+        <p class="text-xs mt-2">
+          Trang web này được tạo ra bởi một AI. Nội dung được tổng hợp, phân
+          tích và trình bày một cách trực quan dựa trên các nguồn báo cáo kỹ
+          thuật công khai. Thông tin được cung cấp nhằm mục đích tham khảo và có
+          thể không phản ánh mọi chi tiết chuyên sâu nhất.
+        </p>
+      </div>
+      <a
+        href="https://thucde.dev"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center space-x-2 text-white-500 hover:text-blue-600 transition-colors"
+      >
+        <span
+          class="w-6 h-6 flex items-center justify-center rounded-md font-bold text-sm"
+        >
+          <img
+            src="https://thucde.dev/logo/thucdedev.png"
+            alt="Thucde.dev Logo"
+            class="w-6 h-6"
+          />
+        </span>
+        <span class="font-semibold">Một sản phẩm của Thucde.dev</span>
+      </a>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const tabButtons = document.querySelectorAll(".tab-button");
+        const tabContents = document.querySelectorAll(".tab-content");
+
+        tabButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            const tabId = button.dataset.tab;
+
+            tabButtons.forEach((btn) => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            tabContents.forEach((content) => {
+              if (content.id === tabId) {
+                content.classList.remove("hidden");
+              } else {
+                content.classList.add("hidden");
+              }
+            });
+          });
+        });
+
+        const mobileMenuButton = document.getElementById("mobile-menu-button");
+        const mobileMenu = document.getElementById("mobile-menu");
+        mobileMenuButton.addEventListener("click", () => {
+          mobileMenu.classList.toggle("hidden");
+        });
+
+        const navLinks = document.querySelectorAll(".nav-link");
+        const sections = document.querySelectorAll("section[id]");
+
+        function changeNavOnScroll() {
+          let current = "";
+          sections.forEach((section) => {
+            const sectionTop = section.offsetTop;
+            if (pageYOffset >= sectionTop - 80) {
+              current = section.getAttribute("id");
+            }
+          });
+
+          navLinks.forEach((link) => {
+            link.classList.remove("active");
+            if (link.getAttribute("href").includes(current)) {
+              link.classList.add("active");
+            }
+          });
+        }
+
+        window.addEventListener("scroll", changeNavOnScroll);
+
+        const chartTextColor = "#44403c";
+        const chartGridColor = "#e7e5e4";
+        Chart.defaults.font.family = "'Be Vietnam Pro', sans-serif";
+        Chart.defaults.color = chartTextColor;
+
+        const cameraData = {
+          labels: ["Canon R8", "Sony A7C II", "Nikon Zf"],
+          price: {
+            data: [1499, 2199, 1999],
+            label: "Giá ra mắt (USD)",
+            backgroundColor: ["#c89c54", "#a8a29e", "#a8a29e"],
+          },
+          weight: {
+            data: [461, 514, 710],
+            label: "Trọng lượng (g)",
+            backgroundColor: ["#c89c54", "#a8a29e", "#a8a29e"],
+          },
+          burst: {
+            data: [40, 10, 14],
+            label: "Tốc độ chụp liên tục (fps)",
+            backgroundColor: ["#c89c54", "#a8a29e", "#a8a29e"],
+          },
+          video: {
+            data: [1, 1.5, 1.5],
+            label: "Hệ số crop 4K/60p (1 = không crop)",
+            backgroundColor: ["#c89c54", "#a8a29e", "#a8a29e"],
+          },
+          battery: {
+            data: [370, 530, 380],
+            label: "Thời lượng pin (ảnh/chuẩn CIPA)",
+            backgroundColor: ["#c89c54", "#a8a29e", "#a8a29e"],
+          },
+        };
+
+        const lensData = {
+          labels: ["Canon RF 50/1.8", "Sony FE 50/1.8", "Nikon Z 50/1.8 S"],
+          price: {
+            data: [199, 248, 527],
+            label: "Giá tham khảo (USD)",
+            backgroundColor: ["#c89c54", "#a8a29e", "#a8a29e"],
+          },
+          weight: {
+            data: [160, 186, 415],
+            label: "Trọng lượng (g)",
+            backgroundColor: ["#c89c54", "#a8a29e", "#a8a29e"],
+          },
+          size: {
+            data: [40, 60, 87],
+            label: "Chiều dài (mm)",
+            backgroundColor: ["#c89c54", "#a8a29e", "#a8a29e"],
+          },
+        };
+
+        const commonChartOptions = (yLabel) => ({
+          indexAxis: "y",
+          maintainAspectRatio: false,
+          responsive: true,
+          plugins: {
+            legend: {
+              display: false,
+            },
+            tooltip: {
+              backgroundColor: "#1c1917",
+              titleColor: "#ffffff",
+              bodyColor: "#ffffff",
+              padding: 10,
+              cornerRadius: 4,
+            },
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: yLabel,
+                font: {
+                  weight: "600",
+                },
+              },
+              grid: {
+                color: chartGridColor,
+                borderColor: chartGridColor,
+              },
+            },
+            y: {
+              grid: {
+                display: false,
+                borderColor: chartGridColor,
+              },
+              ticks: {
+                font: {
+                  size: 14,
+                  weight: "500",
+                },
+              },
+            },
+          },
+        });
+
+        const ctxCamera = document
+          .getElementById("cameraComparisonChart")
+          .getContext("2d");
+        let cameraChart = new Chart(ctxCamera, {
+          type: "bar",
+          data: {
+            labels: cameraData.labels,
+            datasets: [
+              {
+                label: cameraData.price.label,
+                data: cameraData.price.data,
+                backgroundColor: cameraData.price.backgroundColor,
+                borderColor: cameraData.price.backgroundColor,
+                borderWidth: 1,
+                borderRadius: 4,
+              },
+            ],
+          },
+          options: commonChartOptions(cameraData.price.label),
+        });
+
+        const ctxLens = document
+          .getElementById("lensComparisonChart")
+          .getContext("2d");
+        let lensChart = new Chart(ctxLens, {
+          type: "bar",
+          data: {
+            labels: lensData.labels,
+            datasets: [
+              {
+                label: lensData.price.label,
+                data: lensData.price.data,
+                backgroundColor: lensData.price.backgroundColor,
+                borderColor: lensData.price.backgroundColor,
+                borderWidth: 1,
+                borderRadius: 4,
+              },
+            ],
+          },
+          options: commonChartOptions(lensData.price.label),
+        });
+
+        const metricButtons = document.querySelectorAll(".metric-button");
+        metricButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            const chartType = button.dataset.chart;
+            const metric = button.dataset.metric;
+
+            document
+              .querySelectorAll(`.metric-button[data-chart="${chartType}"]`)
+              .forEach((btn) => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            if (chartType === "camera") {
+              const metricData = cameraData[metric];
+              cameraChart.data.datasets[0].data = metricData.data;
+              cameraChart.data.datasets[0].label = metricData.label;
+              cameraChart.options.scales.x.title.text = metricData.label;
+              cameraChart.update();
+            } else if (chartType === "lens") {
+              const metricData = lensData[metric];
+              lensChart.data.datasets[0].data = metricData.data;
+              lensChart.data.datasets[0].label = metricData.label;
+              lensChart.options.scales.x.title.text = metricData.label;
+              lensChart.update();
+            }
+          });
+        });
+
+        const ctxIso = document.getElementById("isoChart").getContext("2d");
+        const isoChart = new Chart(ctxIso, {
+          type: "line",
+          data: {
+            labels: [
+              "100",
+              "800",
+              "3200",
+              "6400",
+              "12800",
+              "25600",
+              "51200",
+              "102400",
+            ],
+            datasets: [
+              {
+                label: "Mức độ nhiễu (tương đối)",
+                data: [5, 6, 8, 12, 18, 30, 55, 85],
+                fill: true,
+                borderColor: "#c89c54",
+                backgroundColor: "rgba(200, 156, 84, 0.1)",
+                tension: 0.3,
+                pointBackgroundColor: "#c89c54",
+              },
+            ],
+          },
+          options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+              legend: {
+                display: false,
+              },
+              title: {
+                display: true,
+                text: "Hiệu suất ISO (Mô phỏng)",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+                padding: {
+                  bottom: 10,
+                },
+              },
+            },
+            scales: {
+              y: {
+                title: {
+                  display: true,
+                  text: "Nhiễu hạt",
+                },
+                grid: {
+                  color: chartGridColor,
+                },
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: "Mức ISO",
+                },
+                grid: {
+                  color: chartGridColor,
+                },
+              },
+            },
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
