@@ -4,397 +4,799 @@
 <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hyperfocal Distance Calculator</title>
 
     <!-- SEO & Social Sharing Meta Tags -->
-    <meta name="description"
-        content="An interactive web application to calculate and visualize hyperfocal distance for photographers. Maximize your depth of field and achieve ultimate sharpness.">
+    <meta
+      name="description"
+      content="An interactive web application to calculate and visualize hyperfocal distance for photographers. Maximize your depth of field and achieve ultimate sharpness."
+    />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://static-pages.thucde.dev/AI/10">
-    <meta property="og:title" content="Hyperfocal Distance Calculator">
-    <meta property="og:description"
-        content="Hyperfocal distance is the closest focusing distance at which a lens can be set to keep objects from a certain point (called the near limit) to infinity in acceptably sharp focus">
-    <meta property="og:image" content="https://res.cloudinary.com/katyperrycbt/image/upload/v1751202726/kk7ghoupsp0vosmsoztg.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://static-pages.thucde.dev/AI/10" />
+    <meta property="og:title" content="Hyperfocal Distance Calculator" />
+    <meta
+      property="og:description"
+      content="Hyperfocal distance is the closest focusing distance at which a lens can be set to keep objects from a certain point (called the near limit) to infinity in acceptably sharp focus"
+    />
+    <meta
+      property="og:image"
+      content="https://res.cloudinary.com/katyperrycbt/image/upload/v1751202726/kk7ghoupsp0vosmsoztg.jpg"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://static-pages.thucde.dev/AI/10">
-    <meta property="twitter:title" content="Hyperfocal Distance Calculator">
-    <meta property="twitter:description"
-        content="Hyperfocal distance is the closest focusing distance at which a lens can be set to keep objects from a certain point (called the near limit) to infinity in acceptably sharp focus">
-    <meta property="twitter:image" content="https://res.cloudinary.com/katyperrycbt/image/upload/v1751202726/kk7ghoupsp0vosmsoztg.jpg">
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:url"
+      content="https://static-pages.thucde.dev/AI/10"
+    />
+    <meta property="twitter:title" content="Hyperfocal Distance Calculator" />
+    <meta
+      property="twitter:description"
+      content="Hyperfocal distance is the closest focusing distance at which a lens can be set to keep objects from a certain point (called the near limit) to infinity in acceptably sharp focus"
+    />
+    <meta
+      property="twitter:image"
+      content="https://res.cloudinary.com/katyperrycbt/image/upload/v1751202726/kk7ghoupsp0vosmsoztg.jpg"
+    />
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f5f5f4;
-            /* stone-100 */
-        }
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f5f5f4;
+      }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 32rem;
+        max-height: 50vh;
+      }
+      input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 6px;
+        background: #e7e5e4;
+        border-radius: 9999px;
+        outline: none;
+        transition: background 0.2s;
+      }
+      input[type="range"]:hover {
+        background: #d6d3d1;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: #0ea5e9;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: background 0.2s;
+      }
+      input[type="range"]::-webkit-slider-thumb:hover {
+        background: #0284c7;
+      }
+      input[type="range"]::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        background: #0ea5e9;
+        cursor: pointer;
+        border-radius: 50%;
+      }
 
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 32rem;
-            /* h-128 */
-            max-height: 50vh;
-        }
-
-        input[type="range"] {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 100%;
-            height: 6px;
-            background: #e7e5e4;
-            /* stone-200 */
-            border-radius: 9999px;
-            outline: none;
-            transition: background .2s;
-        }
-
-        input[type="range"]:hover {
-            background: #d6d3d1;
-            /* stone-300 */
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #0ea5e9;
-            /* sky-500 */
-            cursor: pointer;
-            border-radius: 50%;
-            transition: background .2s;
-        }
-
-        input[type="range"]::-webkit-slider-thumb:hover {
-            background: #0284c7;
-            /* sky-600 */
-        }
-
-        input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            background: #0ea5e9;
-            /* sky-500 */
-            cursor: pointer;
-            border-radius: 50%;
-        }
+      /* Improved Tooltip Styling */
+      .tooltip {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+      }
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 220px;
+        background-color: #334155;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 8px;
+        position: absolute;
+        z-index: 10;
+        bottom: 150%;
+        left: 50%;
+        margin-left: -110px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        font-size: 12px;
+        font-weight: 500;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .tooltip .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #334155 transparent transparent transparent;
+      }
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
     </style>
-</head>
+  </head>
 
-<body class="text-stone-800">
-
+  <body class="text-stone-800">
     <div class="container mx-auto px-4 py-8 max-w-7xl">
-        <header class="text-center mb-10">
-            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-stone-900">Mastering Depth of Field</h1>
-            <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">An interactive guide to calculating hyperfocal
-                distance for maximum sharpness in your photography.</p>
-        </header>
+      <header class="text-center mb-10">
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-stone-900">
+          Mastering Depth of Field
+        </h1>
+        <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">
+          An interactive guide to calculating hyperfocal distance for maximum
+          sharpness in your photography.
+        </p>
+      </header>
 
-        <div class="lg:grid lg:grid-cols-12 lg:gap-8">
-            <aside class="lg:col-span-4 xl:col-span-3 mb-8 lg:mb-0">
-                <div class="sticky top-8 bg-white p-6 rounded-2xl shadow-lg space-y-6 border border-stone-200">
-                    <div>
-                        <h2 class="text-xl font-semibold text-stone-900">Camera Settings</h2>
-                        <p class="text-sm text-stone-500 mt-1">Adjust the sliders to match your equipment and see the
-                            results update instantly.</p>
-                    </div>
-
-                    <div>
-                        <label for="sensorSize" class="block text-sm font-medium text-stone-700">1. Sensor Size</label>
-                        <select id="sensorSize"
-                            class="mt-1 w-full bg-stone-50 border-stone-300 rounded-lg shadow-sm focus:ring-sky-500 focus:border-sky-500 p-2 text-sm">
-                            <option value="Full-Frame" selected>Full-Frame</option>
-                            <option value="APS-C">APS-C</option>
-                            <option value="Micro Four Thirds">Micro Four Thirds</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between items-center">
-                            <label for="focalLength" class="text-sm font-medium text-stone-700">2. Focal Length</label>
-                            <span id="focalLengthValue"
-                                class="text-sm font-semibold text-sky-700 bg-sky-100 rounded-md px-2 py-0.5">35mm</span>
-                        </div>
-                        <input type="range" id="focalLength" min="10" max="200" value="35" step="1" class="mt-2 w-full">
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between items-center">
-                            <label for="aperture" class="text-sm font-medium text-stone-700">3. Aperture</label>
-                            <span id="apertureValue"
-                                class="text-sm font-semibold text-sky-700 bg-sky-100 rounded-md px-2 py-0.5">f/8</span>
-                        </div>
-                        <input type="range" id="aperture" min="0" max="15" value="12" step="1" class="mt-2 w-full">
-                    </div>
-
-                    <div class="pt-4 border-t border-stone-200">
-                        <h3 class="text-lg font-semibold text-stone-900">Your Focus Point</h3>
-                        <div class="mt-2 p-4 bg-sky-50 border-2 border-dashed border-sky-200 rounded-lg text-center">
-                            <p class="text-sm text-sky-800">Focus at (Hyperfocal):</p>
-                            <p id="hyperfocalDistance" class="text-3xl font-bold text-sky-600">7.66 m</p>
-                            <p class="mt-2 text-sm text-sky-800">Sharpness from:</p>
-                            <p id="nearLimit" class="text-md font-semibold text-stone-700">3.83 m to Infinity</p>
-                        </div>
-                    </div>
-                </div>
-            </aside>
-
-            <main class="lg:col-span-8 xl:col-span-9">
-                <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-lg border border-stone-200">
-                    <div class="mb-6">
-                        <div class="border-b border-stone-200">
-                            <nav class="-mb-px flex space-x-1 sm:space-x-4" aria-label="Tabs">
-                                <button id="tab-chart"
-                                    class="whitespace-nowrap py-3 px-3 sm:px-4 border-b-2 font-medium text-sm border-sky-500 text-sky-600">
-                                    Visualizer
-                                </button>
-                                <button id="tab-table"
-                                    class="whitespace-nowrap py-3 px-3 sm:px-4 border-b-2 font-medium text-sm border-transparent text-stone-500 hover:text-stone-700 hover:border-stone-300">
-                                    Data Tables
-                                </button>
-                            </nav>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div id="content-chart">
-                            <h2 class="text-xl font-semibold text-stone-900">Aperture vs. Hyperfocal Distance</h2>
-                            <p class="mt-1 text-sm text-stone-600">This chart illustrates how stopping down your
-                                aperture (choosing a higher f-number) dramatically decreases the hyperfocal distance,
-                                giving you a wider zone of sharpness for your selected focal length of <span
-                                    id="chart-focal-length" class="font-bold">35mm</span>.</p>
-                            <div class="mt-4 chart-container">
-                                <canvas id="hyperfocalChart"></canvas>
-                            </div>
-                        </div>
-
-                        <div id="content-table" class="hidden">
-                            <h2 class="text-xl font-semibold text-stone-900">Hyperfocal Distance Data Tables</h2>
-                            <p class="mt-1 text-sm text-stone-600">For precise planning, find your settings in the table
-                                for the selected sensor size. Distances are shown in <span
-                                    class="font-bold">Meters</span>.</p>
-                            <div class="mt-4 overflow-x-auto">
-                                <table id="data-table"
-                                    class="min-w-full divide-y divide-stone-200 border border-stone-200">
-                                    <thead class="bg-stone-50">
-                                    </thead>
-                                    <tbody class="bg-white divide-y divide-stone-200">
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
-        </div>
-
-        <div class="mt-8 bg-white p-8 rounded-2xl shadow-lg border border-stone-200">
-            <h2 class="text-2xl font-semibold text-center text-stone-900 mb-4">What is Hyperfocal Distance?</h2>
-            <p class="max-w-4xl mx-auto text-center text-stone-600 leading-relaxed">
-                In photography, the <strong>hyperfocal distance</strong> is the closest focusing distance at which a
-                lens can be set to keep objects from a certain point (called the near limit) to infinity in acceptably
-                sharp focus.
-                <br><br>
-                When you focus on the hyperfocal point, your depth of field—the zone of sharpness—will extend from
-                <strong>half of that distance all the way to infinity</strong>. This technique is invaluable for
-                landscape, architectural, and street photographers who want to achieve maximum sharpness throughout an
-                entire scene, from foreground elements to the distant background.
-            </p>
-        </div>
-        <footer class="mt-16 text-center py-4">
-            <div class="max-w-3xl mx-auto mb-6 p-4 border border-blue-200 rounded-lg">
-                <h4 class="font-bold text-sm text-blue-700">
-                    Lưu ý về Nguồn gốc Nội dung
-                </h4>
-                <p class="text-xs mt-2">
-                    Trang web này được thiết kế bởi AI. Chỉ dùng nội dung này để tham khảo và sử dụng với sự cẩn trọng.
-                </p>
+      <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+        <aside class="lg:col-span-4 xl:col-span-3 mb-8 lg:mb-0">
+          <div
+            class="sticky top-8 bg-white p-6 rounded-2xl shadow-lg space-y-6 border border-stone-200"
+          >
+            <div>
+              <h2 class="text-xl font-semibold text-stone-900">
+                Camera Settings
+              </h2>
+              <p class="text-sm text-stone-500 mt-1">
+                Adjust these to match your equipment.
+              </p>
             </div>
-            <a href="https://thucde.dev" target="_blank" rel="noopener noreferrer"
-                class="inline-flex items-center space-x-2 text-white-500 hover:text-blue-600 transition-colors">
-                <span class="w-6 h-6 flex items-center justify-center rounded-md font-bold text-sm">
-                    <img src="https://thucde.dev/logo/thucdedev.png" alt="Thucde.dev Logo" class="w-6 h-6" />
-                </span>
-                <span class="font-semibold">Một sản phẩm của Thucde.dev</span>
-            </a>
-        </footer>
+
+            <div>
+              <label
+                for="sensorSize"
+                class="block text-sm font-medium text-stone-700"
+                >1. Sensor Size</label
+              >
+              <select
+                id="sensorSize"
+                class="mt-1 w-full bg-stone-50 border-stone-300 rounded-lg shadow-sm focus:ring-sky-500 focus:border-sky-500 p-2 text-sm"
+              >
+                <option value="Full-Frame" selected>Full-Frame</option>
+                <option value="APS-C">APS-C</option>
+                <option value="Micro Four Thirds">Micro Four Thirds</option>
+              </select>
+            </div>
+
+            <div>
+              <div class="flex justify-between items-center">
+                <label
+                  for="focalLength"
+                  class="text-sm font-medium text-stone-700"
+                  >2. Focal Length</label
+                >
+                <span
+                  id="focalLengthValue"
+                  class="text-sm font-semibold text-sky-700 bg-sky-100 rounded-md px-2 py-0.5"
+                  >35mm</span
+                >
+              </div>
+              <input
+                type="range"
+                id="focalLength"
+                min="10"
+                max="200"
+                value="35"
+                step="1"
+                class="mt-2 w-full"
+              />
+            </div>
+
+            <div>
+              <div class="flex justify-between items-center">
+                <label for="aperture" class="text-sm font-medium text-stone-700"
+                  >3. Aperture</label
+                >
+                <span
+                  id="apertureValue"
+                  class="text-sm font-semibold text-sky-700 bg-sky-100 rounded-md px-2 py-0.5"
+                  >f/8</span
+                >
+              </div>
+              <input
+                type="range"
+                id="aperture"
+                min="0"
+                max="15"
+                value="12"
+                step="1"
+                class="mt-2 w-full"
+              />
+            </div>
+
+            <div class="pt-4 border-t border-stone-200">
+              <h3 class="text-lg font-semibold text-stone-900">
+                Ideal Scenario: Hyperfocal Focus
+              </h3>
+              <div
+                class="mt-2 p-4 bg-sky-50 border-2 border-dashed border-sky-200 rounded-lg text-center"
+              >
+                <p class="text-sm text-sky-800">Focus at:</p>
+                <p
+                  id="hyperfocalDistance"
+                  class="text-3xl font-bold text-sky-600"
+                >
+                  7.66 m
+                </p>
+                <p class="mt-2 text-sm text-sky-800">Sharpness from:</p>
+                <p id="nearLimit" class="text-md font-semibold text-stone-700">
+                  3.83 m to Infinity
+                </p>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-stone-200 space-y-4">
+              <h3 class="text-lg font-semibold text-stone-900">
+                Practical Scenario Planner
+              </h3>
+              <p class="text-sm text-stone-500 -mt-3">
+                What if you can't focus at the ideal distance? Enter your actual
+                subject distance below.
+              </p>
+
+              <div>
+                <div class="flex justify-between items-center">
+                  <label
+                    for="subjectDistance"
+                    class="text-sm font-medium text-stone-700"
+                    >4. Actual Subject Distance</label
+                  >
+                  <span
+                    id="subjectDistanceValue"
+                    class="text-sm font-semibold text-amber-700 bg-amber-100 rounded-md px-2 py-0.5"
+                    >5.00m</span
+                  >
+                </div>
+                <input
+                  type="range"
+                  id="subjectDistance"
+                  min="0.5"
+                  max="50"
+                  value="5"
+                  step="0.25"
+                  class="mt-2 w-full"
+                />
+              </div>
+
+              <div
+                class="p-4 bg-amber-50 border-2 border-dashed border-amber-200 rounded-lg text-center space-y-2"
+              >
+                <div>
+                  <p class="text-sm text-amber-800">New Depth of Field:</p>
+                  <p
+                    id="dofResult"
+                    class="text-md font-semibold text-stone-700"
+                  >
+                    3.11m to 9.28m
+                  </p>
+                </div>
+                <div>
+                  <p class="text-sm text-amber-800">Total Sharp Zone:</p>
+                  <p id="totalDof" class="text-xl font-bold text-amber-600">
+                    6.17 m
+                  </p>
+                </div>
+              </div>
+
+              <div class="pt-4 border-t border-stone-200">
+                <div class="flex items-center gap-2">
+                  <h4 class="text-md font-semibold text-stone-800">
+                    Exposure Helper
+                  </h4>
+                  <div class="tooltip">
+                    <span
+                      class="text-xs font-bold text-stone-500 cursor-help border border-stone-400 rounded-full w-4 h-4 flex items-center justify-center hover:bg-stone-100"
+                      >?</span
+                    >
+                    <span class="tooltiptext"
+                      >Set a baseline exposure, then see how to adjust Shutter
+                      or ISO if you change the aperture.</span
+                    >
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-sm mt-2">
+                  <div>
+                    <label
+                      for="baseShutter"
+                      class="block text-xs font-medium text-stone-600"
+                      >Base Shutter</label
+                    >
+                    <select
+                      id="baseShutter"
+                      class="w-full mt-1 bg-stone-50 border-stone-300 rounded-md p-1 text-xs focus:ring-sky-500 focus:border-sky-500"
+                    >
+                      <option>1/1000</option>
+                      <option>1/500</option>
+                      <option>1/250</option>
+                      <option selected>1/125</option>
+                      <option>1/60</option>
+                      <option>1/30</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label
+                      for="baseIso"
+                      class="block text-xs font-medium text-stone-600"
+                      >Base ISO</label
+                    >
+                    <select
+                      id="baseIso"
+                      class="w-full mt-1 bg-stone-50 border-stone-300 rounded-md p-1 text-xs focus:ring-sky-500 focus:border-sky-500"
+                    >
+                      <option>100</option>
+                      <option selected>200</option>
+                      <option>400</option>
+                      <option>800</option>
+                      <option>1600</option>
+                    </select>
+                  </div>
+                </div>
+                <div
+                  id="exposure-compensation"
+                  class="mt-3 text-xs text-center p-2 bg-stone-100 rounded-lg"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <main class="lg:col-span-8 xl:col-span-9">
+          <div
+            class="bg-white p-4 sm:p-6 rounded-2xl shadow-lg border border-stone-200"
+          >
+            <div class="mb-6">
+              <div class="border-b border-stone-200">
+                <nav
+                  class="-mb-px flex space-x-1 sm:space-x-4"
+                  aria-label="Tabs"
+                >
+                  <button
+                    id="tab-chart"
+                    class="whitespace-nowrap py-3 px-3 sm:px-4 border-b-2 font-medium text-sm border-sky-500 text-sky-600"
+                  >
+                    Visualizer
+                  </button>
+                  <button
+                    id="tab-table"
+                    class="whitespace-nowrap py-3 px-3 sm:px-4 border-b-2 font-medium text-sm border-transparent text-stone-500 hover:text-stone-700 hover:border-stone-300"
+                  >
+                    Data Tables
+                  </button>
+                </nav>
+              </div>
+            </div>
+
+            <div>
+              <div id="content-chart">
+                <h2 class="text-xl font-semibold text-stone-900">
+                  Aperture vs. Hyperfocal Distance
+                </h2>
+                <p class="mt-1 text-sm text-stone-600">
+                  This chart illustrates how stopping down your aperture
+                  (choosing a higher f-number) dramatically decreases the
+                  hyperfocal distance for your selected focal length of
+                  <span id="chart-focal-length" class="font-bold">35mm</span>.
+                </p>
+                <div class="mt-4 chart-container">
+                  <canvas id="hyperfocalChart"></canvas>
+                </div>
+              </div>
+
+              <div id="content-table" class="hidden">
+                <h2 class="text-xl font-semibold text-stone-900">
+                  Hyperfocal Distance Data Tables
+                </h2>
+                <p class="mt-1 text-sm text-stone-600">
+                  For precise planning, find your settings in the table for the
+                  selected sensor size. Distances are in
+                  <span class="font-bold">Meters</span>.
+                </p>
+                <div class="mt-4 overflow-x-auto">
+                  <table
+                    id="data-table"
+                    class="min-w-full divide-y divide-stone-200 border border-stone-200"
+                  >
+                    <thead class="bg-stone-50"></thead>
+                    <tbody class="bg-white divide-y divide-stone-200"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="mt-8 bg-white p-8 rounded-2xl shadow-lg border border-stone-200"
+          >
+            <h2 class="text-2xl font-semibold text-center text-stone-900 mb-4">
+              What is Hyperfocal Distance?
+            </h2>
+            <p
+              class="max-w-4xl mx-auto text-center text-stone-600 leading-relaxed"
+            >
+              In photography, the <strong>hyperfocal distance</strong> is the
+              closest focusing distance at which a lens can be set to keep
+              objects from a certain point (called the near limit) to infinity
+              in acceptably sharp focus. When you focus on the hyperfocal point,
+              your depth of field—the zone of sharpness—will extend from
+              <strong>half of that distance all the way to infinity</strong>.
+              This technique is invaluable for landscape, architectural, and
+              street photographers who want to achieve maximum sharpness
+              throughout an entire scene.
+            </p>
+          </div>
+        </main>
+      </div>
+
+      <footer class="mt-16 text-center py-4">
+        <div
+          class="max-w-3xl mx-auto mb-6 p-4 border border-blue-200 rounded-lg"
+        >
+          <h4 class="font-bold text-sm text-blue-700">
+            Lưu ý về Nguồn gốc Nội dung
+          </h4>
+          <p class="text-xs mt-2">
+            Trang web này được thiết kế bởi AI. Chỉ dùng nội dung này để tham
+            khảo và sử dụng với sự cẩn trọng.
+          </p>
+        </div>
+        <a
+          href="https://thucde.dev"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center space-x-2 text-white-500 hover:text-blue-600 transition-colors"
+        >
+          <span
+            class="w-6 h-6 flex items-center justify-center rounded-md font-bold text-sm"
+          >
+            <img
+              src="https://thucde.dev/logo/thucdedev.png"
+              alt="Thucde.dev Logo"
+              class="w-6 h-6"
+            />
+          </span>
+          <span class="font-semibold">Một sản phẩm của Thucde.dev</span>
+        </a>
+      </footer>
     </div>
 
     <script>
-        const DATA = {
-            "Full-Frame": {
-                coc: 0.030,
-                focalLengths: [14, 16, 20, 24, 28, 35, 50, 85, 135],
-                apertures: [1.8, 2.0, 2.2, 2.5, 2.8, 3.2, 3.5, 4, 4.5, 5.0, 5.6, 6.3, 8, 11, 16, 22]
-            },
-            "APS-C": {
-                coc: 0.020,
-                focalLengths: [12, 16, 18, 24, 35, 50, 85],
-                apertures: [1.8, 2.0, 2.2, 2.5, 2.8, 3.2, 3.5, 4, 4.5, 5.0, 5.6, 6.3, 8, 11, 16, 22]
-            },
-            "Micro Four Thirds": {
-                coc: 0.015,
-                focalLengths: [8, 12, 17, 25, 45],
-                apertures: [1.8, 2.0, 2.2, 2.5, 2.8, 3.2, 3.5, 4, 4.5, 5.0, 5.6, 6.3, 8, 11, 16, 22]
-            }
-        };
+      const DATA = {
+        "Full-Frame": {
+          coc: 0.03,
+          focalLengths: [14, 16, 20, 24, 28, 35, 50, 85, 135],
+          apertures: [
+            1.8, 2.0, 2.2, 2.5, 2.8, 3.2, 3.5, 4, 4.5, 5.0, 5.6, 6.3, 8, 11, 16,
+            22,
+          ],
+        },
+        "APS-C": {
+          coc: 0.02,
+          focalLengths: [12, 16, 18, 24, 35, 50, 85],
+          apertures: [
+            1.8, 2.0, 2.2, 2.5, 2.8, 3.2, 3.5, 4, 4.5, 5.0, 5.6, 6.3, 8, 11, 16,
+            22,
+          ],
+        },
+        "Micro Four Thirds": {
+          coc: 0.015,
+          focalLengths: [8, 12, 17, 25, 45],
+          apertures: [
+            1.8, 2.0, 2.2, 2.5, 2.8, 3.2, 3.5, 4, 4.5, 5.0, 5.6, 6.3, 8, 11, 16,
+            22,
+          ],
+        },
+      };
 
-        const APERTURE_STOPS = DATA["Full-Frame"].apertures;
-        let appState = { sensor: 'Full-Frame', focalLength: 50, apertureIndex: 8 };
-        let hyperfocalChart;
+      const APERTURE_STOPS = DATA["Full-Frame"].apertures;
+      const SHUTTER_SPEEDS = [
+        "1/8000",
+        "1/4000",
+        "1/2000",
+        "1/1000",
+        "1/500",
+        "1/250",
+        "1/125",
+        "1/60",
+        "1/30",
+        "1/15",
+        "1/8",
+        "1/4",
+        "1/2",
+        "1",
+      ];
+      const ISO_VALUES = [100, 200, 400, 800, 1600, 3200, 6400];
 
-        function calculateHyperfocal(focalLength, aperture, coc) {
-            const hyperfocal_mm = (focalLength * focalLength) / (aperture * coc);
-            return hyperfocal_mm / 1000;
+      let appState = {
+        sensor: "Full-Frame",
+        focalLength: 50,
+        apertureIndex: 8,
+        subjectDistance: 5,
+        baseApertureIndex: 12,
+      };
+      let hyperfocalChart;
+
+      function calculateHyperfocal(focalLength, aperture, coc) {
+        return (focalLength * focalLength) / (aperture * coc) / 1000;
+      }
+
+      function calculateDof(hyperfocalDist, focusDist, focalLength) {
+        const f = focalLength / 1000;
+        const H = hyperfocalDist;
+        const D = focusDist;
+
+        if (D >= H) {
+          return { near: H / 2, far: Infinity, total: Infinity };
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const sensorEl = document.getElementById('sensorSize');
-            const focalLengthEl = document.getElementById('focalLength');
-            const apertureEl = document.getElementById('aperture');
-            const tabChartEl = document.getElementById('tab-chart');
-            const tabTableEl = document.getElementById('tab-table');
+        const near = (H * D) / (H + (D - f));
+        const far = (H * D) / (H - (D - f));
 
-            function updateUI() {
-                const sensorData = DATA[appState.sensor];
-                const aperture = APERTURE_STOPS[appState.apertureIndex];
+        return {
+          near: near > 0 ? near : 0,
+          far: far > 0 ? far : Infinity,
+          total: far > 0 ? far - near : Infinity,
+        };
+      }
 
-                document.getElementById('focalLengthValue').textContent = `${appState.focalLength}mm`;
-                document.getElementById('apertureValue').textContent = `f/${aperture}`;
+      document.addEventListener("DOMContentLoaded", () => {
+        const UIElements = {
+          sensor: document.getElementById("sensorSize"),
+          focalLength: document.getElementById("focalLength"),
+          aperture: document.getElementById("aperture"),
+          subjectDistance: document.getElementById("subjectDistance"),
+          baseShutter: document.getElementById("baseShutter"),
+          baseIso: document.getElementById("baseIso"),
+          focalLengthValue: document.getElementById("focalLengthValue"),
+          apertureValue: document.getElementById("apertureValue"),
+          subjectDistanceValue: document.getElementById("subjectDistanceValue"),
+          hyperfocalDistance: document.getElementById("hyperfocalDistance"),
+          nearLimit: document.getElementById("nearLimit"),
+          dofResult: document.getElementById("dofResult"),
+          totalDof: document.getElementById("totalDof"),
+          exposureCompensation: document.getElementById(
+            "exposure-compensation"
+          ),
+          chartFocalLength: document.getElementById("chart-focal-length"),
+          contentChart: document.getElementById("content-chart"),
+          contentTable: document.getElementById("content-table"),
+          tabChart: document.getElementById("tab-chart"),
+          tabTable: document.getElementById("tab-table"),
+          dataTableHead: document.querySelector("#data-table thead"),
+          dataTableBody: document.querySelector("#data-table tbody"),
+          chartCanvas: document.getElementById("hyperfocalChart"),
+        };
 
-                const hf_m = calculateHyperfocal(appState.focalLength, aperture, sensorData.coc);
-                const near_m = hf_m / 2;
+        appState.baseApertureIndex = parseInt(UIElements.aperture.value);
 
-                document.getElementById('hyperfocalDistance').textContent = `${hf_m.toFixed(2)} m`;
-                document.getElementById('nearLimit').textContent = `${near_m.toFixed(2)} m to Infinity`;
+        function updateUI() {
+          const sensorData = DATA[appState.sensor];
+          const aperture = APERTURE_STOPS[appState.apertureIndex];
 
-                updateChart();
-                updateTable();
-            }
+          UIElements.focalLengthValue.textContent = `${appState.focalLength}mm`;
+          UIElements.apertureValue.textContent = `f/${aperture}`;
+          UIElements.subjectDistanceValue.textContent = `${parseFloat(
+            appState.subjectDistance
+          ).toFixed(2)}m`;
 
-            function updateChart() {
-                const sensorData = DATA[appState.sensor];
-                document.getElementById('chart-focal-length').textContent = `${appState.focalLength}mm`;
+          const hf_m = calculateHyperfocal(
+            appState.focalLength,
+            aperture,
+            sensorData.coc
+          );
+          UIElements.hyperfocalDistance.textContent = `${hf_m.toFixed(2)} m`;
+          UIElements.nearLimit.textContent = `${(hf_m / 2).toFixed(
+            2
+          )} m to Infinity`;
 
-                const chartData = sensorData.apertures.map(ap => calculateHyperfocal(appState.focalLength, ap, sensorData.coc));
+          const dof = calculateDof(
+            hf_m,
+            appState.subjectDistance,
+            appState.focalLength
+          );
+          const farText = isFinite(dof.far)
+            ? `${dof.far.toFixed(2)}m`
+            : "Infinity";
+          const totalText = isFinite(dof.total)
+            ? `${dof.total.toFixed(2)} m`
+            : "Infinite";
+          UIElements.dofResult.textContent = `${dof.near.toFixed(
+            2
+          )}m to ${farText}`;
+          UIElements.totalDof.textContent = totalText;
 
-                const chartOptions = {
-                    maintainAspectRatio: false,
-                    responsive: true,
-                    scales: {
-                        y: { beginAtZero: true, title: { display: true, text: 'Hyperfocal Distance (meters)', color: '#44403c' }, grid: { color: '#e7e5e4' }, ticks: { color: '#57534e' } },
-                        x: { grid: { display: false }, ticks: { color: '#57534e' } }
+          updateExposureHelper(aperture);
+          updateChart();
+          updateTable();
+        }
+
+        function updateExposureHelper(currentAperture) {
+          const baseAperture = APERTURE_STOPS[appState.baseApertureIndex];
+          const baseShutter = UIElements.baseShutter.value;
+          const baseIso = parseInt(UIElements.baseIso.value);
+
+          const stopsDiff = Math.log2(currentAperture / baseAperture) * 2;
+
+          const baseShutterIndex = SHUTTER_SPEEDS.indexOf(baseShutter);
+          const newShutterIndex = Math.round(baseShutterIndex - stopsDiff);
+          const newShutter =
+            SHUTTER_SPEEDS[
+              Math.max(0, Math.min(SHUTTER_SPEEDS.length - 1, newShutterIndex))
+            ];
+
+          const newISO = Math.round(baseIso * Math.pow(2, stopsDiff));
+
+          UIElements.exposureCompensation.innerHTML = `To match exposure, use <strong>${newShutter}s</strong> OR ISO <strong>${newISO}</strong>`;
+        }
+
+        function updateChart() {
+          const sensorData = DATA[appState.sensor];
+          UIElements.chartFocalLength.textContent = `${appState.focalLength}mm`;
+          const chartData = sensorData.apertures.map((ap) =>
+            calculateHyperfocal(appState.focalLength, ap, sensorData.coc)
+          );
+
+          const chartOptions = {
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: "Hyperfocal Distance (meters)",
+                  color: "#44403c",
+                },
+                grid: { color: "#e7e5e4" },
+                ticks: { color: "#57534e" },
+              },
+              x: { grid: { display: false }, ticks: { color: "#57534e" } },
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: (c) =>
+                    `${c.dataset.label || ""}: ${c.parsed.y.toFixed(2)} m`,
+                },
+              },
+            },
+          };
+
+          if (!hyperfocalChart) {
+            hyperfocalChart = new Chart(
+              UIElements.chartCanvas.getContext("2d"),
+              {
+                type: "bar",
+                data: {
+                  labels: sensorData.apertures.map((a) => `f/${a}`),
+                  datasets: [
+                    {
+                      label: "Distance",
+                      data: chartData,
+                      backgroundColor: "rgba(14, 165, 233, 0.6)",
+                      borderColor: "rgba(14, 165, 233, 1)",
+                      borderWidth: 1,
+                      borderRadius: 4,
                     },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: (context) => `${context.dataset.label || ''}: ${context.parsed.y.toFixed(2)} m`
-                            }
-                        }
-                    }
-                };
+                  ],
+                },
+                options: chartOptions,
+              }
+            );
+          } else {
+            hyperfocalChart.data.labels = sensorData.apertures.map(
+              (a) => `f/${a}`
+            );
+            hyperfocalChart.data.datasets[0].data = chartData;
+            hyperfocalChart.update();
+          }
+        }
 
-                if (!hyperfocalChart) {
-                    const ctx = document.getElementById('hyperfocalChart').getContext('2d');
-                    hyperfocalChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: sensorData.apertures.map(a => `f/${a}`),
-                            datasets: [{
-                                label: 'Distance',
-                                data: chartData,
-                                backgroundColor: 'rgba(14, 165, 233, 0.6)',
-                                borderColor: 'rgba(14, 165, 233, 1)',
-                                borderWidth: 1,
-                                borderRadius: 4,
-                            }]
-                        },
-                        options: chartOptions
-                    });
-                } else {
-                    hyperfocalChart.data.labels = sensorData.apertures.map(a => `f/${a}`);
-                    hyperfocalChart.data.datasets[0].data = chartData;
-                    hyperfocalChart.update();
-                }
-            }
+        function updateTable() {
+          const sensorData = DATA[appState.sensor];
+          let headHTML =
+            '<tr><th class="sticky left-0 bg-stone-50 py-3 px-4 text-left text-xs font-medium text-stone-500 uppercase tracking-wider z-10">FL(mm)</th>';
+          sensorData.apertures.forEach(
+            (ap) =>
+              (headHTML += `<th class="py-3 px-4 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">f/${ap}</th>`)
+          );
+          UIElements.dataTableHead.innerHTML = headHTML + "</tr>";
 
-            function updateTable() {
-                const sensorData = DATA[appState.sensor];
-                const tableHead = document.querySelector('#data-table thead');
-                const tableBody = document.querySelector('#data-table tbody');
-
-                let headHTML = '<tr><th class="sticky left-0 bg-stone-50 py-3 px-4 text-left text-xs font-medium text-stone-500 uppercase tracking-wider z-10">FL(mm)</th>';
-                sensorData.apertures.forEach(ap => {
-                    headHTML += `<th class="py-3 px-4 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">f/${ap}</th>`;
-                });
-                headHTML += '</tr>';
-                tableHead.innerHTML = headHTML;
-
-                let bodyHTML = '';
-                sensorData.focalLengths.forEach((fl) => {
-                    bodyHTML += '<tr class="hover:bg-stone-50"><td class="sticky left-0 bg-white hover:bg-stone-50 py-4 px-4 whitespace-nowrap text-sm font-medium text-stone-900 z-10">' + fl + '</td>';
-                    sensorData.apertures.forEach(ap => {
-                        const hf = calculateHyperfocal(fl, ap, sensorData.coc);
-                        bodyHTML += '<td class="py-4 px-4 whitespace-nowrap text-sm text-stone-500">' + hf.toFixed(2) + '</td>';
-                    });
-                    bodyHTML += '</tr>';
-                });
-                tableBody.innerHTML = bodyHTML;
-            }
-
-            sensorEl.addEventListener('change', (e) => {
-                appState.sensor = e.target.value;
-                updateUI();
+          let bodyHTML = "";
+          sensorData.focalLengths.forEach((fl) => {
+            bodyHTML +=
+              '<tr class="hover:bg-stone-50"><td class="sticky left-0 bg-white hover:bg-stone-50 py-4 px-4 whitespace-nowrap text-sm font-medium text-stone-900 z-10">' +
+              fl +
+              "</td>";
+            sensorData.apertures.forEach((ap) => {
+              const hf = calculateHyperfocal(fl, ap, sensorData.coc);
+              bodyHTML +=
+                '<td class="py-4 px-4 whitespace-nowrap text-sm text-stone-500">' +
+                hf.toFixed(2) +
+                "</td>";
             });
-            focalLengthEl.addEventListener('input', (e) => {
-                appState.focalLength = parseInt(e.target.value);
-                updateUI();
-            });
-            apertureEl.addEventListener('input', (e) => {
-                appState.apertureIndex = parseInt(e.target.value);
-                updateUI();
-            });
+            bodyHTML += "</tr>";
+          });
+          UIElements.dataTableBody.innerHTML = bodyHTML;
+        }
 
-            const contentChart = document.getElementById('content-chart');
-            const contentTable = document.getElementById('content-table');
-
-            tabChartEl.addEventListener('click', () => {
-                contentChart.classList.remove('hidden');
-                contentTable.classList.add('hidden');
-                tabChartEl.className = 'whitespace-nowrap py-3 px-3 sm:px-4 border-b-2 font-medium text-sm border-sky-500 text-sky-600';
-                tabTableEl.className = 'whitespace-nowrap py-3 px-3 sm:px-4 border-b-2 font-medium text-sm border-transparent text-stone-500 hover:text-stone-700 hover:border-stone-300';
-            });
-
-            tabTableEl.addEventListener('click', () => {
-                contentChart.classList.add('hidden');
-                contentTable.classList.remove('hidden');
-                tabTableEl.className = 'whitespace-nowrap py-3 px-3 sm:px-4 border-b-2 font-medium text-sm border-sky-500 text-sky-600';
-                tabChartEl.className = 'whitespace-nowrap py-3 px-3 sm:px-4 border-b-2 font-medium text-sm border-transparent text-stone-500 hover:text-stone-700 hover:border-stone-300';
-            });
-
+        function setupEventListeners() {
+          UIElements.sensor.addEventListener("change", (e) => {
+            appState.sensor = e.target.value;
             updateUI();
-        });
-    </script>
-</body>
+          });
+          UIElements.focalLength.addEventListener("input", (e) => {
+            appState.focalLength = parseInt(e.target.value);
+            updateUI();
+          });
+          UIElements.aperture.addEventListener("input", (e) => {
+            appState.apertureIndex = parseInt(e.target.value);
+            updateUI();
+          });
+          UIElements.subjectDistance.addEventListener("input", (e) => {
+            appState.subjectDistance = parseFloat(e.target.value) || 0;
+            updateUI();
+          });
 
+          function setBaseExposure() {
+            appState.baseApertureIndex = appState.apertureIndex;
+            updateUI();
+          }
+
+          [UIElements.baseShutter, UIElements.baseIso].forEach((el) =>
+            el.addEventListener("change", setBaseExposure)
+          );
+
+          UIElements.tabChart.addEventListener("click", () => {
+            UIElements.contentChart.classList.remove("hidden");
+            UIElements.contentTable.classList.add("hidden");
+            UIElements.tabChart.className =
+              "whitespace-nowrap py-3 px-3 sm:px-4 border-b-2 font-medium text-sm border-sky-500 text-sky-600";
+            UIElements.tabTable.className =
+              "whitespace-nowrap py-3 px-3 sm:px-4 border-b-2 font-medium text-sm border-transparent text-stone-500 hover:text-stone-700 hover:border-stone-300";
+          });
+
+          UIElements.tabTable.addEventListener("click", () => {
+            UIElements.contentChart.classList.add("hidden");
+            UIElements.contentTable.classList.remove("hidden");
+            UIElements.tabTable.className =
+              "whitespace-nowrap py-3 px-3 sm:px-4 border-b-2 font-medium text-sm border-sky-500 text-sky-600";
+            UIElements.tabChart.className =
+              "whitespace-nowrap py-3 px-3 sm:px-4 border-b-2 font-medium text-sm border-transparent text-stone-500 hover:text-stone-700 hover:border-stone-300";
+          });
+        }
+
+        setupEventListeners();
+        updateUI();
+      });
+    </script>
+  </body>
 </html>
