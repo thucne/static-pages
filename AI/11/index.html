@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Settings Suggester</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Get instant camera setting recommendations for any photography situation. Enter your gear and shooting style to get the perfect settings for portraits, landscapes, sports, and more.">
+    <meta name="keywords" content="camera settings, photography, shutter speed, aperture, ISO, Canon, full-frame, APS-C, portrait, landscape, sports photography, settings suggester">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://static-pages.thucde.dev/">
+    <meta property="og:title" content="Camera Settings Suggester">
+    <meta property="og:description" content="Get instant camera setting recommendations for any photography situation.">
+    <meta property="og:image" content="https://res.cloudinary.com/katyperrycbt/image/upload/v1751353445/eqr6bgdx0zs1ecuzbeo9.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://static-pages.thucde.dev/">
+    <meta property="twitter:title" content="Camera Settings Suggester">
+    <meta property="twitter:description" content="Get instant camera setting recommendations for any photography situation.">
+    <meta property="twitter:image" content="https://res.cloudinary.com/katyperrycbt/image/upload/v1751353445/eqr6bgdx0zs1ecuzbeo9.jpg">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .setting-card {
+            background-color: #1F2937;
+            border: 1px solid #374151;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .setting-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-5xl">
+        
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-white">📷 Camera Settings Suggester</h1>
+            <p class="text-gray-400 mt-2">Get recommended camera settings for any situation.</p>
+        </header>
+
+        <!-- Input Form -->
+        <div class="bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-700 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Situation -->
+                <div>
+                    <label for="situation" class="block text-sm font-medium text-gray-300 mb-2">Shooting Situation</label>
+                    <select id="situation" class="w-full bg-gray-700 border-gray-600 text-white rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="portrait">Portrait</option>
+                        <option value="landscape">Landscape</option>
+                        <option value="sports">Sports / Action</option>
+                        <option value="night">Night Photography</option>
+                        <option value="product">Product / Still Life</option>
+                        <option value="macro">Macro</option>
+                        <option value="street">Street Photography</option>
+                        <option value="wildlife">Wildlife</option>
+                    </select>
+                </div>
+                <!-- Focal Length -->
+                <div>
+                    <label for="focalLength" class="block text-sm font-medium text-gray-300 mb-2">Lens Focal Length (mm)</label>
+                    <input type="number" id="focalLength" placeholder="e.g., 50" class="w-full bg-gray-700 border-gray-600 text-white rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" value="50">
+                </div>
+                <!-- Sensor Type -->
+                <div>
+                    <label for="sensor" class="block text-sm font-medium text-gray-300 mb-2">Canon Sensor Type</label>
+                    <select id="sensor" class="w-full bg-gray-700 border-gray-600 text-white rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="fullframe">Full-Frame</option>
+                        <option value="apsc">APS-C (1.6x Crop)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-6 text-center">
+                <button id="get-settings-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-transform transform hover:scale-105">
+                    Suggest Settings
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results" class="hidden">
+            <h2 class="text-2xl font-bold text-center mb-6 text-white">Recommended Settings</h2>
+            <div id="settings-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Settings will be injected here by JavaScript -->
+            </div>
+            <div class="mt-6 p-4 bg-gray-800 border border-gray-700 rounded-2xl">
+                 <h3 class="font-bold text-lg text-white mb-2">📝 Rationale & Tips</h3>
+                 <p id="rationale" class="text-gray-400"></p>
+            </div>
+        </div>
+         <!-- Initial Message -->
+        <div id="initial-message" class="text-center text-gray-500 mt-12">
+            <p>Select your situation and gear to get started!</p>
+        </div>
+
+           <footer class="mt-16 text-center py-4">
+        <div
+          class="max-w-3xl mx-auto mb-6 p-4 border border-blue-200 rounded-lg"
+        >
+          <h4 class="font-bold text-sm text-blue-700">
+            Important Note: Content Generated by AI
+          </h4>
+          <p class="text-xs mt-2">
+            This content is generated by AI and may not always be accurate or
+            up-to-date. Always verify settings with your camera's manual or
+            trusted sources before use.
+          </p>
+        </div>
+        <a
+          href="https://thucde.dev"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center space-x-2 text-white-500 hover:text-blue-600 transition-colors"
+        >
+          <span
+            class="w-6 h-6 flex items-center justify-center rounded-md font-bold text-sm"
+          >
+            <img
+              src="https://thucde.dev/logo/thucdedev.png"
+              alt="Thucde.dev Logo"
+              class="w-6 h-6"
+            />
+          </span>
+          <span class="font-semibold">A product of Thucde.dev</span>
+        </a>
+      </footer>
+    </div>
+
+    <script>
+        // DOM Elements
+        const getSettingsBtn = document.getElementById('get-settings-btn');
+        const resultsDiv = document.getElementById('results');
+        const settingsGrid = document.getElementById('settings-grid');
+        const rationaleP = document.getElementById('rationale');
+        const initialMessage = document.getElementById('initial-message');
+
+        // Event Listener
+        getSettingsBtn.addEventListener('click', () => {
+            // Get user inputs
+            const situation = document.getElementById('situation').value;
+            const focalLengthInput = document.getElementById('focalLength');
+            const sensor = document.getElementById('sensor').value;
+            
+            let focalLength = parseInt(focalLengthInput.value, 10);
+
+            // Basic validation
+            if (isNaN(focalLength) || focalLength <= 0) {
+                const modal = document.createElement('div');
+                modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+                modal.innerHTML = `
+                    <div class="bg-gray-800 text-white p-6 rounded-lg shadow-lg text-center">
+                        <p>Please enter a valid focal length.</p>
+                        <button onclick="this.parentElement.parentElement.remove()" class="mt-4 bg-blue-600 px-4 py-2 rounded">OK</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                return;
+            }
+
+            // Get and display settings
+            const settings = getSuggestedSettings(situation, focalLength, sensor);
+            displaySettings(settings);
+
+            // Show results and hide initial message
+            resultsDiv.classList.remove('hidden');
+            initialMessage.classList.add('hidden');
+        });
+
+        /**
+         * Core logic to determine camera settings based on inputs.
+         * @param {string} situation - The photography scenario.
+         * @param {number} focalLength - The lens focal length in mm.
+         * @param {string} sensor - The camera sensor type ('fullframe' or 'apsc').
+         * @returns {object} - An object containing suggested settings and rationale.
+         */
+        function getSuggestedSettings(situation, focalLength, sensor) {
+            // Calculate effective focal length for shutter speed rule and FoV
+            const cropFactor = sensor === 'apsc' ? 1.6 : 1;
+            const effectiveFocalLength = Math.round(focalLength * cropFactor);
+            const handheldShutterSpeed = Math.max(125, Math.round(1 / effectiveFocalLength * 100));
+
+            let settings = {
+                mode: 'Manual (M)',
+                aperture: 'f/1.8',
+                shutter: '1/125s',
+                iso: '100',
+                whiteBalance: 'Auto',
+                focusMode: 'Single-Shot AF',
+                driveMode: 'Single Shot',
+                effectiveFoV: `${effectiveFocalLength}mm`,
+                distance: 'Varies',
+                rationale: ''
+            };
+
+            switch (situation) {
+                case 'portrait':
+                    settings.mode = 'Aperture Priority (Av)';
+                    settings.aperture = focalLength > 35 ? 'f/1.4 - f/2.8' : 'f/2.8 - f/4';
+                    settings.shutter = `≥ 1/${handheldShutterSpeed}s`;
+                    settings.iso = '100-400';
+                    settings.focusMode = 'Eye AF / Single-Point AF';
+                    settings.distance = '1.5 - 3 meters';
+                    settings.rationale = `Use a wide aperture (low f-number) to create a shallow depth of field, blurring the background and making your subject pop. The effective field of view shows how 'zoomed in' your lens will appear on your sensor.`;
+                    break;
+
+                case 'landscape':
+                    settings.mode = 'Aperture Priority (Av) or Manual (M)';
+                    settings.aperture = 'f/8 - f/16';
+                    settings.shutter = 'Varies (use tripod)';
+                    settings.iso = '100';
+                    settings.whiteBalance = 'Daylight or Cloudy';
+                    settings.focusMode = 'Live View AF';
+                    settings.driveMode = '2-sec Timer (with tripod)';
+                    settings.distance = 'Focus 1/3 into scene';
+                    settings.rationale = `Use a narrow aperture (high f-number) to maximize depth of field, keeping everything from foreground to background sharp. A tripod is highly recommended to allow for low ISO and slower shutter speeds.`;
+                    break;
+
+                case 'sports':
+                    settings.mode = 'Shutter Priority (Tv) or Manual (M)';
+                    settings.aperture = 'Widest possible (e.g., f/2.8, f/4)';
+                    settings.shutter = '1/1000s or faster';
+                    settings.iso = '400-3200 (or Auto)';
+                    settings.focusMode = 'AI Servo / Continuous AF';
+                    settings.driveMode = 'High-Speed Continuous';
+                    settings.distance = 'Varies, track subject';
+                    settings.rationale = `A fast shutter speed is critical to freeze the action. Use continuous focus (AI Servo) to track moving subjects and a high drive mode to capture the perfect moment. Open the aperture wide to let in more light.`;
+                    break;
+
+                case 'night':
+                    settings.mode = 'Manual (M)';
+                    settings.aperture = 'Widest possible (e.g., f/1.8, f/2.8)';
+                    settings.shutter = '10-30s (use tripod)';
+                    settings.iso = '800-3200';
+                    settings.whiteBalance = 'Tungsten or Custom';
+                    settings.focusMode = 'Manual Focus (use Live View)';
+                    settings.driveMode = '2-sec Timer (with tripod)';
+                    settings.distance = 'Focus on subject or infinity';
+                    settings.rationale = `A tripod is essential. Use a wide aperture and a high ISO to capture as much light as possible. A long shutter speed will blur motion (like water or clouds) and create light trails. Focus manually for best results.`;
+                    break;
+
+                case 'product':
+                    settings.mode = 'Manual (M) or Aperture Priority (Av)';
+                    settings.aperture = 'f/8 - f/16';
+                    settings.shutter = 'Varies (use tripod)';
+                    settings.iso = '100';
+                    settings.whiteBalance = 'Custom or Preset';
+                    settings.focusMode = 'Manual Focus or Single-Point AF';
+                    settings.driveMode = '2-sec Timer (with tripod)';
+                    settings.distance = '0.5 - 2 meters';
+                    settings.rationale = 'Use a narrow aperture (high f-number) for a deep depth of field to keep the entire subject sharp. A tripod is essential for stability, allowing a low ISO for the best image quality. Use a timer to avoid camera shake.';
+                    break;
+
+                case 'macro':
+                    settings.mode = 'Manual (M)';
+                    settings.aperture = 'f/8 - f/11';
+                    settings.shutter = '1/100s or faster (use flash)';
+                    settings.iso = '100-200';
+                    settings.focusMode = 'Manual Focus';
+                    settings.distance = 'Lens minimum focus distance';
+                    settings.rationale = `Depth of field is very shallow in macro. Use a narrower aperture to get more of your tiny subject in focus. A flash (or good lighting) is often needed. Manual focus is key for precision.`;
+                    break;
+                
+                case 'street':
+                    settings.mode = 'Aperture Priority (Av)';
+                    settings.aperture = 'f/5.6 - f/8';
+                    settings.shutter = '1/250s or faster';
+                    settings.iso = 'Auto (with max limit, e.g., 3200)';
+                    settings.focusMode = 'Zone or Single-Point AF';
+                    settings.distance = '2 - 10 meters';
+                    settings.rationale = `A moderately narrow aperture keeps most of the scene in focus. A fast shutter speed helps capture fleeting moments without blur. Auto ISO is useful as lighting conditions can change quickly.`;
+                    break;
+
+                case 'wildlife':
+                    settings.mode = 'Shutter Priority (Tv) or Manual (M)';
+                    settings.aperture = 'Widest possible (e.g., f/4, f/5.6)';
+                    settings.shutter = '1/1000s or faster';
+                    settings.iso = 'Auto (with max limit)';
+                    settings.focusMode = 'AI Servo / Continuous AF';
+                    settings.driveMode = 'High-Speed Continuous';
+                    settings.distance = 'As close as safely possible';
+                    settings.rationale = `Similar to sports, freezing motion is key. Use your lens's widest aperture to achieve faster shutter speeds and isolate the subject. Continuous AF and high-speed burst will help you nail the shot of a moving animal.`;
+                    break;
+            }
+
+            return settings;
+        }
+
+        /**
+         * Displays the suggested settings in the UI.
+         * @param {object} settings - The settings object from getSuggestedSettings.
+         */
+        function displaySettings(settings) {
+            settingsGrid.innerHTML = ''; // Clear previous results
+
+            const settingsMap = {
+                'Shooting Mode': settings.mode,
+                'Aperture': settings.aperture,
+                'Shutter Speed': settings.shutter,
+                'ISO': settings.iso,
+                'Focus Mode': settings.focusMode,
+                'Drive Mode': settings.driveMode,
+                'Effective FoV': settings.effectiveFoV,
+                'Suggested Distance': settings.distance,
+            };
+
+            for (const [key, value] of Object.entries(settingsMap)) {
+                const card = document.createElement('div');
+                card.className = 'setting-card p-4 rounded-lg flex flex-col justify-center text-center';
+                card.innerHTML = `
+                    <h3 class="font-semibold text-gray-400 text-sm">${key}</h3>
+                    <p class="text-white text-xl font-bold">${value}</p>
+                `;
+                settingsGrid.appendChild(card);
+            }
+
+            rationaleP.textContent = settings.rationale;
+        }
+    </script>
+
+</body>
+</html>
